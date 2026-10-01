@@ -33,3 +33,30 @@ Book (CS72+Flush-B) screen Sharpe 1.513.
 
 ## Evidence
 * `code/pairs.py`, `results/pairs.csv`
+
+## Update — ran every combo on BOTH panels (the full universe matters)
+`code/combos.py`: every subset of the 5 strategies through one slot-limited compounding account (flat 20%/trade,
+max 5 open, raw P&L, 72h). Ran on the 16-coin panel (`results/combos.csv`, Dec2021–Aug2026) AND the full 30-coin
+panel (`results/combos_all30.csv`, Jan2020–Aug2026, the extra Kraken-margin/Kalshi coins + ~2 more years).
+
+**The ranking changes with the universe — this is the finding.**
+| combo | 16-coin Sharpe | 30-coin Sharpe |
+|---|---:|---:|
+| FlushB alone | 1.55 | **2.24 (top)** |
+| CS72+FlushB+BigLong | 2.21 (top) | 2.23 |
+| CS72+FlushB (current book) | 1.99 | 2.16 |
+| CS72+FlushB+MOM20 | 1.23 | 1.82 |
+| CS72 alone | 1.34 | 0.96 |
+
+* On 30 coins **Flush-B alone carries almost everything**; CS72's standalone Sharpe *drops* (1.34→0.96) and adds
+  little on top of Flush-B. The two-engine thesis is a 16-coin result; on the wider universe it is closer to
+  "Flush-B is the engine, the rest is trim."
+* **MOM20 flips from drag to contributor** (book 1.23→1.82) — momentum diversifies on the wider universe. Do not
+  leave it out based on the 16-coin run.
+* **BigLong earns a slot on both** (ties/helps). My earlier "probably redundant" guess was wrong.
+* **PerpShort is poison on both** (−0.86 alone / 30 coins). Dead — though note the real futures÷spot definition still
+  needs the spot panel; this is the hot-perp-taker proxy.
+
+**Caveat (ranking is the signal, absolute DD is not):** flat 20%/trade with no concurrency cap inflates the ~−40%
+drawdowns — that is the uncapped-flush problem from `FLUSH-MEMBERSHIP-2026-10-01.md`, not the production book. The
+proper sized engine with the Flush cap would lower them. Next: re-run the sized account engine on the 30-coin panel.
