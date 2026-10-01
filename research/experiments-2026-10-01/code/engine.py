@@ -17,7 +17,7 @@ def build(panel_key):
     p['oi24'] = g.oi.apply(lambda s: s / s.shift(6) - 1); p['ret24'] = g.c.apply(lambda s: s / s.shift(6) - 1)
     p['ret7d'] = g.c.apply(lambda s: s / s.shift(42) - 1)
     p['hi20'] = g.h.apply(lambda s: s.rolling(120, min_periods=60).max()); p['near_hi'] = (p.c >= 0.97 * p.hi20)
-    for H in (6, 18): p[f'f{H}'] = g.c.apply(lambda s, H=H: s.shift(-H) / s - 1)
+    for H in (6, 12, 18, 24): p[f'f{H}'] = g.c.apply(lambda s, H=H: s.shift(-H) / s - 1)
     # BTC clock (grid.py rules) + vol percentile + BTC 24h return
     b = p[p.coin == 'BTC'].set_index('t').c.sort_index()
     lr = np.log(b).diff(); vol = lr.rolling(20).std()
@@ -38,6 +38,17 @@ def build(panel_key):
     p['btc_volpct'] = p.t.map(vol.rolling(250).rank(pct=True))
     p['btc24'] = p.t.map(b / b.shift(6) - 1)
     p['btc30'] = p.t.map(b / b.shift(180) - 1)
+    bb = p[p.coin == 'BTC'].set_index('t').sort_index()
+    hh, ll, cc = bb.h, bb.l, bb.c
+    up = hh.diff(); dn = -ll.diff()
+    pdm = np.where((up > dn) & (up > 0), up, 0.0); ndm = np.where((dn > up) & (dn > 0), dn, 0.0)
+    trr = pd.concat([hh - ll, (hh - cc.shift()).abs(), (ll - cc.shift()).abs()], axis=1).max(axis=1)
+    ew = lambda z: pd.Series(np.asarray(z, float), index=bb.index).ewm(alpha=1/14, adjust=False).mean()
+    atr = ew(trr); pdi = 100*ew(pdm)/atr; ndi = 100*ew(ndm)/atr
+    adx = (100*(pdi-ndi).abs()/(pdi+ndi)).ewm(alpha=1/14, adjust=False).mean()
+    r5 = (adx < 20) & (atr / atr.rolling(50).median() < 0.85)
+    p['btc_r5'] = p.t.map(r5).fillna(False).astype(bool)
+    p['ret6m'] = p.groupby('coin', group_keys=False).c.apply(lambda s: s / s.shift(1080) - 1)
     return p
 
 def library(p):
@@ -70,22 +81,24 @@ def trade_table(p, L):
     """per signal: arrays sorted by entry time."""
     T = {}
     coin_id = {c: i for i, c in enumerate(sorted(p.coin.unique()))}
-    for nm, (side, mask, H) in L.items():
+    for nm, spec in L.items():
+        side, mask, H = spec[:3]; mult = spec[3] if len(spec) > 3 else None
         fwd = p[f'f{H}']
         m = (mask.fillna(False) & fwd.notna()).values
         sub = p[m]
+        mm = np.ones(m.sum()) if mult is None else np.asarray(mult[m], float)
         T[nm] = dict(entry=sub.t.values.astype(np.int64), exit=(sub.t.values + H * 14400).astype(np.int64),
                      coin=sub.coin.map(coin_id).values, r=side * fwd[m].values - FEE,
-                     isflush=np.full(m.sum(), nm.startswith('Flush')), name=nm)
+                     isflush=np.full(m.sum(), nm.startswith('Flush')), mult=mm, name=nm)
     return T
 
 def sim(T, names, size=0.20, maxopen=5, flushcap=None, split_t=None, coins=None, series=False):
     e = np.concatenate([T[n]['entry'] for n in names]); x = np.concatenate([T[n]['exit'] for n in names])
     c = np.concatenate([T[n]['coin'] for n in names]); r = np.concatenate([T[n]['r'] for n in names])
-    fl = np.concatenate([T[n]['isflush'] for n in names])
+    fl = np.concatenate([T[n]['isflush'] for n in names]); mu = np.concatenate([T[n]['mult'] for n in names])
     if coins is not None:
-        keep = np.isin(c, list(coins)); e, x, c, r, fl = e[keep], x[keep], c[keep], r[keep], fl[keep]
-    o = np.argsort(e, kind='stable'); e, x, c, r, fl = e[o], x[o], c[o], r[o], fl[o]
+        keep = np.isin(c, list(coins)); e, x, c, r, fl, mu = e[keep], x[keep], c[keep], r[keep], fl[keep], mu[keep]
+    o = np.argsort(e, kind='stable'); e, x, c, r, fl, mu = e[o], x[o], c[o], r[o], fl[o], mu[o]
     eq = 1.0; op = []; held = set(); ev_t = []; ev_eq = []; n = 0
     for i in range(len(e)):
         et = e[i]
@@ -98,7 +111,7 @@ def sim(T, names, size=0.20, maxopen=5, flushcap=None, split_t=None, coins=None,
             op = keep
         if len(op) >= maxopen or c[i] in held: continue
         if flushcap is not None and fl[i] and sum(1 for q in op if q[4]) >= flushcap: continue
-        op.append((x[i], c[i], eq * size, r[i], fl[i])); held.add(c[i]); n += 1
+        op.append((x[i], c[i], eq * size * mu[i], r[i], fl[i])); held.add(c[i]); n += 1
         if eq <= 0: break
     for (xx, cc, notional, rr, ff) in sorted(op):
         eq += notional * rr; ev_t.append(xx); ev_eq.append(eq)

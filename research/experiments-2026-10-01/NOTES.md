@@ -44,3 +44,20 @@ Flat per-trade sizing — rankings and robustness are the signal; absolute CAGR 
 Selection: thousands of configs were searched, so best-single-config numbers are flattering — the medians/worst-cases
 across configs, the train/test split, coin halves and per-year rows are the honest reads. Flat sizing, Binance prices,
 normal-day costs, no funding. Ledger rows: `study=experiments`.
+
+## Phase 4 — narrow R5 gate, season sizing, hold length, universe rules (both panels) · `code/phase4.py`, `results/phase4.csv`
+`FlushStd` = Flush-B standing down when BTC vol pct < 0.40, except deep flushes (price also down >5%) — the Phase 1–3 winner.
+* **Crowd short on the narrow R5 gate** (ADX<20 & ATR<0.85): neutral to slightly positive (+0.00 to +0.05). Resolves the
+  discrepancy — the narrow state is weak for CS72 per trade but rare; the broad vol-pct gate hurts. Not a rule.
+* **Season sizing** (Stress/TrendUp ×1.3, Calm ×0.8 short / ×1.0 long, TrendDown ×1.0 short / ×0.8 long): small,
+  consistent plus (+0.02 to +0.05 Sharpe, more CAGR, similar DD). Confirms the adopted playbook sizing.
+* **Hold:** Flush 72h confirmed (48h/96h worse on both panels). **CS72 48h is a lead on 30c** (2.66 → 2.85, test 3.45);
+  flat on 16c.
+* **CS24 on established coins only fixes it**: 30c CS72+CS24 2.20 (2026 −12%) → CS72+CS24_core 2.66–2.73, no losing year.
+* **Coin up 6 months on CS72** (production rule): helps 30c (2.66 → 2.75), hurts 16c (2.07 → 1.94).
+* **BigLong flips with the combination:** it helped CS72+FlushB, but with the Flush stand-down it **hurts on 30c**
+  (2.66 → 2.25) and helps only on 16c (2.07 → 2.28). Its earlier value was combination-dependent.
+
+**Candidate that holds on both panels:** CS72 + CS24 (established coins) + FlushStd, season-sized, Flush cap 3, 8 slots:
+30c Sharpe 2.75, all 5 years positive (worst +7.4%), DD −24%; 16c Sharpe 2.62, all 5 years positive (worst +28.7%),
+train 2.59 / test 2.65, DD −17%.
