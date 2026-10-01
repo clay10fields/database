@@ -195,10 +195,20 @@ def bars(coin: str) -> pd.DataFrame | None:
 
 
 def btc_state(btc: pd.DataFrame | None) -> tuple[pd.Series, pd.Series]:
-    """BTC regime (grid.py clock) and 20-bar vol percentile, both from data at or before each close."""
-    if btc is None or len(btc) < 60:
+    """BTC regime (grid.py clock) and 20-bar vol percentile, both from data at or before each close.
+
+    The live recorder window is only a few days of 4h bars, far short of the 250-bar rolling quantile the
+    regime clock needs, so the closes are seeded from the archive first -- exactly as bars() does for the
+    percentile inputs. Without the seed this returned an empty series and every signal was logged with no
+    market state, which silently left the concurrency-capped paper books (C and D) permanently uncapped.
+    """
+    if btc is None or btc.empty:
         return pd.Series(dtype=object), pd.Series(dtype=float)
-    c = btc.c
+    seed = seed_close_history("BTC", int(btc.index.min()))
+    c = pd.concat([seed, btc.c]) if len(seed) else btc.c
+    c = c[~c.index.duplicated(keep="last")].sort_index()
+    if len(c) < 300:                      # 250-bar quantile + 30-bar efficiency ratio need real depth
+        return pd.Series(dtype=object), pd.Series(dtype=float)
     lr = np.log(c).diff()
     vol = lr.rolling(20).std()
     vol_pct = vol.rolling(250, min_periods=100).rank(pct=True)
