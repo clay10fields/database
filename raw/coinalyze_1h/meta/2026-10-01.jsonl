@@ -1,0 +1,1 @@
+{"run": "2026-10-01T01:56:41.999680+00:00", "from": 1790643600, "to": 1790816400, "tables": {"perp_ohlcv": {"ok": false, "error": "HTTP 401"}, "spot_ohlcv": {"ok": false, "error": "HTTP 401"}, "oi": {"ok": false, "error": "HTTP 401"}, "funding": {"ok": false, "error": "HTTP 401"}, "liq": {"ok": false, "error": "HTTP 401"}, "ls_ratio": {"ok": false, "error": "HTTP 401"}}}
