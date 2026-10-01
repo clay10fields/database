@@ -1,0 +1,3 @@
+farside_btc_all.csv scraped 2026-09-30 from https://farside.co.uk/bitcoin-etf-flow-all-data/ units US$m
+farside_eth_all.csv from ethereum-etf-flow-all-data if present
+bykarantelicom files are the CC0 freeze through 2026-09-10 from github.com/bykarantelicom/crypto-datasets
