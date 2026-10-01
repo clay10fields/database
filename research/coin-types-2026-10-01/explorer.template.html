@@ -1,0 +1,231 @@
+<title>Coin Regime Grid</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one working column — controls, group×regime profile, variable×quartile heatmap, strongest cells, method. */
+:root{
+  --bg:#f3f4f2; --panel:#ffffff; --ink:#15191c; --mute:#5c666d; --line:#d9ddd9;
+  --up:#1f7a52; --up-soft:#d5ebdf; --dn:#b23a2e; --dn-soft:#f4d9d5; --accent:#2f5d8a; --accent-soft:#e1e9f2;
+  --display:"Barlow Semi Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#111416; --panel:#181c1f; --ink:#e6e9e7; --mute:#99a3a8; --line:#2b3135;
+  --up:#4fbf8a; --up-soft:#173527; --dn:#ec7a6c; --dn-soft:#3d1f1b; --accent:#86b3de; --accent-soft:#1c2a38; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111416; --panel:#181c1f; --ink:#e6e9e7; --mute:#99a3a8; --line:#2b3135;
+  --up:#4fbf8a; --up-soft:#173527; --dn:#ec7a6c; --dn-soft:#3d1f1b; --accent:#86b3de; --accent-soft:#1c2a38; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--body)}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:16px;padding-block:28px 56px;display:grid;gap:28px}
+h1{font:700 2.1rem/1.05 var(--display);letter-spacing:.01em;margin:0;text-wrap:balance}
+h2{font:600 1.3rem/1.2 var(--display);margin:0;letter-spacing:.01em}
+.lede{color:var(--mute);max-width:68ch;margin:6px 0 0}
+.eyebrow{font:500 .72rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{font:500 .78rem var(--mono);padding:4px 9px;border:1px solid var(--line);border-radius:4px;background:var(--panel)}
+.controls{display:flex;flex-wrap:wrap;gap:16px 24px;align-items:end}
+.ctl{display:grid;gap:6px}
+label{font:500 .72rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+select{font:500 .95rem var(--body);padding:7px 10px;border:1px solid var(--line);border-radius:5px;background:var(--panel);color:var(--ink);min-width:180px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:5px;overflow:hidden;background:var(--panel)}
+.seg button{font:500 .85rem var(--mono);padding:7px 12px;border:0;background:transparent;color:var(--mute);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent)}
+button:focus-visible,select:focus-visible,td.cell:focus-visible,tr.pick:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+section{display:grid;gap:12px;min-width:0}
+.note{color:var(--mute);font-size:.88rem;max-width:72ch;margin:0}
+.scroll{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:6px}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{padding:8px 10px;text-align:right;white-space:nowrap}
+th{font:500 .72rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mute);border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+tbody tr+tr td{border-top:1px solid var(--line)}
+.num{font:500 .92rem var(--mono)}
+.sub{display:block;font:400 .72rem var(--mono);color:var(--mute)}
+tr.pick{cursor:pointer}
+tr.pick[aria-selected="true"] td:first-child{box-shadow:inset 3px 0 0 var(--accent);font-weight:600}
+.pos{color:var(--up)} .neg{color:var(--dn)}
+/* heatmap */
+.hm td.cell{padding:0;width:58px;height:44px;text-align:center;cursor:pointer;border-left:1px solid var(--line)}
+.hm td.cell div{display:grid;place-items:center;height:100%;font:500 .8rem var(--mono)}
+.hm td.cell.sig div{box-shadow:inset 0 0 0 2px var(--ink)}
+.hm td.cell.thin div{color:var(--mute);opacity:.6}
+.hm th.reg{text-align:center;border-left:1px solid var(--line)}
+.hm th.q{text-align:center;font-size:.66rem;border-left:1px solid var(--line)}
+.hm td.var{font-weight:500;min-width:190px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;align-items:center;font:400 .8rem var(--mono);color:var(--mute)}
+.sw{display:inline-block;width:14px;height:14px;border-radius:2px;vertical-align:-2px;margin-right:5px}
+.detail{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:12px 14px;display:flex;flex-wrap:wrap;gap:8px 22px;font:400 .88rem var(--mono)}
+.detail b{font-weight:500;color:var(--ink)}
+.detail .what{flex-basis:100%;font:600 .95rem var(--body)}
+.warn{border-left:3px solid var(--dn);padding:4px 0 4px 12px}
+ul.method{margin:0;padding-left:18px;color:var(--mute);font-size:.88rem;max-width:72ch;display:grid;gap:4px}
+@media (prefers-reduced-motion:no-preference){td.cell div{transition:filter .12s} td.cell:hover div{filter:brightness(.93)}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Binance perps · 16 coins · 4h bars · <span id="span"></span></div>
+    <h1>Coin Regime Grid</h1>
+    <p class="lede">How each kind of coin moved next, by market regime, at each level of six positioning variables. Pick a group, then read across the regimes.</p>
+    <div class="chips" id="share"></div>
+  </header>
+
+  <div class="controls">
+    <div class="ctl"><label for="grp">Coin group</label><select id="grp"></select></div>
+    <div class="ctl"><label id="hlab">Look ahead</label>
+      <div class="seg" role="group" aria-labelledby="hlab"><button id="h24" aria-pressed="false">24h</button><button id="h72" aria-pressed="true">72h</button></div></div>
+    <div class="ctl"><label id="mlab">Show</label>
+      <div class="seg" role="group" aria-labelledby="mlab"><button id="mx" aria-pressed="true">vs normal</button><button id="mm" aria-pressed="false">raw move</button></div></div>
+  </div>
+
+  <section>
+    <div><div class="eyebrow">1 · Baseline</div><h2>Average move by group and regime</h2></div>
+    <p class="note">Average long return over the look-ahead on any bar, with how often price was up and the group's beta to BTC. Tap a row to load it below.</p>
+    <div class="scroll"><table id="prof"></table></div>
+  </section>
+
+  <section>
+    <div><div class="eyebrow">2 · Conditions</div><h2 id="hmTitle"></h2></div>
+    <p class="note" id="hmNote"></p>
+    <div class="legend">
+      <span><span class="sw" style="background:var(--dn)"></span>worse than normal</span>
+      <span><span class="sw" style="background:var(--up)"></span>better than normal</span>
+      <span><span class="sw" style="box-shadow:inset 0 0 0 2px var(--ink);background:var(--panel)"></span>|t| ≥ 2</span>
+      <span>Q1 = lowest quarter of its own 90 days · Q4 = highest</span>
+    </div>
+    <div class="scroll"><table class="hm" id="hm"></table></div>
+    <div class="detail" id="detail"></div>
+  </section>
+
+  <section>
+    <div><div class="eyebrow">3 · Shortlist</div><h2>Strongest cells across coin types</h2></div>
+    <p class="note warn" id="fp"></p>
+    <div class="scroll"><table id="top"></table></div>
+  </section>
+
+  <section>
+    <div><div class="eyebrow">Method</div><h2>How the grid is built</h2></div>
+    <ul class="method">
+      <li>Regime is one market clock taken from BTC, with no look-ahead. Stress: BTC 20-bar volatility above its trailing 250-bar 90th percentile. Trend up or down: BTC 30-bar efficiency ratio above 0.35, signed by the 30-bar move. Calm: everything else. Each state must last 3 bars.</li>
+      <li>Every variable is ranked against that coin's own trailing 90 days and split into quarters, so a meme coin's crowd reading is compared with its own history, not with BTC's.</li>
+      <li>"Vs normal" is the cell's average minus the average of every bar for the same group and regime. No fees. This is a map, not a trading rule.</li>
+      <li>t is cluster-robust by calendar week, because 72h windows overlap and coins move together. Cells with fewer than 30 bars are hidden; cells under 300 bars are dimmed.</li>
+      <li>Source: research/coin-types-2026-10-01/grid.py in the database repo.</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+const D = __DATA__;
+const TYPES = D.meta.types, REGS = ["All", ...D.meta.regimes], VARS = D.meta.vars;
+const groups = ["All coins", ...Object.keys(TYPES)];
+const coins = Object.values(TYPES).flat();
+let S = {g:"All coins", h:"72", m:"x", sel:null};
+const $ = id => document.getElementById(id);
+const fmt = (v,d=2) => v==null ? "–" : (v>0?"+":"") + v.toFixed(d) + "%";
+const cls = v => v==null ? "" : v>0 ? "pos" : v<0 ? "neg" : "";
+const key = c => c.g+"|"+c.r+"|"+c.v+"|"+c.q;
+const IDX = new Map(D.cells.map(c => [key(c), c]));
+const PIDX = new Map(D.profile.map(p => [p.g+"|"+p.r, p]));
+
+$("span").textContent = D.meta.start + " to " + D.meta.end;
+$("share").innerHTML = D.meta.regimes.map(r => `<span class="chip">${r} ${D.meta.regime_share[r]}% of the time</span>`).join("");
+
+const sel = $("grp");
+sel.innerHTML = `<optgroup label="Types">${groups.map(g=>`<option>${g}</option>`).join("")}</optgroup>` +
+  Object.entries(TYPES).map(([t,cs]) => `<optgroup label="${t}">${cs.map(c=>`<option>${c}</option>`).join("")}</optgroup>`).join("");
+sel.onchange = () => { S.g = sel.value; S.sel = null; render(); };
+const seg = (a,b,k,va,vb) => { $(a).onclick=()=>{S[k]=va;render()}; $(b).onclick=()=>{S[k]=vb;render()}; };
+seg("h24","h72","h","24","72"); seg("mx","mm","m","x","m");
+
+function color(v, scale){
+  if (v==null) return "transparent";
+  const a = Math.min(Math.abs(v)/scale, 1);
+  const c = v>0 ? "var(--up)" : "var(--dn)";
+  return `color-mix(in srgb, ${c} ${Math.round(a*70)}%, var(--panel))`;
+}
+
+function renderProfile(){
+  const rows = [...groups, ...(coins.includes(S.g) ? [S.g] : [])];
+  const h = S.h;
+  let html = `<thead><tr><th>Group</th>${REGS.map(r=>`<th>${r}</th>`).join("")}<th>Up %</th><th>Beta</th></tr></thead><tbody>`;
+  for (const g of rows){
+    const all = PIDX.get(g+"|All");
+    html += `<tr class="pick" tabindex="0" aria-selected="${g===S.g}" data-g="${g}"><td>${g}${coins.includes(g)?"":`<span class="sub">${g==="All coins"?"16 coins":TYPES[g].join(" · ")}</span>`}</td>`;
+    for (const r of REGS){
+      const p = PIDX.get(g+"|"+r);
+      html += p ? `<td><span class="num ${cls(p["f"+h])}">${fmt(p["f"+h])}</span><span class="sub">t ${p["t"+h]?.toFixed(1) ?? "–"} · n ${p.n.toLocaleString()}</span></td>` : `<td>–</td>`;
+    }
+    html += `<td class="num">${all? all.up24.toFixed(0):"–"}</td><td class="num">${all&&all.beta!=null? all.beta.toFixed(2):"–"}</td></tr>`;
+  }
+  $("prof").innerHTML = html + "</tbody>";
+  $("prof").querySelectorAll("tr.pick").forEach(tr => {
+    const go = () => { S.g = tr.dataset.g; sel.value = S.g; S.sel=null; render(); };
+    tr.onclick = go; tr.onkeydown = e => { if (e.key==="Enter"||e.key===" ") { e.preventDefault(); go(); } };
+  });
+}
+
+function renderHeat(){
+  const h = S.h, f = (S.m==="x"?"x":"m")+h, scale = h==="72" ? 2.5 : 1.2;
+  $("hmTitle").textContent = `${S.g}: next ${h}h by variable level and regime`;
+  $("hmNote").textContent = S.m==="x"
+    ? `Each cell is the average ${h}h move minus what ${S.g} normally did in that regime. Tap a cell for details.`
+    : `Each cell is the raw average ${h}h move after that condition. Tap a cell for details.`;
+  let html = `<thead><tr><th rowspan="2">Variable</th>${REGS.map(r=>`<th class="reg" colspan="4">${r}</th>`).join("")}</tr><tr>${REGS.map(()=>[1,2,3,4].map(q=>`<th class="q">Q${q}</th>`).join("")).join("")}</tr></thead><tbody>`;
+  for (const v of VARS){
+    html += `<tr><td class="var">${v}</td>`;
+    for (const r of REGS) for (const q of [1,2,3,4]){
+      const c = IDX.get(S.g+"|"+r+"|"+v+"|"+q);
+      if (!c){ html += `<td class="cell"><div>–</div></td>`; continue; }
+      const t = c["t"+h], sig = t!=null && Math.abs(t)>=2, thin = c.n<300;
+      const val = c[f];
+      html += `<td class="cell ${sig?"sig":""} ${thin?"thin":""}" tabindex="0" data-k="${key(c)}" aria-label="${v}, ${r}, Q${q}: ${fmt(val)}"><div style="background:${color(val,scale)}">${val==null?"–":(val>0?"+":"")+val.toFixed(1)}</div></td>`;
+    }
+    html += `</tr>`;
+  }
+  $("hm").innerHTML = html + "</tbody>";
+  $("hm").querySelectorAll("td.cell[data-k]").forEach(td => {
+    const go = () => { S.sel = td.dataset.k; renderDetail(); };
+    td.onclick = go; td.onkeydown = e => { if (e.key==="Enter"||e.key===" ") { e.preventDefault(); go(); } };
+  });
+  if (!S.sel || !S.sel.startsWith(S.g+"|")) {
+    // default: strongest cell for this group at this horizon
+    const cs = D.cells.filter(c => c.g===S.g && c["t"+h]!=null).sort((a,b)=>Math.abs(b["t"+h])-Math.abs(a["t"+h]));
+    S.sel = cs.length ? key(cs[0]) : null;
+  }
+  renderDetail();
+}
+
+function renderDetail(){
+  const c = S.sel && IDX.get(S.sel), h = S.h;
+  if (!c){ $("detail").innerHTML = `<span class="what">No cell selected</span>`; return; }
+  const p = PIDX.get(c.g+"|"+c.r);
+  $("detail").innerHTML = `<span class="what">${c.g} · ${c.r} regime · ${c.v} in Q${c.q}</span>
+    <span>next ${h}h <b class="${cls(c["m"+h])}">${fmt(c["m"+h])}</b></span>
+    <span>normal <b>${fmt(p["f"+h])}</b></span>
+    <span>vs normal <b class="${cls(c["x"+h])}">${fmt(c["x"+h])}</b></span>
+    <span>t <b>${c["t"+h]?.toFixed(2) ?? "–"}</b></span>
+    <span>up <b>${c["w"+h].toFixed(0)}%</b></span>
+    <span>bars <b>${c.n.toLocaleString()}</b></span>`;
+}
+
+function renderTop(){
+  const h = S.h, T = [...groups];
+  const pool = D.cells.filter(c => T.includes(c.g) && c["t"+h]!=null);
+  const hits = pool.filter(c => Math.abs(c["t"+h])>=2);
+  const expected = Math.round(pool.length*0.0455);
+  $("fp").textContent = `${pool.length} type-level cells at ${h}h. About ${expected} would show |t| ≥ 2 by luck alone; ${hits.length} do. Treat this list as ideas to test on their own, not as findings.`;
+  const top = pool.sort((a,b)=>Math.abs(b["t"+h])-Math.abs(a["t"+h])).slice(0,15);
+  $("top").innerHTML = `<thead><tr><th>Group</th><th>Regime</th><th>Condition</th><th>Next ${h}h</th><th>Vs normal</th><th>t</th><th>Bars</th></tr></thead><tbody>` +
+    top.map(c => `<tr><td>${c.g}</td><td>${c.r}</td><td>${c.v} Q${c.q}</td><td class="num ${cls(c["m"+h])}">${fmt(c["m"+h])}</td><td class="num ${cls(c["x"+h])}">${fmt(c["x"+h])}</td><td class="num">${c["t"+h].toFixed(2)}</td><td class="num">${c.n.toLocaleString()}</td></tr>`).join("") + "</tbody>";
+}
+
+function render(){
+  $("h24").setAttribute("aria-pressed", S.h==="24"); $("h72").setAttribute("aria-pressed", S.h==="72");
+  $("mx").setAttribute("aria-pressed", S.m==="x"); $("mm").setAttribute("aria-pressed", S.m==="m");
+  renderProfile(); renderHeat(); renderTop();
+}
+render();
+</script>
