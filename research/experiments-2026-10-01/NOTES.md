@@ -81,3 +81,18 @@ also the −2% resting-limit version. Restricted to each panel's date range and 
 
 **Book that has survived every phase so far:** CS72 (72h; 48h on the wide universe) + CS24 on established coins +
 FlushStd + filtered LiqBuy, season-sized, 8 slots, Flush cap 3. Next: walk-forward (select on 2022–mid-2024, test after).
+
+## Phase 6 — walk-forward: select on 2022-01..2024-06 only, test on 2024-07..2026-08 · `code/phase6.py`, `results/phase6_walkforward.csv`
+2,972 combos (1–4 signals from a 17-signal roster) per panel, scored separately on each window (15%, cap 3, 8 slots).
+* **The search found signal, not noise.** Rank correlation of selection-window Sharpe vs unseen-window Sharpe:
+  **+0.70 (30c), +0.83 (16c)**. Top 10 / top 50 picked on the past: **100% beat the field median** on unseen data; their
+  unseen median Sharpe 2.25–2.44 vs field 0.95–0.98.
+* **Finalist CS72_48h+CS24_core+FlushStd+LiqBuy:** 30c selection rank #3 → unseen **#8 of 2,972** (Sharpe 2.96, DD −15%);
+  16c #14 → #49 (top 2%, Sharpe 2.65). Current book CS72+FlushB: unseen #237 (30c) / #119 (16c) — every candidate built today
+  beats it out of sample.
+* **Signal effects out of sample** (median unseen Sharpe with vs without): helps — CS72, CS72_48h, FlushB/FlushStd, LiqBuy,
+  BigLong, and **MOM20_7d (+0.65 on 30c, the largest; neutral in-sample — a momentum lead)**. Hurts — PerpShort, FundHighShort,
+  CrowdLow, FundLowLong (16c), **plain CS24 on 30c (−0.35)**; CS24_core holds.
+* **Caveat:** this validates the *ranking*, not the *invention*. FlushStd, CS24_core and CS72_48h were designed today on data
+  that includes the unseen window, so the roster carries hindsight (CS24_core most directly). Stricter test next: multi-fold
+  walk-forward with design choices made inside each fold; then the forward paper record.
