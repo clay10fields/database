@@ -60,3 +60,21 @@ panel (`results/combos_all30.csv`, Jan2020–Aug2026, the extra Kraken-margin/Ka
 **Caveat (ranking is the signal, absolute DD is not):** flat 20%/trade with no concurrency cap inflates the ~−40%
 drawdowns — that is the uncapped-flush problem from `FLUSH-MEMBERSHIP-2026-10-01.md`, not the production book. The
 proper sized engine with the Flush cap would lower them. Next: re-run the sized account engine on the 30-coin panel.
+
+## Update — Flush concurrency cap (max 2) on the 30-coin panel
+`code/combos_capped.py`, `results/combos_all30_flushcap2.csv`. Same sweep, Flush capped at 2 concurrent.
+* The cap lowers drawdown as the repo predicted (top combo −40.4% → −31.8%), but with flat 20% sizing it also cuts
+  Flush's big winners, so Sharpe falls here (FlushB alone 2.24 → 1.56). The flat sim over-weights Flush vs the
+  production 15%; the sized engine in `universe-refresh/` remains the adjudicator for the cap itself.
+
+## What survived every run (16-coin, 30-coin uncapped, 30-coin capped)
+| run | CS72+FlushB | + BigLong |
+|---|---:|---:|
+| 16-coin | 1.99 | **2.21** |
+| 30-coin uncapped | 2.16 | **2.23** |
+| 30-coin Flush cap 2 | 1.65 | **1.91** |
+
+**Adding BigLong to the book improves Sharpe in every configuration tested.** Caveat that must travel with it: its
+premise was found false (`big-accounts/BIG-ACCOUNTS.md` premise test — big accounts don't lead price; the edge is
+crowd-contrarian). Portfolio stats favour it; the mechanism needs re-examination before it is trusted. Next: sized
+account engine on the 30-coin panel for CS72+FlushB+BigLong, and BigLong through the pass bar.
