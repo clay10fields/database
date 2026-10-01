@@ -1,6 +1,6 @@
 # Liquidation spikes: what we know
 
-Status: **full treatment 2026-10-01. The plain version is real across 7 years but violent, and it has been losing since Dec 2025. The version worth running is the filtered one (market-wide spike in a high-volatility tape), small. Never short a short squeeze.**
+Status: **FULL WORKS COMPLETE 2026-10-01 (our method). The filtered long-liq buy (market-wide spike + high-vol tape) is a genuine third strategy: it clears the pass bar, survives every audit, and is improvable with a -2% limit entry. The plain unfiltered version is real but violent; never short a short squeeze. Run the filtered version small, standalone. Not yet live — paper first.**
 Coinalyze daily liquidations, OI and price for 16 Binance perps, Sep 2019 to Oct 2026. This is the one dataset here that covers the
 previous cycle. Liquidations ranked against the coin's own trailing 90 days. Enter at the day's close, hold N days, 0.10% fee.
 
@@ -183,3 +183,42 @@ barely matters (OI fell +4.4% / OI rose +6.8%). The signal is robust to these cu
 
 **Net:** the only adopted refinement is the -2% resting-limit entry. Everything else confirms the base. The
 trade is a genuine, robust third edge.
+
+
+## FULL WORKS — Steps 16, 18, 20, 12a audits (2026-10-01)
+`code/robust.py`. All clear.
+
+**Step 16 look-ahead / staleness.** Inputs are known at the spike-day close. Edge decays *smoothly* with a
+late fill (as-traded +4.9% -> 1-day late +3.3% -> 2-day +2.0%, all positive) — no look-ahead cliff, and it
+tolerates a stale fill, which matters for live execution.
+
+**Step 18 plateau — a real plateau, not a spike.** Dose-response on the trigger (liq pct 0.90 +3.7% / 0.95
++4.9% / 0.98 +6.4%), and market-wide count, vol-pct and hold all move smoothly with every neighbour positive.
+This is the signature of a real edge, not a fitted point.
+
+**Step 20 events — it profits in the real forced-selling episodes.** COVID Mar-2020 +12.3%, FTX Nov-2022
++11.1%, Oct-10-2025 +11.1%, LUNA May-2022 +3.6% (41 signals). The one negative window is May-2021 (-11.8%,
+n=3, too few to weigh). Aug-5-2024 did not trigger the filter. The mechanism fires into cascades and gets paid.
+
+**Step 12a quant.** Signal-strength sizing works: the most volatile tapes (vol pct >=0.90) return +5.6% vs
++3.9% — size up there. Monte Carlo (15%/trade, 10k resamples) median final x15.8, P(maxDD < -40%) = 0%.
+**Honest caveat:** that MC is iid, so it understates drawdown clustering — the real *sequential* account
+drawdown (Step 11) was -29%, and that is the number to plan against, not the iid -8%.
+
+## Current best read (provisional) — the liquidation buy as strategy #3
+**Signal.** A coin's daily long-liquidations at or above its own 90-day 95th percentile, on a day when **>=5
+of the 16 coins** spike together, while the coin's **20-day realized vol is in its own top fifth**.
+**Entry.** A resting limit **2% below the spike-day close**, valid ~1 day; size only the filled portion.
+**Exit.** Hold **3 days, no stop** (stops lower the edge; losers bounce). Optional +8% profit target for a
+smoother ride (keeps +3.95%, best t). A hard 15% intraday stop caps the worst trade -28% -> -15% but costs
+~1.4%/trade — only if drawdown must be bounded.
+**Size.** Small and fixed (~10-15% of equity); size up in the most volatile tapes. Sequential drawdown ran
+-29% historically — treat that as the planning number.
+**Coins.** Works across the board, in demand or in decline (unlike CS/FL). Best HBAR/XLM/LINK/AVAX/SOL; drop
+DOT/XTZ/SHIB (not Kraken-tradeable); weak on BCH/AAVE.
+**Pass bar:** cleared — +4%/trade, t 3.7-4.4, both halves +, 7/7 years, n>200, beats placebo.
+**Caveats:** filter conditions were data-selected (in-sample), so confirm forward; daily data only (no
+intraday); and it was cut from the 2-engine *book* on portfolio fit, not on its own merit — re-test book
+admission with proper standalone sizing.
+**Open (lower priority):** Step 17 survivorship (the daily set already spans 2019 and includes faded coins),
+Step 19 formal multiple-testing count, Steps 22/23/25 for this engine specifically, Step 24 (venue, blocked).
