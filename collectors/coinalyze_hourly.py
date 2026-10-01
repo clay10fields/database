@@ -57,7 +57,10 @@ def perp(c: str) -> str:
 
 
 def spot(c: str) -> str:
-    return f"{c}USD.A"
+    # Verified 2026-09-30: every coin has a {COIN}USD.A spot aggregate except LINK, which only
+    # exists as LINKUSDT.A / LINKUSDC.A. A missing symbol is silently absent from the response,
+    # not an error, so a wrong name here would quietly lose a coin forever.
+    return ("LINKUSDT.A" if c == "LINK" else f"{c}USD.A")
 
 
 # table -> (endpoint, symbol fn, extra params, columns)
