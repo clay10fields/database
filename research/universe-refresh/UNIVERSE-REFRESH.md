@@ -52,6 +52,25 @@ Using causal slot priority therefore does **not** explain away the Flush-B drawd
 ## What remains unresolved
 The project objective says coins should enter/leave by rule rather than by name. **That objective is satisfied for CS72 but not for Flush-B.** Future Flush universe work must find a predeclared causal membership/priority/risk rule that preserves the broad positive edge without doubling account drawdown. The current seven-name set remains a validated research set, not a general universe law.
 
+### Update 2026-10-01 — substantially resolved; see `FLUSH-MEMBERSHIP-2026-10-01.md`
+The diagnosis in this file ("the problem appears when clustered signals compete for a finite account") was tested
+directly against three predeclared risk-rule families on the dynamic universe. It was right.
+
+**Drawdown is monotone in the number of concurrent Flush positions, and the damage sits at 3+:**
+−11.70% (max 1), −13.92% (max 2), **−22.70% (max 3)**, −26.06% (max 4), −26.83% (uncapped). Going from two
+simultaneous flush longs to three costs 8.8pp of drawdown for 5.4pp of CAGR — the N_eff ≈ 2.5 "one bet" result showing
+up where the correlation evidence says it should.
+
+**The name list can therefore go.** Dynamic 16-coin universe + max 2 concurrent Flush gives Sharpe **2.71** and worst
+month **−5.64%** against the curated seven's 2.66 / −5.70%, at −13.92% drawdown and 87.28% CAGR. Better risk-adjusted
+return and better tail, ~7pp less CAGR, every year positive, and no coin chosen after the fact.
+
+Also found: breadth de-sizing alone fails (−23.9%) — the *count* of open positions matters more than the size of each.
+Gross-exposure caps are strictly dominated by slot caps (same drawdown, 22pp less return).
+
+Caveat: 16 account configurations were searched after seeing the problem, so the cap of **2** is in-sample and the
+Sharpe peak there may be a spike (neighbours 2.36 and 2.65). The monotone drawdown curve is the robust part.
+
 ## Evidence
 - `code/universe_refresh.py`
 - `code/dynamic_universe_test.py`

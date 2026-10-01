@@ -116,6 +116,22 @@ Step 27 tested a rule-based replacement and rejected it on drawdown (-26.83% vs 
 per-coin results, and every account figure in this file inherits that. Writing down the predeclared causal rule that
 admits a Flush coin is the open item that blocks this engine from being called rule-based.
 
+**Update 2026-10-01 — there is now a rule-based alternative worth running alongside this one**
+(`research/universe-refresh/FLUSH-MEMBERSHIP-2026-10-01.md`). The drawdown problem is concurrency, not coin identity:
+on the rule-based 16-coin universe, max drawdown runs −11.70% / −13.92% / **−22.70%** / −26.06% / −26.83% as the cap on
+simultaneous Flush positions goes 1 / 2 / 3 / 4 / 5. Capping at two gives:
+
+| | curated seven (this spec) | dynamic 16 + max 2 concurrent Flush |
+|---|---:|---:|
+| CAGR | 93.94% | 87.28% |
+| max DD | −12.94% | −13.92% |
+| **Sharpe** | 2.66 | **2.71** |
+| worst month | −5.70% | **−5.64%** |
+
+Better Sharpe and better worst month with no hand-picked coin list; ~7pp less CAGR. **Run both in paper** — the signals
+are identical and only admission differs, so it costs nothing to carry both until the live record settles it. The cap
+of 2 is itself an in-sample choice over 16 configurations; the monotone drawdown curve is the robust finding.
+
 The 180-day maturity rule was specified in Step 27 and then isolated in a reconciliation audit. Versus no history gate it improved standalone edge from +2.66% to +2.93% and improved the corrected book on CAGR, drawdown, Sharpe, and worst month. A 365-day sensitivity looked attractive but is **not adopted** because it was not the preregistered rule and trims substantially more early history.
 
 ### Exit / damage control
