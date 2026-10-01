@@ -172,3 +172,17 @@ cold bleed = funding 7d pct ≤0.2 AND prior month already falling.
 * Config note: for the new book, max 5 slots / no Flush cap beats 8 slots / cap 3 on both panels (2.75 vs 2.63; 2.87 vs 2.76).
 * **Pattern across phases 10–11:** per-trade conditional edges are real and large, but the account is slot- and
   correlation-bound — which trades get in matters; sizing on conditions mostly trades Sharpe for return.
+
+## Phase 12 / 12b — coin-group rotation by regime (first test of FULL-TREATMENT §3's open macro question) · `code/phase12*.py`
+Groups from `coin-types-2026-10-01/grid.py`, extended to 30 coins (+BNB→Big alts; ALGO NEAR TRX ZEC→Old L1s; UNI CRV HYPE→DeFi;
+PEPE PENGU→Memes; SUI WLD RENDER VVV→New/AI). Weekly, non-overlapping samples.
+* **The rotation sequence (majors → big alts → old L1s → memes) is false as stated.** Majors→big alts corr −0.04; big alts→old
+  L1s +0.03; **old L1s→memes −0.14 / −0.16 (t −2.2 / −2.5) — backwards** (memes lag after L1s run). Trading the rotation rule:
+  −0.35%/wk (30c), −0.75%/wk in 2024–26. Each group's own momentum is stronger than any hand-off (big alts +0.26).
+* **Regime → group: mostly noise.** Robust on both panels: **forks lag in BTC trend-up** (−2.98%/wk t −2.5; −2.46% t −2.7). Big alts
+  lead in trend-up (+1.3 to +2.1%/wk, t 1.2–1.6).
+* Regime rule chosen on 2022–23 only, tested 2024–26: 30c +0.94%/wk (t 1.5), 16c +0.34%/wk (t 0.9). Decays; a lead, not a rule.
+* **Inside the book (12b, strict folds, favoured groups chosen from each fold's past):** group tilt (×1.3 favoured / ×0.7
+  disfavoured, mirrored for shorts) **wins all 3 unseen years on 30c** (4.37→4.42, 4.14→4.26, 0.94→1.26; avg 3.15→3.31) and is
+  neutral on 16c (2.79 vs 2.78). Caveat: the 30c gain leans on "New/AI" in trend regimes — 3–4 young coins. Lead on the wide
+  universe only. Skipping fork longs in trend-up: no effect.

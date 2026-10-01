@@ -1,0 +1,19 @@
+panel,test_year,mode,sharpe,cagr,dd,favoured
+30,2024,none,4.37,620.5,-11.2,
+30,2024,tilt,4.42,509.8,-12.0,"{'Calm': 'Big alts', 'Stress': 'Forks', 'TrendDown': 'New/AI', 'TrendUp': 'New/AI'}"
+30,2024,forks,4.35,617.2,-11.2,
+30,2025,none,4.14,345.3,-11.9,
+30,2025,tilt,4.26,304.7,-10.2,"{'Calm': 'Memes', 'Stress': 'Forks', 'TrendDown': 'New/AI', 'TrendUp': 'New/AI'}"
+30,2025,forks,4.14,346.1,-11.9,
+30,2026,none,0.94,28.0,-12.7,
+30,2026,tilt,1.26,37.0,-12.6,"{'Calm': 'Memes', 'Stress': 'Forks', 'TrendDown': 'New/AI', 'TrendUp': 'New/AI'}"
+30,2026,forks,0.94,28.0,-12.7,
+16,2024,none,3.46,275.7,-16.9,
+16,2024,tilt,3.44,272.4,-16.9,"{'Calm': 'Big alts', 'Stress': 'Forks', 'TrendDown': 'Forks', 'TrendUp': 'Old L1s'}"
+16,2024,forks,3.45,274.0,-16.9,
+16,2025,none,2.64,80.9,-6.8,
+16,2025,tilt,2.66,85.9,-6.7,"{'Calm': 'DeFi', 'Stress': 'Forks', 'TrendDown': 'Memes', 'TrendUp': 'Big alts'}"
+16,2025,forks,2.66,81.4,-6.8,
+16,2026,none,2.28,55.2,-8.2,
+16,2026,tilt,2.25,54.4,-8.8,"{'Calm': 'Big alts', 'Stress': 'Forks', 'TrendDown': 'Forks', 'TrendUp': 'Big alts'}"
+16,2026,forks,2.28,55.2,-8.2,
