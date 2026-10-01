@@ -129,8 +129,12 @@ def flush_cap(spec, row) -> int:
 def run_book(led: pd.DataFrame, name: str, cfg: dict):
     """Replay one book. Returns (summary dict, per-signal rows)."""
     want = {"CROWD_72H", cfg["flush_rule"]}
+    # Keep every watched signal (minus the hard venue exclusions) so a coin with no contract size is
+    # logged as a rejection rather than vanishing. signals.py emits FLUSH_D for coins like ZEC/NEAR/
+    # ALGO/WLD/RENDER once they mature past 180d, but book.py only defines contract sizes for 16 coins,
+    # so those are not tradeable here (same as the backtest) — the book records why instead of dropping
+    # them silently.
     t = led[led.rule.isin(want) & ~led.coin.isin(EXCLUDE)].copy()
-    t = t[t.coin.isin(CONTRACT)]
     t["is_fl"] = t.rule == cfg["flush_rule"]
     t["sz"] = [size_fl(r) if r["is_fl"] else size_cs(r) for _, r in t.iterrows()]
     # Causal admission order: CS before Flush, then larger planned size first.
@@ -153,6 +157,8 @@ def run_book(led: pd.DataFrame, name: str, cfg: dict):
             rec = dict(book=name, coin=r.coin, rule=r.rule, entry_t=now,
                        entry_utc=r.entry_utc, status=r.status, ret_pct=r.ret_pct,
                        regime=r.get("regime"), btc_vol_pct=r.get("btc_vol_pct"), size_frac=round(r.sz, 4))
+            if r.coin not in CONTRACT:
+                trades.append(dict(rec, admitted=False, why="no contract size (not tradeable here)")); continue
             if len(open_) >= MAX_OPEN:
                 trades.append(dict(rec, admitted=False, why="account full (5 open)")); continue
             if any(o["coin"] == r.coin for o in open_):

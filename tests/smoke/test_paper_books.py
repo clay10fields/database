@@ -78,6 +78,19 @@ def build_ledger() -> pd.DataFrame:
     # Bar 5 — a price so high that $5k x 15% cannot buy one whole 0.01 BTC contract.
     T5 = T3 + 40 * DAY
     rows.append(row("BTC", "FLUSH_D", T5, 600_000_000.0, 1.0, "Stress", 0.80))
+    # Bar 6 + 6b — CS-vs-Flush slot contention, the one rule Step 27 adopted as causal (CS before Flush).
+    # P fills four of five slots with CS72 shorts (Stress/0.90 so no cap interferes, all tradeable coins);
+    # one bar later a CS72 and a FLUSH_D both want the last slot. Correct priority admits the CS and rejects
+    # the Flush as account-full; flipped priority does the reverse. Everything from earlier bars has closed
+    # by T6 (holds are 72h), so reusing coin names is safe.
+    T6 = T5 + 10 * DAY
+    for coin, px in (("LTC", 50.0), ("HBAR", 0.10), ("AAVE", 100.0), ("SOL", 150.0)):
+        rows.append(row(coin, "CROWD_72H", T6, px, 1.0, "Stress", 0.90, ls_pct=0.95))
+    rows.append(row("LINK", "CROWD_72H", T6 + 4 * 3600, 12.0, 1.0, "Stress", 0.90, ls_pct=0.95))
+    rows.append(row("XLM", "FLUSH_D", T6 + 4 * 3600, 0.10, 1.0, "Stress", 0.90))
+    # Bar 6b also carries a FLUSH_D on a coin with no contract size (signals.py emits these once a coin
+    # matures past 180d; book.py sizes only 16). It must be logged as a rejection, never dropped silently.
+    rows.append(row("ZEC", "FLUSH_D", T6 + 4 * 3600, 100.0, 1.0, "Stress", 0.90))
     return pd.DataFrame(rows)
 
 
@@ -125,6 +138,27 @@ def main() -> int:
                        "position below one whole contract"):
             check(f"saw {expect!r}", expect in why, True)
         check("saw a Flush cap rejection", any(w.startswith("Flush cap") for w in why), True)
+
+        print("\nCS-before-Flush slot priority (Step 27 causal rule), last slot contested:")
+        T6b = int(sorted(led.entry_t.unique())[-1])  # the contention bar is the latest entry_t
+        for book in ("B_dynamic_cap2", "C_dynamic_calm1", "D_dynamic_volcap"):
+            bar = tr[(tr.book == book) & (tr.entry_t == T6b)]
+            cs = bar[bar.rule == "CROWD_72H"]
+            fl = bar[bar.rule == "FLUSH_D"]
+            cs_adm = bool(cs.admitted.iloc[0]) if len(cs) else None
+            fl_why = fl.why.iloc[0] if len(fl) else None
+            # the contested Flush is the sizeable one (XLM); ZEC is dropped earlier for no contract size
+            fl_xlm = fl[fl.coin == "XLM"]
+            check(f"{book}: contested CS admitted", cs_adm, True)
+            check(f"{book}: contested Flush loses the slot",
+                  fl_xlm.why.iloc[0] if len(fl_xlm) else None, "account full (5 open)")
+
+        print("\nun-sizeable coin is logged, not dropped silently (finding this review found):")
+        for book in ("B_dynamic_cap2", "C_dynamic_calm1", "D_dynamic_volcap"):
+            zec = tr[(tr.book == book) & (tr.coin == "ZEC")]
+            check(f"{book}: ZEC FLUSH_D present in the ledger", len(zec) >= 1, True)
+            check(f"{book}: ZEC rejected for no contract size",
+                  zec.why.iloc[0] if len(zec) else None, "no contract size (not tradeable here)")
 
         print("\nbooks diverge (the point of running all four):")
         check("A and D admitted different counts",
