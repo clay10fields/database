@@ -92,13 +92,15 @@ def trade_table(p, L):
                      isflush=np.full(m.sum(), nm.startswith('Flush')), mult=mm, name=nm)
     return T
 
-def sim(T, names, size=0.20, maxopen=5, flushcap=None, split_t=None, coins=None, series=False):
+def sim(T, names, size=0.20, maxopen=5, flushcap=None, split_t=None, coins=None, series=False, trades=False):
     e = np.concatenate([T[n]['entry'] for n in names]); x = np.concatenate([T[n]['exit'] for n in names])
     c = np.concatenate([T[n]['coin'] for n in names]); r = np.concatenate([T[n]['r'] for n in names])
     fl = np.concatenate([T[n]['isflush'] for n in names]); mu = np.concatenate([T[n]['mult'] for n in names])
+    nm = np.concatenate([np.full(len(T[n]['r']), n, dtype=object) for n in names])
     if coins is not None:
-        keep = np.isin(c, list(coins)); e, x, c, r, fl, mu = e[keep], x[keep], c[keep], r[keep], fl[keep], mu[keep]
-    o = np.argsort(e, kind='stable'); e, x, c, r, fl, mu = e[o], x[o], c[o], r[o], fl[o], mu[o]
+        keep = np.isin(c, list(coins)); e, x, c, r, fl, mu, nm = e[keep], x[keep], c[keep], r[keep], fl[keep], mu[keep], nm[keep]
+    o = np.argsort(e, kind='stable'); e, x, c, r, fl, mu, nm = e[o], x[o], c[o], r[o], fl[o], mu[o], nm[o]
+    log = []
     eq = 1.0; op = []; held = set(); ev_t = []; ev_eq = []; n = 0
     for i in range(len(e)):
         et = e[i]
@@ -112,6 +114,7 @@ def sim(T, names, size=0.20, maxopen=5, flushcap=None, split_t=None, coins=None,
         if len(op) >= maxopen or c[i] in held: continue
         if flushcap is not None and fl[i] and sum(1 for q in op if q[4]) >= flushcap: continue
         op.append((x[i], c[i], eq * size * mu[i], r[i], fl[i])); held.add(c[i]); n += 1
+        if trades: log.append((e[i], x[i], c[i], nm[i], r[i], eq * size * mu[i], eq))
         if eq <= 0: break
     for (xx, cc, notional, rr, ff) in sorted(op):
         eq += notional * rr; ev_t.append(xx); ev_eq.append(eq)
@@ -127,6 +130,7 @@ def sim(T, names, size=0.20, maxopen=5, flushcap=None, split_t=None, coins=None,
     cut = pd.Timestamp('2024-01-01')
     out['sharpe_train'] = sh(ret[ret.index < cut]); out['sharpe_test'] = sh(ret[ret.index >= cut])
     if series: out['_daily'] = d
+    if trades: out['_trades'] = pd.DataFrame(log, columns=['entry','exit','coin','strat','r','notional','eq_at_entry']).assign(pnl=lambda z: z.notional*z.r)
     return out
 
 def log(study, test, variant, panel_key, p, cfg, m, script):

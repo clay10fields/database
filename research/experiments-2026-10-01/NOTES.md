@@ -114,3 +114,15 @@ LiqBuy/BigLong/MOM20_7d), then tested on the next unseen year. Folds: sel 2022-2
 
 **Honest read of the whole day:** the components the past keeps choosing are the durable findings. The size of the gain over
 the current book is modest out of sample (~+0.3 Sharpe on 30c, ~0 on 16c), not the +0.6–1.0 the in-sample tables suggested.
+
+## Phase 8 — where the out-of-sample result comes from · `code/phase8.py`, `results/phase8_attribution.csv`
+Unseen years only, fold-chosen book vs current book, mean trade return by strategy / regime / compression / coin group.
+* **2025 win = the Flush stand-down:** fold-chosen Flush +3.35%/trade vs plain Flush-B +1.20% (30c); LiqBuy +2.7%.
+* **CS24 is a slot hog:** hundreds of trades at tiny edge (all-coins 2024: −0.07% on 427 trades; core 2025–26 +0.18 to +0.32%).
+  It smooths the equity curve (flattering in-sample Sharpe) but out of sample it takes slots from trades worth ~10× more.
+  This is why the current book won 30c-2024 and 16c-2026.
+* **2026 is bad for flushes everywhere** (current Flush-B +0.26%, fold-chosen −0.79% on 30c); newer coins lost in 2026 for
+  both books; established coins carried it.
+* **LiqBuy is the most consistent per-trade earner out of sample:** +2.7% to +4.2% per trade in 2025 and 2026 (~20 trades/yr).
+* **The compression stand-down is not free every year:** 16c 2024 the current book's compressed-tape trades made +4.28%.
+Next: CS24 off / slot-capped / smaller, then strict folds again.
