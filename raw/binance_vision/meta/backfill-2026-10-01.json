@@ -1,4 +1,180 @@
 {
+ "BTCUSDT": {
+  "counts": {
+   "klines_4h:have": 80,
+   "klines_4h:http": 2,
+   "fundingRate:have": 81,
+   "fundingRate:http": 1,
+   "metrics:have": 1765,
+   "metrics:http": 1
+  },
+  "errors": []
+ },
+ "ETHUSDT": {
+  "counts": {
+   "klines_4h:have": 80,
+   "klines_4h:http": 2,
+   "fundingRate:have": 81,
+   "fundingRate:http": 1,
+   "metrics:have": 1765,
+   "metrics:http": 1
+  },
+  "errors": []
+ },
+ "SOLUSDT": {
+  "counts": {
+   "klines_4h:http": 10,
+   "klines_4h:have": 72,
+   "fundingRate:http": 9,
+   "fundingRate:have": 73,
+   "metrics:have": 1765,
+   "metrics:http": 1
+  },
+  "errors": []
+ },
+ "XRPUSDT": {
+  "counts": {
+   "klines_4h:have": 80,
+   "klines_4h:http": 2,
+   "fundingRate:have": 81,
+   "fundingRate:http": 1,
+   "metrics:have": 1765,
+   "metrics:http": 1
+  },
+  "errors": []
+ },
+ "ADAUSDT": {
+  "counts": {
+   "klines_4h:have": 80,
+   "klines_4h:http": 2,
+   "fundingRate:have": 81,
+   "fundingRate:http": 1,
+   "metrics:have": 1765,
+   "metrics:http": 1
+  },
+  "errors": []
+ },
+ "DOGEUSDT": {
+  "counts": {
+   "klines_4h:http": 8,
+   "klines_4h:have": 74,
+   "fundingRate:http": 7,
+   "fundingRate:have": 75,
+   "metrics:have": 1765,
+   "metrics:http": 1
+  },
+  "errors": []
+ },
+ "LTCUSDT": {
+  "counts": {
+   "klines_4h:have": 80,
+   "klines_4h:http": 2,
+   "fundingRate:have": 81,
+   "fundingRate:http": 1,
+   "metrics:have": 1765,
+   "metrics:http": 1
+  },
+  "errors": []
+ },
+ "DOTUSDT": {
+  "counts": {
+   "klines_4h:http": 9,
+   "klines_4h:have": 73,
+   "fundingRate:http": 8,
+   "fundingRate:have": 74,
+   "metrics:have": 1765,
+   "metrics:http": 1
+  },
+  "errors": []
+ },
+ "LINKUSDT": {
+  "counts": {
+   "klines_4h:have": 80,
+   "klines_4h:http": 2,
+   "fundingRate:have": 81,
+   "fundingRate:http": 1,
+   "metrics:have": 1765,
+   "metrics:http": 1
+  },
+  "errors": []
+ },
+ "AAVEUSDT": {
+  "counts": {
+   "klines_4h:http": 11,
+   "klines_4h:have": 71,
+   "fundingRate:http": 10,
+   "fundingRate:have": 72,
+   "metrics:have": 1765,
+   "metrics:http": 1
+  },
+  "errors": []
+ },
+ "AVAXUSDT": {
+  "counts": {
+   "klines_4h:http": 10,
+   "klines_4h:have": 72,
+   "fundingRate:http": 9,
+   "fundingRate:have": 73,
+   "metrics:have": 1765,
+   "metrics:http": 1
+  },
+  "errors": []
+ },
+ "BCHUSDT": {
+  "counts": {
+   "klines_4h:have": 80,
+   "klines_4h:http": 2,
+   "fundingRate:have": 81,
+   "fundingRate:http": 1,
+   "metrics:have": 1765,
+   "metrics:http": 1
+  },
+  "errors": []
+ },
+ "HBARUSDT": {
+  "counts": {
+   "klines_4h:http": 16,
+   "klines_4h:have": 66,
+   "fundingRate:http": 15,
+   "fundingRate:have": 67,
+   "metrics:have": 1765,
+   "metrics:http": 1
+  },
+  "errors": []
+ },
+ "1000SHIBUSDT": {
+  "counts": {
+   "klines_4h:http": 18,
+   "klines_4h:have": 64,
+   "fundingRate:http": 17,
+   "fundingRate:have": 65,
+   "metrics:have": 1765,
+   "metrics:http": 1
+  },
+  "errors": []
+ },
+ "XLMUSDT": {
+  "counts": {
+   "klines_4h:have": 80,
+   "klines_4h:http": 2,
+   "fundingRate:have": 81,
+   "fundingRate:http": 1,
+   "metrics:have": 1764,
+   "metrics:http": 2
+  },
+  "errors": []
+ },
+ "XTZUSDT": {
+  "counts": {
+   "klines_4h:http": 3,
+   "klines_4h:have": 79,
+   "fundingRate:http": 2,
+   "fundingRate:have": 80,
+   "metrics:have": 1764,
+   "metrics:http": 2
+  },
+  "errors": []
+ },
  "ZECUSDT": {
   "counts": {
    "klines_4h:http": 3,
@@ -21,41 +197,13 @@
   },
   "errors": []
  },
- "SUIUSDT": {
+ "ALGOUSDT": {
   "counts": {
-   "klines_4h:http": 42,
-   "klines_4h:have": 40,
-   "fundingRate:http": 41,
-   "fundingRate:have": 40,
-   "fundingRate:ok": 1,
-   "metrics:http": 4,
-   "metrics:have": 1245,
-   "metrics:ok": 1
-  },
-  "errors": []
- },
- "HYPEUSDT": {
-  "counts": {
-   "klines_4h:http": 66,
-   "klines_4h:have": 16,
-   "fundingRate:http": 65,
-   "fundingRate:have": 16,
-   "fundingRate:ok": 1,
-   "metrics:http": 30,
-   "metrics:have": 488,
-   "metrics:ok": 1
-  },
-  "errors": []
- },
- "UNIUSDT": {
-  "counts": {
-   "klines_4h:http": 10,
-   "klines_4h:have": 72,
-   "fundingRate:http": 9,
-   "fundingRate:have": 72,
-   "fundingRate:ok": 1,
-   "metrics:have": 1764,
-   "metrics:ok": 1,
+   "klines_4h:http": 7,
+   "klines_4h:have": 75,
+   "fundingRate:http": 6,
+   "fundingRate:have": 76,
+   "metrics:have": 1765,
    "metrics:http": 1
   },
   "errors": []
@@ -71,69 +219,6 @@
   },
   "errors": []
  },
- "1000PEPEUSDT": {
-  "counts": {
-   "klines_4h:http": 42,
-   "klines_4h:have": 40,
-   "fundingRate:http": 41,
-   "fundingRate:have": 40,
-   "fundingRate:ok": 1,
-   "metrics:http": 5,
-   "metrics:have": 1244,
-   "metrics:ok": 1
-  },
-  "errors": []
- },
- "PENGUUSDT": {
-  "counts": {
-   "klines_4h:http": 61,
-   "klines_4h:have": 21,
-   "fundingRate:http": 60,
-   "fundingRate:have": 21,
-   "fundingRate:ok": 1,
-   "metrics:http": 17,
-   "metrics:have": 652,
-   "metrics:ok": 1
-  },
-  "errors": []
- },
- "CRVUSDT": {
-  "counts": {
-   "klines_4h:http": 10,
-   "klines_4h:have": 72,
-   "fundingRate:http": 9,
-   "fundingRate:have": 72,
-   "fundingRate:ok": 1,
-   "metrics:have": 1764,
-   "metrics:ok": 1,
-   "metrics:http": 1
-  },
-  "errors": []
- },
- "ALGOUSDT": {
-  "counts": {
-   "klines_4h:http": 7,
-   "klines_4h:have": 75,
-   "fundingRate:http": 6,
-   "fundingRate:have": 76,
-   "metrics:have": 1765,
-   "metrics:http": 1
-  },
-  "errors": []
- },
- "TRXUSDT": {
-  "counts": {
-   "klines_4h:have": 80,
-   "klines_4h:http": 2,
-   "fundingRate:have": 80,
-   "fundingRate:ok": 1,
-   "fundingRate:http": 1,
-   "metrics:have": 1764,
-   "metrics:ok": 1,
-   "metrics:http": 1
-  },
-  "errors": []
- },
  "RENDERUSDT": {
   "counts": {
    "klines_4h:http": 56,
@@ -142,43 +227,6 @@
    "fundingRate:have": 27,
    "metrics:http": 26,
    "metrics:have": 797
-  },
-  "errors": []
- },
- "RNDRUSDT": {
-  "counts": {
-   "klines_4h:http": 64,
-   "klines_4h:have": 18,
-   "fundingRate:http": 63,
-   "fundingRate:have": 19,
-   "metrics:http": 702,
-   "metrics:have": 637
-  },
-  "errors": []
- },
- "BNBUSDT": {
-  "counts": {
-   "klines_4h:http": 3,
-   "klines_4h:have": 79,
-   "fundingRate:http": 2,
-   "fundingRate:have": 79,
-   "fundingRate:ok": 1,
-   "metrics:have": 1764,
-   "metrics:ok": 1,
-   "metrics:http": 1
-  },
-  "errors": []
- },
- "VVVUSDT": {
-  "counts": {
-   "klines_4h:http": 62,
-   "klines_4h:have": 20,
-   "fundingRate:http": 61,
-   "fundingRate:have": 20,
-   "fundingRate:ok": 1,
-   "metrics:http": 29,
-   "metrics:have": 609,
-   "metrics:ok": 1
   },
   "errors": []
  }
