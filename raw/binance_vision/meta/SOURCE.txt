@@ -1,0 +1,5 @@
+source: data.binance.vision
+pulled: 2026-09-30
+coins: ADA DOGE XRP AVAX ETH SOL LTC HBAR
+have: daily metrics 5min OI/LS/taker, monthly 4h klines, monthly fundingRate
+not rewritten. append-only.
