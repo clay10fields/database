@@ -184,3 +184,22 @@ def add_liq_buy(T, p, root=None):
     T['LiqBuy_lim'] = dict(entry=ent2, exit=ent2+3*86400, coin=f.coin.map(ids).values, r=(f.c4/(0.98*f.c)-1).values-FEE,
                            isflush=np.zeros(len(f),bool), mult=np.ones(len(f)), name='LiqBuy_lim')
     return T
+
+# ---------------- spot layer (Binance spot 4h klines; same definitions as research/spot-vs-perp) ----------------
+def add_spot(p, root=None):
+    import glob, zipfile, io as _io
+    R = root or os.path.join(HERE, '../../../raw/binance_vision/spot_klines_4h')
+    parts = []
+    for c in p.coin.unique():
+        s = '1000SHIBUSDT' if c == 'SHIB' else c + 'USDT'
+        for f in sorted(glob.glob(f'{R}/{s}/*.zip')):
+            with zipfile.ZipFile(f) as z: d = pd.read_csv(_io.BytesIO(z.read(z.namelist()[0])), header=None)
+            if str(d.iloc[0, 0]).startswith('open'): d = d.iloc[1:]
+            d = d.iloc[:, [0, 7, 10]].astype(float); d.columns = ['t', 'sqv', 'sbqv']
+            d['t'] = np.where(d.t > 1e14, d.t // 1_000_000, d.t // 1000).astype(np.int64); d['coin'] = c; parts.append(d)
+    sp = pd.concat(parts).drop_duplicates(['coin', 't'])
+    p = p.merge(sp, on=['coin', 't'], how='left').sort_values(['coin', 't']).reset_index(drop=True)
+    g = p.groupby('coin', group_keys=False); rk = lambda s: s.rolling(540, min_periods=180).rank(pct=True)
+    p['snet'] = 2 * p.sbqv / p.sqv - 1; p['snet24'] = g.snet.apply(lambda s: s.rolling(6).mean()); p['snet_pct'] = g.snet24.apply(rk)
+    p['fs_ratio'] = p.qv / p.sqv; p['fs_pct'] = g.fs_ratio.apply(rk)
+    return p

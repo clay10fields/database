@@ -142,3 +142,16 @@ Components the past selects every fold — CS72 at 48h, Flush stand-down in comp
 the durable findings. The out-of-sample edge of the new book over the current one is **positive on the wide universe, a tie on
 the original 16**, and the current book did better in 2026 YTD. Backtesting has reached its limit here; the clean remaining
 test is forward paper data (a book E alongside A–D in `collectors/paper_books.py` — not done; it changes the hourly job).
+
+## Phase 10 — the spot-flow layer, real definitions (16c, funding in) · `code/phase10.py`, `results/phase10.csv`
+Binance spot 4h klines joined (coverage 94%, 15 coins). `snet_pct` = spot taker net buying, own 90d pct; `fs_pct` = futures÷spot
+quote-volume ratio, own 90d pct (same definitions as `spot-vs-perp/`).
+* **Real perp-led short is dead:** rally >3% & fs_pct ≥0.9 → −0.54%/trade, standalone Sharpe −0.41; added to the book 2.76 → 1.97,
+  DD −20% → −37%. As a CS72 filter it adds nothing (CS72&perp-led +1.10% vs CS72 +1.09%). The old +2.95%/n38 does not generalise.
+  (Phase 1's hot-taker proxy verdict now confirmed on the real definition.)
+* **Spot direction holds per trade:** FlushStd while spot buying **+2.26%** vs spot selling +1.18%; perp-led flush **+0.09%**
+  (dead); CS72 while spot not buying +1.36% vs +1.09%.
+* **But at book level it is a wash:** spot sizing/gating 2.74–2.78 vs 2.76 without. Flush spot sizing alone: +9pp CAGR, DD −18.4%
+  vs −19.8%. Strict folds picked flush spot sizing for 2024 (won 3.69 vs 3.58) and 2025 (lost 2.36 vs 2.71), none for 2026 →
+  **neutral out of sample**. Slots fill with good trades either way.
+* Spot-led rally long: +0.81%/trade but standalone Sharpe 0.37, DD −64%; hurts the book (2.76 → 1.97).
