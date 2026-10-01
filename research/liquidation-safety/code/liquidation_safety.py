@@ -14,6 +14,7 @@ import numpy as np
 import pandas as pd
 
 ROOT=os.path.abspath(os.path.join(os.path.dirname(__file__),'../../..'))
+OUT=os.path.join(ROOT,'research','liquidation-safety','results'); os.makedirs(OUT,exist_ok=True)
 PLAY=os.path.join(ROOT,'research','playbook'); os.chdir(PLAY)
 sizing_path=os.path.join(PLAY,'code','sizing.py')
 src=open(sizing_path).read(); src=src[:src.index('\nSINCE =')]
@@ -22,7 +23,6 @@ with contextlib.redirect_stdout(io.StringIO()): exec(compile(src,sizing_path,'ex
 nsC,nsF=ns['nsC'],ns['nsF']; pC,pF=ns['pC'],ns['pF']; np=ns['np']; pd=ns['pd']
 szCS,szFL=ns['szCS'],ns['szFL']; use={'regime','signal'}
 
-# Current final historical cores.
 CS_COINS={'BTC','ETH','SOL','XRP','ADA','DOGE','LINK','BCH','AVAX','HBAR','XLM'}
 gc=pC.groupby('coin',group_keys=False); pC['ret6m']=gc.c.apply(lambda s:s/s.shift(1080)-1)
 cs=ns['cs'].copy(); cs['ret6m']=pC.loc[cs.i.values,'ret6m'].values
@@ -49,10 +49,9 @@ def flush_timecut_trades():
     return t
 fl=flush_timecut_trades(); fl['sz']=szFL(fl,use)
 
-# Bitnomial published maintenance margin percentages, checked 2026-10-01.
+# Published Bitnomial maintenance percentages, checked 2026-10-01.
 MM={'BTC':.15,'ETH':.15,'SOL':.15,'XRP':.21,'ADA':.15,'DOGE':.16,'LINK':.15,'BCH':.15,'AVAX':.15,'HBAR':.15,'XLM':.19,'AAVE':.17}
 
-# Account constants from the existing book engine.
 TT=pC.t.values; C=nsC['C']; btc=pC[pC.coin=='BTC'].set_index('t')
 os.chdir(PLAY+'/../book'); bsrc=open('code/book.py').read(); bsrc=bsrc[bsrc.index("CS={'BTC'"):bsrc.index("rows=[]")]
 bns={'p':pC,'np':np,'pd':pd,'C':C,'btc':btc}; exec(bsrc,bns)
@@ -71,7 +70,7 @@ def buffer_for(open_,realized_eq,now,override_mm=None):
         mtm += o['qty']*entry*o['side']*(px/entry-1)
         m=override_mm if override_mm is not None else MM[o['coin']]
         N += cur_notional; M0 += m*cur_notional
-        Dm += (-o['side'])*m*cur_notional  # shorts' maintenance rises in adverse-up move; longs falls
+        Dm += (-o['side'])*m*cur_notional
     E=realized_eq+mtm
     den=N+Dm
     d=(E-M0)/den if den>0 else np.nan
@@ -80,7 +79,7 @@ def buffer_for(open_,realized_eq,now,override_mm=None):
 def simulate(start):
     t=pd.concat([cs,fl]).sort_values('i').copy(); t=t[~t.coin.isin(('SHIB','XTZ'))]
     t['t_in']=TT[t.i.values]; t['j']=t.i+t.held; t['t_out']=TT[t.j.values]
-    by_t={};
+    by_t={}
     for r in t.to_dict('records'): by_t.setdefault(r['t_in'],[]).append(r)
     times=np.sort(btc.index.values); times=times[(times>=t.t_in.min())&(times<=t.t_out.max())]
     eq=float(start); open_=[]; rows=[]
@@ -88,7 +87,7 @@ def simulate(start):
         still=[]
         for o in open_:
             if o['t_out']<=now:
-                pnl=o['entry_notional']*o['r']-o['cost']; eq+=pnl
+                eq += o['entry_notional']*o['r']-o['cost']
             else: still.append(o)
         open_=still
         for r in by_t.get(now,[]):
@@ -101,7 +100,7 @@ def simulate(start):
               qty=qty,cost=n*.30+notional*SPREAD[c]/100,strat=r['strat'],side=r['side'],sz=r['sz']))
         if by_t.get(now):
             d,E,N,M0,mtm=buffer_for(open_,eq,now,None)
-            d25,_,_,M25,_=buffer_for(open_,eq,now,.25)
+            d25,_,_,_,_=buffer_for(open_,eq,now,.25)
             rows.append(dict(start=start,t=now,n_open=len(open_),equity_marked=E,gross_notional=N,gross_x=N/E if E>0 else np.nan,
                 maintenance=M0,maintenance_pct_equity=100*M0/E if E>0 else np.nan,liq_buffer_pct=100*d,
                 liq_buffer_25pct_mm=100*d25,has_cs=any(o['strat']=='CS' for o in open_),has_fl=any(o['strat']=='FL' for o in open_),
@@ -115,19 +114,18 @@ for start in (5000.,25000.,100000.):
         z=x[col].dropna()
         summ.append(dict(start=start,margin_case=label,n_snapshots=len(z),min_buffer_pct=z.min(),p05_buffer_pct=z.quantile(.05),
            median_buffer_pct=z.median(),pct_below_5=100*(z<5).mean(),pct_below_10=100*(z<10).mean(),pct_below_15=100*(z<15).mean(),pct_below_20=100*(z<20).mean()))
-X=pd.concat(allrows,ignore_index=True); X.to_csv(ROOT+'/research/liquidation-safety/results/snapshots.csv',index=False)
-S=pd.DataFrame(summ); S.to_csv(ROOT+'/research/liquidation-safety/results/summary.csv',index=False)
+X=pd.concat(allrows,ignore_index=True); X.to_csv(os.path.join(OUT,'snapshots.csv'),index=False)
+S=pd.DataFrame(summ); S.to_csv(os.path.join(OUT,'summary.csv'),index=False)
 
-# Pure grid for the old 50%-per-position planning assumption and the newer 80% CS cap.
 grid=[]
 for size in (.35,.50,.80):
   for n in range(1,6):
     gross=size*n
     for m in (.15,.17,.19,.21,.25):
-      # all-short is conservative for maintenance because notional and MM both rise as price rises.
+      # All-short is conservative for the maintenance response to an adverse move.
       d=(1-m*gross)/(gross+m*gross) if gross>0 else np.nan
       grid.append(dict(position_frac=size,n_positions=n,gross_x=gross,maintenance_rate=m,all_short_buffer_pct=100*d))
-G=pd.DataFrame(grid); G.to_csv(ROOT+'/research/liquidation-safety/results/theoretical_grid.csv',index=False)
+G=pd.DataFrame(grid); G.to_csv(os.path.join(OUT,'theoretical_grid.csv'),index=False)
 
 print('STEP 25 — LIQUIDATION SAFETY')
 print('\nActual historical entry snapshots:')
