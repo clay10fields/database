@@ -17,7 +17,7 @@ with contextlib.redirect_stdout(io.StringIO()):
 # Exact corrected research rows.
 cs=h['cs'].copy()
 fl=h['fl_src'][h['fl_src'].age_days>=180].copy()
-pC=h['pC']; ns=h['ns']; nsC=h['nsC']; TT=h['TT']; C=nsC['C']
+pC=h['pC']; ns=h['ns']; TT=h['TT']; C=h['C4']
 
 # Published Bitnomial maintenance percentages used by original Step 25.
 MM={'BTC':.15,'ETH':.15,'SOL':.15,'XRP':.21,'ADA':.15,'DOGE':.16,'LINK':.15,'BCH':.15,'AVAX':.15,'HBAR':.15,'XLM':.19,'AAVE':.17}
