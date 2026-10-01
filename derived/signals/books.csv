@@ -3,3 +3,4 @@ A_curated_nocap,"current spec: curated seven, no Flush cap",5000.0,0.0,0.0,0,0,0
 B_dynamic_cap2,"rule-based universe, max 2 concurrent Flush",5000.0,0.0,0.0,0,0,0,0,0,,,0,0
 C_dynamic_calm1,"rule-based, max 1 Flush in Calm else 2",5000.0,0.0,0.0,0,0,0,0,0,,,0,0
 D_dynamic_volcap,"rule-based, max 1 Flush when BTC vol pct < 0.40 else 2",5000.0,0.0,0.0,0,0,0,0,0,,,0,0
+E_experiments_final,"CS 48h + CS24 established + Flush stand-down (vol<0.50) + liq buy, season-sized",5000.0,0.0,0.0,6,3,3,0,3,,,3,0
