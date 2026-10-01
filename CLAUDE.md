@@ -4,7 +4,7 @@
 
 **READ THE FILES. OPEN EVERY RESULT TABLE. DO NOT SKIM THE INDEX AND START WRITING.** Clayten says this to every session in person. The verdicts are in `research/steward/WHAT-THE-FILES-SAY.md`. The tables are in each study's `results/` folder. Open them. A note that cites a number without the table is not done. Do not ask him to explain the job again.
 
-The job, already decided. Find an edge on the coins he can trade, Kraken and Kalshi. Paper only. No orders. This repo, main, no other repo. Regime before the trade: Stress, trend up, trend down, calm. Compression is stand-down. Do not short a bull leg unless that cell already paid. One idea at a time. A close miss stays. A failure is written with the reason, and that reason is the next hypothesis. Do not add to the current book from a backtest.
+The job, already decided. Find an edge on the coins he can trade, Kraken and Kalshi. Paper only. No orders. This repo, main. Do not open another repo. Regime before the trade: Stress, trend up, trend down, calm. Compression is stand-down. Do not short a bull leg unless that cell already paid. One idea at a time. A close miss stays. A failure is written with the reason, and that reason is the next hypothesis. Do not add to the current book from a backtest.
 
 The book is the crowd short and the flush long in `research/book/CURRENT-BOOK-2026-10-01.md`, with its two caveats. Already settled: do not short a funding spike, a liquidation spike, a break, or catch-up on the 16. The paper spec is the wide washout on the 16 only. ZEC, NEAR, ALGO, WLD, RENDER have no liquidation history in `raw/coinalyze_daily/` yet. Do not rerun that spec on them and call it done.
 
@@ -21,7 +21,7 @@ Rules, none waived:
 
 Layout: `raw/` recorded truth · `derived/panel/<interval>/<COIN>.csv` what calculators read ·
 `research/` studies, each dated, with the code that produced them · `collectors/` the recorder
-and the resampler. Do not open another repo. The copy under `raw/okx_recorder/` is already here.
+and the resampler.
 
 Branches: `main` is the only live branch. The 15 `chatgpt-*` branches and `claude-review-2026-10-01` were merged
 into `main` on 2026-10-01 (PR #1) and are **superseded** — every file on them is contained in `main`, verified
