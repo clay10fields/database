@@ -135,3 +135,47 @@ def log(study, test, variant, panel_key, p, cfg, m, script):
                 start=str(pd.to_datetime(p.t.min(), unit='s').date()), end=str(pd.to_datetime(p.t.max(), unit='s').date()),
                 sizing=f"flat {int(cfg['size']*100)}%", flush_cap=str(cfg['flushcap']), max_open=cfg['maxopen'], hold_h='per signal'),
            m, script=script)
+
+# ---------------- extended library (phase 4+) and the daily liquidation buy ----------------
+CORE16 = {'AAVE','ADA','AVAX','BCH','BTC','DOGE','DOT','ETH','HBAR','LINK','LTC','SHIB','SOL','XLM','XRP','XTZ'}
+def extended_library(p):
+    L = library(p)
+    cs72 = L['CS72'][1]; cs24 = L['CS24'][1]; fb = L['FlushB'][1]; fc = L['FlushC'][1]
+    nocomp = p.btc_volpct >= 0.40; up6 = p.ret6m > 0; core = p.coin.isin(CORE16)
+    fstd = (fb & nocomp) | fc
+    csm = p.regime.map({'Stress':1.3,'TrendUp':1.3,'TrendDown':1.0,'Calm':0.8}).fillna(1.0)
+    flm = p.regime.map({'Stress':1.3,'TrendUp':1.3,'TrendDown':0.8,'Calm':1.0}).fillna(1.0)
+    L.update({'FlushStd':(1,fstd,18), 'FlushStd_sized':(1,fstd,18,flm),
+              'CS72_sized':(-1,cs72,18,csm), 'CS72_48h':(-1,cs72,12), 'CS72_48h_sized':(-1,cs72,12,csm),
+              'CS72_up6m':(-1,cs72&up6,18), 'CS72_up6m_sized':(-1,cs72&up6,18,csm),
+              'CS24_core':(-1,cs24&core,6), 'CS24_core_sized':(-1,cs24&core,6,csm),
+              'CS24_core_up6m':(-1,cs24&core&up6,6), 'CS24_core_up6m_sized':(-1,cs24&core&up6,6,csm)})
+    return L
+
+def add_liq_buy(T, p, root=None):
+    """Daily filtered long-liq buy (LIQUIDATIONS.md): ll_pct>=0.95, >=5 coins spiking, coin 20d vol top fifth.
+    Enter at the spike day's close, hold 3 days. Also the -2% resting-limit version (fills if next day trades
+    2% below the close; size only filled). Restricted to the panel's date range and coins. isflush=False."""
+    R = root or os.path.join(HERE, '../../../raw/coinalyze_daily')
+    liq = pd.read_csv(f'{R}/liq.csv'); px = pd.read_csv(f'{R}/perp_ohlcv.csv')
+    cn = lambda s: s.replace('1000SHIB', 'SHIB').split('USDT')[0]
+    for x in (liq, px): x['coin'] = x.symbol.map(cn)
+    d = px[['t','coin','o','h','l','c']].merge(liq[['t','coin','l']].rename(columns={'l':'liq_l'}), on=['t','coin'], how='left')
+    d = d.drop_duplicates(['coin','t']).sort_values(['coin','t']).reset_index(drop=True)
+    g = d.groupby('coin', group_keys=False)
+    d['ll_pct'] = g.liq_l.apply(lambda s: s.rolling(90, min_periods=45).rank(pct=True))
+    d['ret1'] = g.c.apply(lambda s: s/s.shift(1)-1); d['vol20'] = g.ret1.apply(lambda s: s.rolling(20).std())
+    d['volpct'] = g.vol20.apply(lambda s: s.rolling(180, min_periods=90).rank(pct=True))
+    d['nspike'] = d.assign(sp=d.ll_pct>=0.95).groupby('t').sp.transform('sum')
+    d['c3'] = g.c.shift(-3); d['l1'] = g.l.shift(-1); d['c4'] = g.c.shift(-4)
+    sig = (d.ll_pct>=0.95)&(d.nspike>=5)&(d.volpct>=0.80)&d.c3.notna()
+    ids = {c:i for i,c in enumerate(sorted(p.coin.unique()))}
+    s = d[sig & d.coin.isin(ids) & (d.t >= p.t.min()) & (d.t <= p.t.max())].copy()
+    ent = (s.t + 86400).values.astype(np.int64)
+    T['LiqBuy'] = dict(entry=ent, exit=ent+3*86400, coin=s.coin.map(ids).values, r=(s.c3/s.c-1).values-FEE,
+                       isflush=np.zeros(len(s),bool), mult=np.ones(len(s)), name='LiqBuy')
+    f = s[s.l1 <= 0.98*s.c]   # limit fills during the next day; exit 3 days after the fill day
+    ent2 = (f.t + 2*86400).values.astype(np.int64)
+    T['LiqBuy_lim'] = dict(entry=ent2, exit=ent2+3*86400, coin=f.coin.map(ids).values, r=(f.c4/(0.98*f.c)-1).values-FEE,
+                           isflush=np.zeros(len(f),bool), mult=np.ones(len(f)), name='LiqBuy_lim')
+    return T

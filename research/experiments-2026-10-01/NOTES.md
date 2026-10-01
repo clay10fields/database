@@ -61,3 +61,23 @@ normal-day costs, no funding. Ledger rows: `study=experiments`.
 **Candidate that holds on both panels:** CS72 + CS24 (established coins) + FlushStd, season-sized, Flush cap 3, 8 slots:
 30c Sharpe 2.75, all 5 years positive (worst +7.4%), DD −24%; 16c Sharpe 2.62, all 5 years positive (worst +28.7%),
 train 2.59 / test 2.65, DD −17%.
+
+## Phase 5 — the liquidation buy in the account · `code/phase5.py`, `code/phase5b.py`, `results/phase5*.csv`
+Daily filtered liq buy (`LIQUIDATIONS.md` rule) merged into the 4h account: enter at the spike-day close, hold 3 days;
+also the −2% resting-limit version. Restricted to each panel's date range and coins.
+* **Window trap caught:** on the 30-coin panel the daily liq data reaches 2020–21, so books with LiqBuy covered 7 years
+  and books without covered 5 — unfair. `phase5b` clips every signal to a common start (2023-02-21, when CS72's
+  top-trader input begins). The 16-coin full-window run was already fair (clipped to Dec 2021) and includes 2022.
+* **Same-window result: LiqBuy improves every book on both panels**, at the single config and across the 96-config
+  grid (median and worst), with equal or better drawdown. 30c: CS72+FlushStd 2.85 → 3.26; CS72+CS24_core+FlushStd
+  (sized) 3.04 → 3.41; CS72_48h variant 3.26 → 3.58. 16c: 2.49 → 2.88; 2.72 → 3.06; 2.74 → 3.01.
+* 16c full window incl. 2022 agrees: CS72+CS24_core+FlushStd (sized) 2.62 → 2.81 with LiqBuy; grid median 2.31 → 2.61,
+  grid worst 1.72 → 2.31 (best worst-case of anything tested).
+* Market-close entry beats the −2% limit at book level (the limit misses fills).
+* **This reverses `liquidations/READMISSION-CORRECTED-BOOK-2026-10-01.md`** — LIQF was cut against the curated, no-stand-down
+  Flush book with 5 slots at 12.5%. With the Flush compression stand-down and 8 slots it adds. Combination-dependent.
+* Caveat: the common window (Feb 2023 →) drops the 2022 bear; absolute Sharpe >3 is bull-window inflated. The with/without
+  delta is the finding.
+
+**Book that has survived every phase so far:** CS72 (72h; 48h on the wide universe) + CS24 on established coins +
+FlushStd + filtered LiqBuy, season-sized, 8 slots, Flush cap 3. Next: walk-forward (select on 2022–mid-2024, test after).
