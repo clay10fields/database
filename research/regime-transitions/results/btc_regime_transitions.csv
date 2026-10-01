@@ -1,0 +1,422 @@
+t,prev_regime,regime,transition,bar_no
+1642190400,,Calm, -> Calm,269
+1642708800,Calm,Stress,Calm -> Stress,305
+1643328000,Stress,Calm,Stress -> Calm,348
+1644019200,Calm,Trend up,Calm -> Trend up,396
+1644451200,Trend up,Calm,Trend up -> Calm,426
+1645315200,Calm,Trend down,Calm -> Trend down,486
+1645560000,Trend down,Calm,Trend down -> Calm,503
+1645660800,Calm,Stress,Calm -> Stress,510
+1645948800,Stress,Calm,Stress -> Calm,530
+1646078400,Calm,Stress,Calm -> Stress,539
+1646265600,Stress,Trend up,Stress -> Trend up,552
+1646352000,Trend up,Calm,Trend up -> Calm,558
+1646510400,Calm,Trend down,Calm -> Trend down,569
+1646784000,Trend down,Calm,Trend down -> Calm,588
+1646798400,Calm,Stress,Calm -> Stress,589
+1647072000,Stress,Calm,Stress -> Calm,608
+1647633600,Calm,Trend up,Calm -> Trend up,647
+1647835200,Trend up,Calm,Trend up -> Calm,661
+1648252800,Calm,Trend up,Calm -> Trend up,690
+1648742400,Trend up,Calm,Trend up -> Calm,724
+1649275200,Calm,Trend down,Calm -> Trend down,761
+1649851200,Trend down,Calm,Trend down -> Calm,801
+1650873600,Calm,Trend down,Calm -> Trend down,872
+1650916800,Trend down,Calm,Trend down -> Calm,875
+1650974400,Calm,Stress,Calm -> Stress,879
+1651262400,Stress,Calm,Stress -> Calm,899
+1651752000,Calm,Stress,Calm -> Stress,933
+1652040000,Stress,Trend down,Stress -> Trend down,953
+1652155200,Trend down,Stress,Trend down -> Stress,961
+1652774400,Stress,Calm,Stress -> Calm,1004
+1653940800,Calm,Trend up,Calm -> Trend up,1085
+1654099200,Trend up,Calm,Trend up -> Calm,1096
+1654617600,Calm,Stress,Calm -> Stress,1132
+1654848000,Stress,Calm,Stress -> Calm,1148
+1655049600,Calm,Trend down,Calm -> Trend down,1162
+1655208000,Trend down,Stress,Trend down -> Stress,1173
+1655913600,Stress,Calm,Stress -> Calm,1222
+1656561600,Calm,Trend down,Calm -> Trend down,1267
+1656864000,Trend down,Calm,Trend down -> Calm,1288
+1657209600,Calm,Trend up,Calm -> Trend up,1312
+1657396800,Trend up,Calm,Trend up -> Calm,1325
+1657641600,Calm,Trend down,Calm -> Trend down,1342
+1657800000,Trend down,Calm,Trend down -> Calm,1353
+1658116800,Calm,Trend up,Calm -> Trend up,1375
+1658188800,Trend up,Calm,Trend up -> Calm,1380
+1658851200,Calm,Trend down,Calm -> Trend down,1426
+1658937600,Trend down,Calm,Trend down -> Calm,1432
+1659182400,Calm,Trend up,Calm -> Trend up,1449
+1659369600,Trend up,Calm,Trend up -> Calm,1462
+1660881600,Calm,Trend down,Calm -> Trend down,1567
+1661313600,Trend down,Calm,Trend down -> Calm,1597
+1661673600,Calm,Trend down,Calm -> Trend down,1622
+1661904000,Trend down,Calm,Trend down -> Calm,1638
+1662508800,Calm,Trend down,Calm -> Trend down,1680
+1662580800,Trend down,Calm,Trend down -> Calm,1685
+1662681600,Calm,Stress,Calm -> Stress,1692
+1662768000,Stress,Calm,Stress -> Calm,1698
+1662825600,Calm,Trend up,Calm -> Trend up,1702
+1663070400,Trend up,Stress,Trend up -> Stress,1719
+1663358400,Stress,Calm,Stress -> Calm,1739
+1663387200,Calm,Trend down,Calm -> Trend down,1741
+1663516800,Trend down,Calm,Trend down -> Calm,1750
+1663560000,Calm,Trend down,Calm -> Trend down,1753
+1663603200,Trend down,Calm,Trend down -> Calm,1756
+1664366400,Calm,Stress,Calm -> Stress,1809
+1664582400,Stress,Calm,Stress -> Calm,1824
+1665345600,Calm,Trend down,Calm -> Trend down,1877
+1665676800,Trend down,Calm,Trend down -> Calm,1900
+1666713600,Calm,Trend up,Calm -> Trend up,1972
+1667145600,Trend up,Calm,Trend up -> Calm,2002
+1667923200,Calm,Stress,Calm -> Stress,2056
+1668729600,Stress,Calm,Stress -> Calm,2112
+1669521600,Calm,Trend up,Calm -> Trend up,2167
+1669579200,Trend up,Calm,Trend up -> Calm,2171
+1670025600,Calm,Trend up,Calm -> Trend up,2202
+1670198400,Trend up,Calm,Trend up -> Calm,2214
+1670932800,Calm,Trend up,Calm -> Trend up,2265
+1671105600,Trend up,Calm,Trend up -> Calm,2277
+1671364800,Calm,Trend down,Calm -> Trend down,2295
+1671537600,Trend down,Calm,Trend down -> Calm,2307
+1672804800,Calm,Trend up,Calm -> Trend up,2395
+1672992000,Trend up,Calm,Trend up -> Calm,2408
+1673179200,Calm,Trend up,Calm -> Trend up,2421
+1673539200,Trend up,Stress,Trend up -> Stress,2446
+1674028800,Stress,Trend up,Stress -> Trend up,2480
+1674072000,Trend up,Calm,Trend up -> Calm,2483
+1674244800,Calm,Stress,Calm -> Stress,2495
+1674532800,Stress,Trend up,Stress -> Trend up,2515
+1674676800,Trend up,Calm,Trend up -> Calm,2525
+1675713600,Calm,Trend down,Calm -> Trend down,2597
+1675800000,Trend down,Calm,Trend down -> Calm,2603
+1675958400,Calm,Trend down,Calm -> Trend down,2614
+1676376000,Trend down,Calm,Trend down -> Calm,2643
+1676462400,Calm,Trend up,Calm -> Trend up,2649
+1676577600,Trend up,Stress,Trend up -> Stress,2657
+1676865600,Stress,Trend up,Stress -> Trend up,2677
+1676908800,Trend up,Calm,Trend up -> Calm,2680
+1677312000,Calm,Trend down,Calm -> Trend down,2708
+1677441600,Trend down,Calm,Trend down -> Calm,2717
+1678075200,Calm,Trend down,Calm -> Trend down,2761
+1678233600,Trend down,Calm,Trend down -> Calm,2772
+1678377600,Calm,Trend down,Calm -> Trend down,2782
+1678550400,Trend down,Stress,Trend down -> Stress,2794
+1679112000,Stress,Trend up,Stress -> Trend up,2833
+1679227200,Trend up,Calm,Trend up -> Calm,2841
+1679299200,Calm,Trend up,Calm -> Trend up,2846
+1679472000,Trend up,Calm,Trend up -> Calm,2858
+1679500800,Calm,Stress,Calm -> Stress,2860
+1679788800,Stress,Calm,Stress -> Calm,2880
+1681156800,Calm,Trend up,Calm -> Trend up,2975
+1681588800,Trend up,Calm,Trend up -> Calm,3005
+1681934400,Calm,Trend down,Calm -> Trend down,3029
+1682438400,Trend down,Calm,Trend down -> Calm,3064
+1682524800,Calm,Stress,Calm -> Stress,3070
+1682812800,Stress,Calm,Stress -> Calm,3090
+1683820800,Calm,Trend down,Calm -> Trend down,3160
+1683964800,Trend down,Calm,Trend down -> Calm,3170
+1685361600,Calm,Trend up,Calm -> Trend up,3267
+1685505600,Trend up,Calm,Trend up -> Calm,3277
+1685980800,Calm,Trend down,Calm -> Trend down,3310
+1686067200,Trend down,Stress,Trend down -> Stress,3316
+1686355200,Stress,Calm,Stress -> Calm,3336
+1686916800,Calm,Stress,Calm -> Stress,3375
+1687060800,Stress,Calm,Stress -> Calm,3385
+1687204800,Calm,Trend up,Calm -> Trend up,3395
+1687348800,Trend up,Stress,Trend up -> Stress,3405
+1687809600,Stress,Calm,Stress -> Calm,3437
+1689696000,Calm,Trend down,Calm -> Trend down,3568
+1689782400,Trend down,Calm,Trend down -> Calm,3574
+1690257600,Calm,Trend down,Calm -> Trend down,3607
+1690387200,Trend down,Calm,Trend down -> Calm,3616
+1692216000,Calm,Trend down,Calm -> Trend down,3743
+1692302400,Trend down,Stress,Trend down -> Stress,3749
+1692590400,Stress,Trend down,Stress -> Trend down,3769
+1692734400,Trend down,Calm,Trend down -> Calm,3779
+1693310400,Calm,Stress,Calm -> Stress,3819
+1693785600,Stress,Trend down,Stress -> Trend down,3852
+1693929600,Trend down,Calm,Trend down -> Calm,3862
+1694865600,Calm,Trend up,Calm -> Trend up,3927
+1694937600,Trend up,Calm,Trend up -> Calm,3932
+1695024000,Calm,Trend up,Calm -> Trend up,3938
+1695067200,Trend up,Calm,Trend up -> Calm,3941
+1695556800,Calm,Trend down,Calm -> Trend down,3975
+1695744000,Trend down,Calm,Trend down -> Calm,3988
+1696190400,Calm,Trend up,Calm -> Trend up,4019
+1696334400,Trend up,Stress,Trend up -> Stress,4029
+1696478400,Stress,Calm,Stress -> Calm,4039
+1697025600,Calm,Trend down,Calm -> Trend down,4077
+1697284800,Trend down,Calm,Trend down -> Calm,4095
+1697457600,Calm,Trend up,Calm -> Trend up,4107
+1698019200,Trend up,Stress,Trend up -> Stress,4146
+1698436800,Stress,Trend up,Stress -> Trend up,4175
+1698523200,Trend up,Calm,Trend up -> Calm,4181
+1698926400,Calm,Stress,Calm -> Stress,4209
+1699156800,Stress,Calm,Stress -> Calm,4225
+1699488000,Calm,Trend up,Calm -> Trend up,4248
+1699588800,Trend up,Calm,Trend up -> Calm,4255
+1699603200,Calm,Stress,Calm -> Stress,4256
+1699732800,Stress,Trend up,Stress -> Trend up,4265
+1699905600,Trend up,Calm,Trend up -> Calm,4277
+1700064000,Calm,Stress,Calm -> Stress,4288
+1700352000,Stress,Calm,Stress -> Calm,4308
+1701518400,Calm,Trend up,Calm -> Trend up,4389
+1701936000,Trend up,Stress,Trend up -> Stress,4418
+1702080000,Stress,Trend up,Stress -> Trend up,4428
+1702152000,Trend up,Calm,Trend up -> Calm,4433
+1702310400,Calm,Trend down,Calm -> Trend down,4444
+1702353600,Trend down,Calm,Trend down -> Calm,4447
+1702425600,Calm,Stress,Calm -> Stress,4452
+1702598400,Stress,Calm,Stress -> Calm,4464
+1704196800,Calm,Trend up,Calm -> Trend up,4575
+1704268800,Trend up,Calm,Trend up -> Calm,4580
+1704283200,Calm,Stress,Calm -> Stress,4581
+1704556800,Stress,Calm,Stress -> Calm,4600
+1704729600,Calm,Stress,Calm -> Stress,4612
+1705017600,Stress,Calm,Stress -> Calm,4632
+1705089600,Calm,Stress,Calm -> Stress,4637
+1705248000,Stress,Trend down,Stress -> Trend down,4648
+1705291200,Trend down,Stress,Trend down -> Stress,4651
+1705363200,Stress,Trend down,Stress -> Trend down,4656
+1705492800,Trend down,Calm,Trend down -> Calm,4665
+1705939200,Calm,Trend down,Calm -> Trend down,4696
+1706040000,Trend down,Calm,Trend down -> Calm,4703
+1706428800,Calm,Trend up,Calm -> Trend up,4730
+1706688000,Trend up,Calm,Trend up -> Calm,4748
+1707393600,Calm,Trend up,Calm -> Trend up,4797
+1707825600,Trend up,Stress,Trend up -> Stress,4827
+1708113600,Stress,Trend up,Stress -> Trend up,4847
+1708171200,Trend up,Calm,Trend up -> Calm,4851
+1708963200,Calm,Trend up,Calm -> Trend up,4906
+1709092800,Trend up,Stress,Trend up -> Stress,4915
+1709409600,Stress,Trend up,Stress -> Trend up,4937
+1709654400,Trend up,Stress,Trend up -> Stress,4954
+1709985600,Stress,Calm,Stress -> Calm,4977
+1710086400,Calm,Trend up,Calm -> Trend up,4984
+1710417600,Trend up,Calm,Trend up -> Calm,5007
+1710460800,Calm,Stress,Calm -> Stress,5010
+1710748800,Stress,Calm,Stress -> Calm,5030
+1710878400,Calm,Trend down,Calm -> Trend down,5039
+1710921600,Trend down,Calm,Trend down -> Calm,5042
+1710964800,Calm,Stress,Calm -> Stress,5045
+1711180800,Stress,Calm,Stress -> Calm,5060
+1711526400,Calm,Trend up,Calm -> Trend up,5084
+1711713600,Trend up,Calm,Trend up -> Calm,5097
+1712059200,Calm,Trend down,Calm -> Trend down,5121
+1712145600,Trend down,Calm,Trend down -> Calm,5127
+1712563200,Calm,Trend up,Calm -> Trend up,5156
+1712664000,Trend up,Calm,Trend up -> Calm,5163
+1713024000,Calm,Trend down,Calm -> Trend down,5188
+1713124800,Trend down,Calm,Trend down -> Calm,5195
+1713211200,Calm,Trend down,Calm -> Trend down,5201
+1713427200,Trend down,Calm,Trend down -> Calm,5216
+1713499200,Calm,Stress,Calm -> Stress,5221
+1713643200,Stress,Calm,Stress -> Calm,5231
+1713787200,Calm,Trend up,Calm -> Trend up,5241
+1713960000,Trend up,Calm,Trend up -> Calm,5253
+1714233600,Calm,Trend down,Calm -> Trend down,5272
+1714392000,Trend down,Calm,Trend down -> Calm,5283
+1714492800,Calm,Trend down,Calm -> Trend down,5290
+1714593600,Trend down,Stress,Trend down -> Stress,5297
+1714824000,Stress,Calm,Stress -> Calm,5313
+1714968000,Calm,Trend up,Calm -> Trend up,5323
+1715140800,Trend up,Calm,Trend up -> Calm,5335
+1715774400,Calm,Trend up,Calm -> Trend up,5379
+1716393600,Trend up,Calm,Trend up -> Calm,5422
+1717588800,Calm,Trend up,Calm -> Trend up,5505
+1717776000,Trend up,Calm,Trend up -> Calm,5518
+1718078400,Calm,Trend down,Calm -> Trend down,5539
+1718193600,Trend down,Calm,Trend down -> Calm,5547
+1718208000,Calm,Stress,Calm -> Stress,5548
+1718481600,Stress,Calm,Stress -> Calm,5567
+1718625600,Calm,Trend down,Calm -> Trend down,5577
+1718668800,Trend down,Calm,Trend down -> Calm,5580
+1719201600,Calm,Trend down,Calm -> Trend down,5617
+1719374400,Trend down,Calm,Trend down -> Calm,5629
+1720137600,Calm,Stress,Calm -> Stress,5682
+1720728000,Stress,Calm,Stress -> Calm,5723
+1721044800,Calm,Trend up,Calm -> Trend up,5745
+1721505600,Trend up,Calm,Trend up -> Calm,5777
+1722513600,Calm,Trend down,Calm -> Trend down,5847
+1722556800,Trend down,Calm,Trend down -> Calm,5850
+1722628800,Calm,Stress,Calm -> Stress,5855
+1723406400,Stress,Calm,Stress -> Calm,5909
+1724587200,Calm,Trend up,Calm -> Trend up,5991
+1724688000,Trend up,Calm,Trend up -> Calm,5998
+1724860800,Calm,Trend down,Calm -> Trend down,6010
+1725220800,Trend down,Calm,Trend down -> Calm,6035
+1725739200,Calm,Trend down,Calm -> Trend down,6071
+1725825600,Trend down,Calm,Trend down -> Calm,6077
+1726228800,Calm,Trend up,Calm -> Trend up,6105
+1726329600,Trend up,Calm,Trend up -> Calm,6112
+1726920000,Calm,Trend up,Calm -> Trend up,6153
+1727006400,Trend up,Calm,Trend up -> Calm,6159
+1727049600,Calm,Trend up,Calm -> Trend up,6162
+1727121600,Trend up,Calm,Trend up -> Calm,6167
+1727812800,Calm,Trend down,Calm -> Trend down,6215
+1728086400,Trend down,Calm,Trend down -> Calm,6234
+1728316800,Calm,Trend up,Calm -> Trend up,6250
+1728360000,Trend up,Calm,Trend up -> Calm,6253
+1728921600,Calm,Trend up,Calm -> Trend up,6292
+1729440000,Trend up,Calm,Trend up -> Calm,6328
+1729684800,Calm,Trend down,Calm -> Trend down,6345
+1729728000,Trend down,Calm,Trend down -> Calm,6348
+1730160000,Calm,Trend up,Calm -> Trend up,6378
+1730419200,Trend up,Calm,Trend up -> Calm,6396
+1730635200,Calm,Trend down,Calm -> Trend down,6411
+1730808000,Trend down,Calm,Trend down -> Calm,6423
+1730851200,Calm,Stress,Calm -> Stress,6426
+1731153600,Stress,Trend up,Stress -> Trend up,6447
+1731398400,Trend up,Stress,Trend up -> Stress,6464
+1731974400,Stress,Calm,Stress -> Calm,6504
+1732233600,Calm,Trend up,Calm -> Trend up,6522
+1732449600,Trend up,Calm,Trend up -> Calm,6537
+1734264000,Calm,Trend up,Calm -> Trend up,6663
+1734537600,Trend up,Calm,Trend up -> Calm,6682
+1734681600,Calm,Stress,Calm -> Stress,6692
+1734984000,Stress,Calm,Stress -> Calm,6713
+1735560000,Calm,Trend down,Calm -> Trend down,6753
+1735632000,Trend down,Calm,Trend down -> Calm,6758
+1736020800,Calm,Trend up,Calm -> Trend up,6785
+1736078400,Trend up,Calm,Trend up -> Calm,6789
+1736121600,Calm,Trend up,Calm -> Trend up,6792
+1736251200,Trend up,Calm,Trend up -> Calm,6801
+1737100800,Calm,Trend up,Calm -> Trend up,6860
+1737316800,Trend up,Stress,Trend up -> Stress,6875
+1737676800,Stress,Calm,Stress -> Calm,6900
+1738540800,Calm,Trend down,Calm -> Trend down,6960
+1738584000,Trend down,Stress,Trend down -> Stress,6963
+1738872000,Stress,Calm,Stress -> Calm,6983
+1740456000,Calm,Trend down,Calm -> Trend down,7093
+1740700800,Trend down,Stress,Trend down -> Stress,7110
+1741392000,Stress,Calm,Stress -> Calm,7158
+1741622400,Calm,Trend down,Calm -> Trend down,7174
+1741708800,Trend down,Calm,Trend down -> Calm,7180
+1742918400,Calm,Trend up,Calm -> Trend up,7264
+1743004800,Trend up,Calm,Trend up -> Calm,7270
+1743249600,Calm,Trend down,Calm -> Trend down,7287
+1743508800,Trend down,Calm,Trend down -> Calm,7305
+1743998400,Calm,Trend down,Calm -> Trend down,7339
+1744056000,Trend down,Calm,Trend down -> Calm,7343
+1744214400,Calm,Stress,Calm -> Stress,7354
+1744502400,Stress,Calm,Stress -> Calm,7374
+1744588800,Calm,Trend up,Calm -> Trend up,7380
+1744646400,Trend up,Calm,Trend up -> Calm,7384
+1744718400,Calm,Trend up,Calm -> Trend up,7389
+1744761600,Trend up,Calm,Trend up -> Calm,7392
+1745193600,Calm,Trend up,Calm -> Trend up,7422
+1745755200,Trend up,Calm,Trend up -> Calm,7461
+1746734400,Calm,Trend up,Calm -> Trend up,7529
+1747094400,Trend up,Calm,Trend up -> Calm,7554
+1747814400,Calm,Stress,Calm -> Stress,7604
+1747915200,Stress,Trend up,Stress -> Trend up,7611
+1747987200,Trend up,Calm,Trend up -> Calm,7616
+1748664000,Calm,Trend down,Calm -> Trend down,7663
+1748808000,Trend down,Calm,Trend down -> Calm,7673
+1749571200,Calm,Trend up,Calm -> Trend up,7726
+1749686400,Trend up,Calm,Trend up -> Calm,7734
+1750521600,Calm,Trend down,Calm -> Trend down,7792
+1750579200,Trend down,Calm,Trend down -> Calm,7796
+1750593600,Calm,Stress,Calm -> Stress,7797
+1750881600,Stress,Calm,Stress -> Calm,7817
+1751025600,Calm,Trend up,Calm -> Trend up,7827
+1751140800,Trend up,Calm,Trend up -> Calm,7835
+1752076800,Calm,Trend up,Calm -> Trend up,7900
+1752177600,Trend up,Stress,Trend up -> Stress,7907
+1752364800,Stress,Trend up,Stress -> Trend up,7920
+1752580800,Trend up,Calm,Trend up -> Calm,7935
+1752638400,Calm,Stress,Calm -> Stress,7939
+1752753600,Stress,Calm,Stress -> Calm,7947
+1754064000,Calm,Trend down,Calm -> Trend down,8038
+1754236800,Trend down,Calm,Trend down -> Calm,8050
+1754366400,Calm,Trend down,Calm -> Trend down,8059
+1754409600,Trend down,Calm,Trend down -> Calm,8062
+1754582400,Calm,Trend up,Calm -> Trend up,8074
+1754640000,Trend up,Calm,Trend up -> Calm,8078
+1754827200,Calm,Trend up,Calm -> Trend up,8091
+1754942400,Trend up,Calm,Trend up -> Calm,8099
+1755129600,Calm,Trend up,Calm -> Trend up,8112
+1755172800,Trend up,Stress,Trend up -> Stress,8115
+1755388800,Stress,Calm,Stress -> Calm,8130
+1755532800,Calm,Trend down,Calm -> Trend down,8140
+1755705600,Trend down,Calm,Trend down -> Calm,8152
+1755792000,Calm,Trend down,Calm -> Trend down,8158
+1755864000,Trend down,Stress,Trend down -> Stress,8163
+1756152000,Stress,Calm,Stress -> Calm,8183
+1756915200,Calm,Trend up,Calm -> Trend up,8236
+1756958400,Trend up,Calm,Trend up -> Calm,8239
+1757620800,Calm,Trend up,Calm -> Trend up,8285
+1757937600,Trend up,Calm,Trend up -> Calm,8307
+1758513600,Calm,Trend down,Calm -> Trend down,8347
+1758715200,Trend down,Calm,Trend down -> Calm,8361
+1758787200,Calm,Trend down,Calm -> Trend down,8366
+1758988800,Trend down,Calm,Trend down -> Calm,8380
+1759248000,Calm,Trend up,Calm -> Trend up,8398
+1759838400,Trend up,Stress,Trend up -> Stress,8439
+1760961600,Stress,Calm,Stress -> Calm,8517
+1761048000,Calm,Stress,Calm -> Stress,8523
+1761336000,Stress,Calm,Stress -> Calm,8543
+1761508800,Calm,Trend up,Calm -> Trend up,8555
+1761681600,Trend up,Calm,Trend up -> Calm,8567
+1762329600,Calm,Trend down,Calm -> Trend down,8612
+1762560000,Trend down,Calm,Trend down -> Calm,8628
+1763064000,Calm,Stress,Calm -> Stress,8663
+1763236800,Stress,Trend down,Stress -> Trend down,8675
+1763582400,Trend down,Calm,Trend down -> Calm,8699
+1763596800,Calm,Stress,Calm -> Stress,8700
+1763942400,Stress,Calm,Stress -> Calm,8724
+1764201600,Calm,Trend up,Calm -> Trend up,8742
+1764374400,Trend up,Calm,Trend up -> Calm,8754
+1764676800,Calm,Stress,Calm -> Stress,8775
+1764835200,Stress,Calm,Stress -> Calm,8786
+1765814400,Calm,Trend down,Calm -> Trend down,8854
+1765872000,Trend down,Calm,Trend down -> Calm,8858
+1765944000,Calm,Trend down,Calm -> Trend down,8863
+1766044800,Trend down,Calm,Trend down -> Calm,8870
+1767484800,Calm,Trend up,Calm -> Trend up,8970
+1767772800,Trend up,Calm,Trend up -> Calm,8990
+1768334400,Calm,Trend up,Calm -> Trend up,9029
+1768564800,Trend up,Calm,Trend up -> Calm,9045
+1768838400,Calm,Trend down,Calm -> Trend down,9064
+1769212800,Trend down,Calm,Trend down -> Calm,9090
+1769688000,Calm,Stress,Calm -> Stress,9123
+1770753600,Stress,Calm,Stress -> Calm,9197
+1772078400,Calm,Stress,Calm -> Stress,9289
+1772136000,Stress,Calm,Stress -> Calm,9293
+1772683200,Calm,Trend up,Calm -> Trend up,9331
+1772726400,Trend up,Calm,Trend up -> Calm,9334
+1773648000,Calm,Trend up,Calm -> Trend up,9398
+1773806400,Trend up,Calm,Trend up -> Calm,9409
+1774123200,Calm,Trend down,Calm -> Trend down,9431
+1774252800,Trend down,Calm,Trend down -> Calm,9440
+1774814400,Calm,Trend down,Calm -> Trend down,9479
+1774929600,Trend down,Calm,Trend down -> Calm,9487
+1775592000,Calm,Trend up,Calm -> Trend up,9533
+1775952000,Trend up,Calm,Trend up -> Calm,9558
+1776427200,Calm,Trend up,Calm -> Trend up,9591
+1776528000,Trend up,Calm,Trend up -> Calm,9598
+1777896000,Calm,Trend up,Calm -> Trend up,9693
+1778112000,Trend up,Calm,Trend up -> Calm,9708
+1778846400,Calm,Stress,Calm -> Stress,9759
+1778961600,Stress,Calm,Stress -> Calm,9767
+1779192000,Calm,Trend down,Calm -> Trend down,9783
+1779278400,Trend down,Calm,Trend down -> Calm,9789
+1780041600,Calm,Trend down,Calm -> Trend down,9842
+1780401600,Trend down,Stress,Trend down -> Stress,9867
+1781308800,Stress,Calm,Stress -> Calm,9930
+1781481600,Calm,Trend up,Calm -> Trend up,9942
+1781625600,Trend up,Calm,Trend up -> Calm,9952
+1782331200,Calm,Stress,Calm -> Stress,10001
+1782619200,Stress,Calm,Stress -> Calm,10021
+1783252800,Calm,Trend up,Calm -> Trend up,10065
+1783382400,Trend up,Calm,Trend up -> Calm,10074
+1784692800,Calm,Trend up,Calm -> Trend up,10165
+1784764800,Trend up,Calm,Trend up -> Calm,10170
+1786147200,Calm,Trend up,Calm -> Trend up,10266
+1786305600,Trend up,Calm,Trend up -> Calm,10277
+1786766400,Calm,Trend down,Calm -> Trend down,10309
+1786809600,Trend down,Calm,Trend down -> Calm,10312
+1787126400,Calm,Trend up,Calm -> Trend up,10334
+1787140800,Trend up,Stress,Trend up -> Stress,10335
+1787904000,Stress,Calm,Stress -> Calm,10388

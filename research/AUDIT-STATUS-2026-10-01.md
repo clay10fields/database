@@ -21,6 +21,15 @@ Current corrected historical account reference:
 
 These are historical research statistics, not forecasts.
 
+**Two caveats belong with every quotation of them** (established in Step 27, reproduced 2026-10-01, and previously absent
+from this ledger and from `CURRENT-BOOK-2026-10-01.md`):
+- the **-12.94% drawdown is a property of the hand-picked seven-coin Flush-B set**. Force Flush membership to follow the
+  rule-based eligibility test and the same book gives 94.15% CAGR at **-26.83%** max drawdown. The return survives; the
+  risk number does not. Step 17 agrees: off-universe Flush-B edge is +0.76% against +2.93% on the curated seven.
+- the figures above are the **`legacy_panel_order`** slot rows. Step 27 decision #3 adopted causal signal-strength slot
+  priority, which gives 93.94% / -12.94% / 2.659 / -5.70%. Immaterial in size, but the adopted rule's numbers are the
+  ones to quote.
+
 ## Build-changing work completed
 ### Step 18 — parameter plateau
 Completed before this reconciliation. The important adopted change was the CS funding gate moving from the 70th to the 90th percentile. This is already part of the current CS72 rule.
@@ -73,7 +82,15 @@ The four CS72 observations are too few/clustered for a post-hoc CS-specific cale
 
 Named shock days remain neutral-to-helpful under the corrected rules: the book had no position on the tested FTX date, while Aug-2024 and Oct-2025 risk-off/liquidation dates were profitable and Flush-B contributed positively.
 
-**Verdict:** no event-calendar filter. Token-unlock behavior remains blocked by lack of a verified point-in-time historical unlock calendar.
+**Verdict:** no event-calendar filter.
+
+Token unlocks: **corrected 2026-10-01.** This line previously said the subtest was blocked with nothing run. It had been
+run — `research/token-unlocks/` holds three scripts and eleven result tables, now written up in
+`research/token-unlocks/TOKEN-UNLOCKS.md`. On 45 events (2023-2025, third-party event list) the pre-unlock week carries
+-5.33% excess of BTC against -1.64% the week before, acceleration -3.69 pp at t -2.72, and the three days after the
+unlock are flat. That is the direction of his hypothesis. It is a **LEAD** (n 45 vs the 200 bar, t 2.72 vs 3.0), and what
+blocks it is specifically the lack of a point-in-time calendar — the trade enters 7-14 days early, so the date must be
+known in advance. Not "no result".
 
 ### Step 21 — clock effects
 Completed. No stable UTC-hour, weekday, or funding-settlement-proximity filter qualified. No rule change.
@@ -137,7 +154,11 @@ Completed. A blanket 0-5-bar post-transition throttle reduced portfolio quality.
 Blocked until at least ~90 days of usable Kraken/Kalshi/venue recorder history exist. Preserve the preregistered test; do not infer a venue result from a few days.
 
 ### Token unlock event subtest
-Blocked by lack of a verified point-in-time historical unlock calendar. Do not hand-pick unlock dates after observing price moves.
+Run, and it supports the hypothesis — see `research/token-unlocks/TOKEN-UNLOCKS.md` and the corrected Step 20 entry above.
+What is blocked is the **calendar**, not the question: the 45 events come from a curated third-party list whose
+event-level selection is undocumented, and a trade that enters 7-14 days before the unlock cannot be run off a list
+assembled after the fact. Start logging announced unlock dates forward now; at ~15 events a year a clean prospective
+sample starts paying evidence within two months. Do not hand-pick unlock dates after observing price moves.
 
 ### Survivorship depth
 Step 17 was run, but the faded/delisted control set remains too small and heterogeneous for a strong survivor-bias clearance claim.

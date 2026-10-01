@@ -20,6 +20,20 @@ train/test halves, coins the rule was never built on). Every number has a script
 | live/ | the live protocol: sample sizes, kill criteria, mid-trade dashboard | written before any money is risked |
 | quant/ | sizing and risk techniques on the book | signal-strength sizing adopted; drawdown throttle, vol targeting rejected; Monte Carlo says plan for −30% |
 | book/ | both trades on one $5K account | Sharpe 2.6 combined vs 1.7 alone; drawdown unchanged |
+| **book/CURRENT-BOOK-2026-10-01.md** | the current two-engine build spec (CS72 + Flush-B; LIQF out) | **authoritative** — read with its two caveats |
+| **AUDIT-STATUS-2026-10-01.md** | ledger: what every step 16–28 concluded | **start here for status** |
+| **REVIEW-2026-10-01.md** | independent re-run and review of all of the above | findings + what is still unfinished |
+| survivorship/ | step 17 — faded/delisted controls (ATOM EOS MATIC FTT LUNA) | **inconclusive**: no survivor-only failure, but n=20 / n=154 and t ≈ 1 |
+| multiple-testing/ | step 19 — search-burden ledger | CS72 clears Bonferroni (t 4.61 vs 4.00); **Flush-B just misses** (3.71 vs 3.79) |
+| events/ | step 20 — FOMC and named shock days | no event-calendar filter; blanket FOMC pause rejected on the portfolio |
+| clock-effects/ | step 21 — UTC hour, weekday, funding-settlement proximity | nothing qualified |
+| diversification/ | step 22 — measured, not assumed | CS72/Flush-B daily correlation −0.065; both engines kept |
+| capacity/ | step 23 — participation and slippage stress | $5K fine; $25K needs depth logging; $100K not validated |
+| venue-leakage/ | step 24 — venue funding and basis | **blocked** until ~90d of Kraken/Kalshi history |
+| liquidation-safety/ | step 25 — margin buffers at planned sizes | no snapshot within 20% of modeled liquidation |
+| universe-refresh/ | step 27 — membership by rule, not by name | **CS72 yes; Flush-B no** — rule-based Flush doubles drawdown to −26.83% |
+| regime-transitions/ | step 28 — around BTC regime changes | no throttle; 2022-23 vs 2024-26 sign flip is forward-monitoring only |
+| token-unlocks/ | selling before the unlock | **LEAD**: pre-week −5.33% excess vs −1.64%, t −2.72, n 45; blocked on a point-in-time calendar |
 | crowding-2026-10-01/, step5-placebos-2026-10-01/, coin-types-2026-10-01/, batch1-2026-10-01/ | the earlier work these build on | see their NOTES / PREREG |
 | squeeze-2026-09-30/, regimes-2026-09-30/, binance_2021/, grok-regime-docs/, evidence-review/ | the 2026-09-30 squeeze study (level-break fade: later failed placebos) | archive |
 

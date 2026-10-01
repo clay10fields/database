@@ -25,6 +25,32 @@ Corrected two-engine book, $5K starting equity, whole-contract Kraken-style cost
 
 These are historical research statistics, not a forecast or expected live return.
 
+### Two things that must travel with those numbers
+Both were established in Step 27 and were missing from this file. Reproduced 2026-10-01 from
+`research/universe-refresh/code/dynamic_universe_test.py`.
+
+1. **The -12.94% drawdown depends on the hand-picked Flush-B coin set.** Swap the curated seven for the rule-based
+   16-coin eligibility set and the same book runs:
+
+   | universe | CAGR | max DD | Sharpe | worst month |
+   |---|---:|---:|---:|---:|
+   | dynamic CS + **curated** Flush (this spec) | 93.94% | **-12.94%** | 2.659 | -5.70% |
+   | dynamic CS + **dynamic** Flush | 94.15% | **-26.83%** | 2.451 | -6.35% |
+
+   Same return, double the drawdown. So the headline risk number is a property of the seven names, not of the signal.
+   Step 27 called this "explicitly an unresolved model-selection constraint, not a causal universe solution" and
+   "a validated research set, not a general universe law" — that stands, and it is the single biggest caveat on this book.
+   Step 17 points the same way: off-universe on faded/delisted controls Flush-B's pooled edge is +0.76%, against +2.93%
+   on the curated seven.
+
+2. **The numbers above were produced under the slot rule Step 27 rejected.** 93.87% / -5.94% is the
+   `legacy_panel_order` row; the adopted causal signal-strength priority gives **93.94% / -12.94% / 2.659 / -5.70%**.
+   The difference is immaterial, but the quoted figures should be the adopted rule's, not the rejected one's.
+
+Treat -12.94% as the best case of a hand-picked universe under a superseded tie-break, and -26.83% as what the same
+signal does when membership is forced to follow a rule. Monte Carlo guidance (plan for -30%) is closer to the second
+number than the first.
+
 ## Engine 1 — CS72
 ### Signal
 At a 4h close, short when all are true:
@@ -83,6 +109,12 @@ The current validated curated Flush-B set is:
 - BCH
 
 In addition, a coin must have at least **180 calendar days of valid positioning history** before it may generate a Flush-B trade.
+
+**This set is hand-picked, not derived.** No file on any branch records the rule that produced these seven names, and
+Step 27 tested a rule-based replacement and rejected it on drawdown (-26.83% vs -12.94%), not on edge — the broad
+16-coin version is still +2.03% per trade at t 3.81. So the seven names are a model-selection choice made after seeing
+per-coin results, and every account figure in this file inherits that. Writing down the predeclared causal rule that
+admits a Flush coin is the open item that blocks this engine from being called rule-based.
 
 The 180-day maturity rule was specified in Step 27 and then isolated in a reconciliation audit. Versus no history gate it improved standalone edge from +2.66% to +2.93% and improved the corrected book on CAGR, drawdown, Sharpe, and worst month. A 365-day sensitivity looked attractive but is **not adopted** because it was not the preregistered rule and trims substantially more early history.
 

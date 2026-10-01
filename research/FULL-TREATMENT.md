@@ -89,7 +89,32 @@ Add the idea to `research/README.md` and, if it survives, to `research/book/` (t
 
 Run order for the backlog on the two live trades: 16, 18, 26 first (they decide whether to trust anything), then 20, 22, 23, 25, then the rest.
 
-**Done 2026-10-01: steps 16, 18, 26 on both live trades.** Results in each trade's knowledge file and in `research/live/LIVE-PROTOCOL.md`.
+**Status 2026-10-01 (updated after the cross-branch review).** Steps 16–28 are all run except 24. Each has its own folder
+and knowledge file; `research/AUDIT-STATUS-2026-10-01.md` is the ledger and `research/book/CURRENT-BOOK-2026-10-01.md` is
+the current spec.
+
+| step | state | where |
+|---|---|---|
+| 16 look-ahead | done, clean | `crowd-short/`, `flush-long/` |
+| 17 survivorship | run, **inconclusive** (controls underpowered) | `survivorship/` |
+| 18 plateau | done — moved the funding cut 0.70 → 0.90 | `crowd-short/` |
+| 19 multiple-testing | done — CS72 clears Bonferroni, **Flush-B just misses** | `multiple-testing/` |
+| 20 events | done — no calendar filter | `events/` |
+| 21 clock | done — nothing qualified | `clock-effects/` |
+| 22 diversification | done — two-engine thesis revalidated | `diversification/` |
+| 23 capacity | done — $5K fine, $100K not validated | `capacity/` |
+| 24 venue leakage | **blocked** — needs ~90d of venue history | `venue-leakage/` |
+| 25 liquidation safety | done — no snapshot within 20% of liquidation | `liquidation-safety/` |
+| 26 live protocol | done | `live/LIVE-PROTOCOL.md` |
+| 27 universe refresh | done for CS72; **Flush-B still hand-picked** | `universe-refresh/` |
+| 28 regime transitions | done — no throttle adopted | `regime-transitions/` |
+| token unlocks | run, **LEAD**; blocked on a point-in-time calendar | `token-unlocks/` |
+
+The two honest soft spots: **Flush-B's seven-coin universe is a model-selection choice** (rule-based membership doubles
+account drawdown to −26.83%), and **Flush-B is the search-burden-sensitive engine** under Step 19. Both are reasons to
+weight its live record more heavily than CS72's, not reasons to drop it.
+
+**Earlier note — steps 16, 18, 26 on both live trades.** Results in each trade's knowledge file and in `research/live/LIVE-PROTOCOL.md`.
 What they changed: (1) no look-ahead anywhere, and the staleness ladder showed the 72h crowd short tolerates a 24–48h-old top-trader
 feed, so it can run live on the daily archive; (2) the plateau step found the funding filter was set too tight — moved from the 70th to
 the 90th percentile, worth +46% → +73% a year on that trade; (3) the live protocol fixes the sample sizes, the kill criteria and the
@@ -109,7 +134,10 @@ Every knowledge file is organised to answer those in that order. What the tests 
 * **Regime decides the size, not the sign.** Crowd short: calm and downtrends; stress only with the full filter set. Flush long / liquidation buy: stress and crashes, biggest when the flush ends a hot run; weakest in a month-long bleed with cold funding (2022, May–June 2026). Compressed volatility is the dead zone for all of them.
 * **Coins in demand carry both trades** (up over 6 months / near their 1-year high): the crowd keeps coming back to them. Coins in multi-year decline (DOT, LTC, XTZ, BNB) fail on both. The new-listing hype coins (SUI, PEPE, PENGU, HYPE) fail on the short and work on the long: their crowd has been right so far.
 * **Cycle coverage is the big gap.** 4h positioning data starts Dec 2021: one bear, one recovery/bull, 2026. Only the daily liquidation data (2019–) spans the 2020–21 bull, and it shows the liquidation buy was strongest there (+4% per trade) and weakest in the 2022 bear. Expect the same shape next cycle: longs strongest early-bull and in bull corrections, shorts strongest late-bull and in calm distribution.
-* **Open macro questions** (add data, then test): token unlock schedules (sell-off into the unlock, boom before?) — no free source found yet; coin-group rotation (majors → big alts → old L1s → memes) by regime, using the coin-type grid; funding-settlement timing; Kraken/Kalshi vs Binance positioning gaps once 90 days are recorded.
+* **Token unlocks: his hypothesis is supported.** The pre-unlock week carries −5.33% excess of BTC against −1.64% the week
+  before, and the three days after are flat — the selling is in front of the unlock, as he said. 45 events, t −2.72 on the
+  preregistered acceleration test: a LEAD, blocked on getting a point-in-time calendar rather than on the result (`token-unlocks/`).
+* **Open macro questions** (add data, then test): coin-group rotation (majors → big alts → old L1s → memes) by regime, using the coin-type grid; funding-settlement timing; Kraken/Kalshi vs Binance positioning gaps once 90 days are recorded.
 
 ## 4. The queue (in order)
 1. Spot-flow filter: full treatment as an upgrade on both trades (account, watcher).

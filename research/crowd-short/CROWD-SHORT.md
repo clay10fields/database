@@ -312,7 +312,10 @@ Every value must be known at that close.
 * `pct(x)`: rank of x within this coin's own last 540 4h bars (90 days), as a fraction 0–1. Needs at least 180 bars, else no signal.
 * `ret24` = close / close 6 bars ago − 1. `fund24` = sum of funding settled in the last 6 bars. `fund_pct` = pct(fund24).
 * `near_hi` = close ≥ 0.97 × highest high of the last 120 bars (20 days, current bar included).
-* **24h version**: pct(ls) > 0.90 AND ret24 > 0 AND fund_pct < 0.70 AND NOT near_hi → short, hold 6 bars.
+* **24h version**: pct(ls) > 0.90 AND ret24 > 0 AND fund_pct < 0.90 AND NOT near_hi → short, hold 6 bars.
+  (Was 0.70 in this spec until 2026-10-01 — a stale line left behind when the plateau step moved the cut to 0.90.
+  `collectors/signals.py` already used 0.90; anything built from the old spec line would have implemented the worse rule:
+  191 trades and +46%/yr instead of 272 and +73%/yr.)
 * **72h version**: 24h version AND pct(top) > 0.70 → short, hold 18 bars.
 * **Pause**: no new entries while BTC close / BTC close 180 bars ago − 1 > 0.15.
 * **Entry**: market or marketable limit at the signal close. One open position per coin. Max 5 open at once; skip new signals when full.
