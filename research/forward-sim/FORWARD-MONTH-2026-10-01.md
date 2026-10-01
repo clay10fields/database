@@ -68,3 +68,33 @@ decaying and the projection was optimistic.
 * `code/forward_month.py` — self-validates against the committed book numbers, then simulates (empirical + bootstrap)
 * `code/forward_month_chart.py` — the distribution chart
 * `results/forward_month.csv`, `results/forward_month.png`
+
+
+## $5,000 traded over one month — the dollar version (book D)
+`code/forward_month_paths.py`, `results/forward_month_paths.png`. 20,000 resampled 30-day months, each
+starting at exactly $5,000:
+
+| outcome | ending balance | month return |
+|---|---:|---:|
+| worst 1% | $4,655 | −6.9% |
+| 5th pct (bad) | $4,797 | −4.1% |
+| 25th pct | $4,992 | −0.2% |
+| **median** | **$5,174** | **+3.5%** |
+| 75th pct | $5,459 | +9.2% |
+| 95th pct (good) | $6,062 | +21.2% |
+| best 1% | $6,919 | +38.4% |
+| mean | $5,277 | +5.5% |
+
+- **P(end below $5,000): 26%** — about one month in four you finish down.
+- **P(end below $4,500): 0%** — losing more than ~10% in a single month effectively never happens in the
+  resample (the true tail is larger than this — see caveat 3 above; one bad month can exceed the worst 5-day
+  block the history held).
+- **P(end above $6,000): 6%** — the +20%+ months are real but rare.
+
+A real median month traded out from $5,000 (2023-09-10 → 2023-10-10): $5,000 → $5,121 (+2.4%), worst dip
+within the month −1.3%. That is what a *typical* month feels like — quiet, a little green, nothing dramatic.
+The excitement is all in the 6% right tail.
+
+Takeaway in dollars: on $5,000, a normal month ends somewhere between about $4,800 and $5,460 (the middle
+half), most likely near $5,170. Plan for that, treat a sub-$5,000 month as expected not alarming, and do not
+bank on the $6,000+ months.
