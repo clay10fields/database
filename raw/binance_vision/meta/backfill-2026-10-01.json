@@ -1,166 +1,166 @@
 {
  "ZECUSDT": {
   "counts": {
-   "klines_4h:http": 2,
-   "klines_4h:ok": 79,
-   "fundingRate:http": 2,
-   "fundingRate:ok": 79,
-   "metrics:ok": 1763,
-   "metrics:http": 2
+   "klines_4h:http": 3,
+   "klines_4h:have": 79,
+   "fundingRate:http": 3,
+   "fundingRate:have": 79,
+   "metrics:have": 1763,
+   "metrics:http": 3
   },
   "errors": []
  },
  "NEARUSDT": {
   "counts": {
-   "klines_4h:http": 10,
-   "klines_4h:ok": 71,
-   "fundingRate:http": 10,
-   "fundingRate:ok": 71,
-   "metrics:ok": 1763,
-   "metrics:http": 2
+   "klines_4h:http": 11,
+   "klines_4h:have": 71,
+   "fundingRate:http": 11,
+   "fundingRate:have": 71,
+   "metrics:have": 1763,
+   "metrics:http": 3
   },
   "errors": []
  },
  "SUIUSDT": {
   "counts": {
-   "klines_4h:http": 41,
-   "klines_4h:ok": 40,
-   "fundingRate:http": 41,
-   "fundingRate:ok": 40,
-   "metrics:http": 4,
-   "metrics:ok": 1245
+   "klines_4h:http": 42,
+   "klines_4h:have": 40,
+   "fundingRate:http": 42,
+   "fundingRate:have": 40,
+   "metrics:http": 5,
+   "metrics:have": 1245
   },
   "errors": []
  },
  "HYPEUSDT": {
   "counts": {
-   "klines_4h:http": 65,
-   "klines_4h:ok": 16,
-   "fundingRate:http": 65,
-   "fundingRate:ok": 16,
-   "metrics:http": 30,
-   "metrics:ok": 488
+   "klines_4h:http": 66,
+   "klines_4h:have": 16,
+   "fundingRate:http": 66,
+   "fundingRate:have": 16,
+   "metrics:http": 31,
+   "metrics:have": 488
   },
   "errors": []
  },
  "UNIUSDT": {
   "counts": {
-   "klines_4h:http": 9,
-   "klines_4h:ok": 72,
-   "fundingRate:http": 9,
-   "fundingRate:ok": 72,
-   "metrics:ok": 1764,
-   "metrics:http": 1
+   "klines_4h:http": 10,
+   "klines_4h:have": 72,
+   "fundingRate:http": 10,
+   "fundingRate:have": 72,
+   "metrics:have": 1764,
+   "metrics:http": 2
   },
   "errors": []
  },
  "WLDUSDT": {
   "counts": {
-   "klines_4h:http": 43,
-   "klines_4h:ok": 38,
-   "fundingRate:http": 43,
-   "fundingRate:ok": 38,
-   "metrics:http": 25,
-   "metrics:ok": 1163
+   "klines_4h:http": 44,
+   "klines_4h:have": 38,
+   "fundingRate:http": 44,
+   "fundingRate:have": 38,
+   "metrics:http": 26,
+   "metrics:have": 1163
   },
   "errors": []
  },
  "1000PEPEUSDT": {
   "counts": {
-   "klines_4h:http": 41,
-   "klines_4h:ok": 40,
-   "fundingRate:http": 41,
-   "fundingRate:ok": 40,
-   "metrics:http": 5,
-   "metrics:ok": 1244
+   "klines_4h:http": 42,
+   "klines_4h:have": 40,
+   "fundingRate:http": 42,
+   "fundingRate:have": 40,
+   "metrics:http": 6,
+   "metrics:have": 1244
   },
   "errors": []
  },
  "PENGUUSDT": {
   "counts": {
-   "klines_4h:http": 60,
-   "klines_4h:ok": 21,
-   "fundingRate:http": 60,
-   "fundingRate:ok": 21,
-   "metrics:http": 17,
-   "metrics:ok": 652
+   "klines_4h:http": 61,
+   "klines_4h:have": 21,
+   "fundingRate:http": 61,
+   "fundingRate:have": 21,
+   "metrics:http": 18,
+   "metrics:have": 652
   },
   "errors": []
  },
  "CRVUSDT": {
   "counts": {
-   "klines_4h:http": 9,
-   "klines_4h:ok": 72,
-   "fundingRate:http": 9,
-   "fundingRate:ok": 72,
-   "metrics:ok": 1764,
-   "metrics:http": 1
+   "klines_4h:http": 10,
+   "klines_4h:have": 72,
+   "fundingRate:http": 10,
+   "fundingRate:have": 72,
+   "metrics:have": 1764,
+   "metrics:http": 2
   },
   "errors": []
  },
  "ALGOUSDT": {
   "counts": {
-   "klines_4h:http": 6,
-   "klines_4h:ok": 75,
-   "fundingRate:http": 6,
-   "fundingRate:ok": 75,
-   "metrics:ok": 1764,
-   "metrics:http": 1
+   "klines_4h:http": 7,
+   "klines_4h:have": 75,
+   "fundingRate:http": 7,
+   "fundingRate:have": 75,
+   "metrics:have": 1764,
+   "metrics:http": 2
   },
   "errors": []
  },
  "TRXUSDT": {
   "counts": {
-   "klines_4h:ok": 80,
-   "klines_4h:http": 1,
-   "fundingRate:ok": 80,
-   "fundingRate:http": 1,
-   "metrics:ok": 1764,
-   "metrics:http": 1
+   "klines_4h:have": 80,
+   "klines_4h:http": 2,
+   "fundingRate:have": 80,
+   "fundingRate:http": 2,
+   "metrics:have": 1764,
+   "metrics:http": 2
   },
   "errors": []
  },
  "RENDERUSDT": {
   "counts": {
-   "klines_4h:http": 55,
-   "klines_4h:ok": 26,
-   "fundingRate:http": 55,
-   "fundingRate:ok": 26,
-   "metrics:http": 26,
-   "metrics:ok": 796
+   "klines_4h:http": 56,
+   "klines_4h:have": 26,
+   "fundingRate:http": 56,
+   "fundingRate:have": 26,
+   "metrics:http": 27,
+   "metrics:have": 796
   },
   "errors": []
  },
  "RNDRUSDT": {
   "counts": {
-   "klines_4h:http": 63,
-   "klines_4h:ok": 18,
-   "fundingRate:http": 62,
-   "fundingRate:ok": 19,
-   "metrics:http": 701,
-   "metrics:ok": 637
+   "klines_4h:http": 64,
+   "klines_4h:have": 18,
+   "fundingRate:http": 63,
+   "fundingRate:have": 19,
+   "metrics:http": 702,
+   "metrics:have": 637
   },
   "errors": []
  },
  "BNBUSDT": {
   "counts": {
-   "klines_4h:http": 2,
-   "klines_4h:ok": 79,
-   "fundingRate:http": 2,
-   "fundingRate:ok": 79,
-   "metrics:ok": 1764,
-   "metrics:http": 1
+   "klines_4h:http": 3,
+   "klines_4h:have": 79,
+   "fundingRate:http": 3,
+   "fundingRate:have": 79,
+   "metrics:have": 1764,
+   "metrics:http": 2
   },
   "errors": []
  },
  "VVVUSDT": {
   "counts": {
-   "klines_4h:http": 61,
-   "klines_4h:ok": 20,
-   "fundingRate:http": 61,
-   "fundingRate:ok": 20,
-   "metrics:http": 29,
-   "metrics:ok": 609
+   "klines_4h:http": 62,
+   "klines_4h:have": 20,
+   "fundingRate:http": 62,
+   "fundingRate:have": 20,
+   "metrics:http": 30,
+   "metrics:have": 609
   },
   "errors": []
  }
