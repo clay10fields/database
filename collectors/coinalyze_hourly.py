@@ -144,7 +144,7 @@ def main() -> int:
         n = append_rows(a.out, table, cols, rows, a.dry_run)
         meta["tables"][table] = {"ok": True, "symbols": len(data), "rows_fetched": len(rows), "rows_appended": n, "secs": round(time.time() - t0, 1)}
         print(f"{table}: {len(data)} symbols, {len(rows)} rows fetched, {n} appended")
-        time.sleep(30)
+        time.sleep(45)  # 7 tables x 16 symbol-calls; 45s keeps us under 40/min even after a retry
     if not a.dry_run:
         md = os.path.join(a.out, "meta")
         os.makedirs(md, exist_ok=True)

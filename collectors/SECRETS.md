@@ -1,25 +1,14 @@
-# GitHub Actions secrets for the hourly recorder
+# GitHub Actions secrets
 
-Repo → Settings → Secrets and variables → Actions → New repository secret.
+Exactly one secret exists for this repo:
 
-Do not put any of these in a file in the repo.
+- `COINALYZE_API_KEY` — the free, read-only Coinalyze data key.
 
-Required for Coinalyze (already in use):
+That is the whole list. Per `CLAUDE.md`: read-only public endpoints, no exchange keys of any
+kind, ever. Kraken, Coinbase, Binance US and Kalshi collectors use only unauthenticated public
+endpoints; if an endpoint requires a key it is not recorded, and the failure is logged in meta.
+Do not add KRAKEN_*, COINBASE_*, BINANCE_*, or KALSHI_* secrets. (A list of those was here
+briefly on 2026-10-01 and was removed; the Kalshi signing code was removed with it.)
 
-- COINALYZE_API_KEY
-
-Optional. Public market data still records without them.
-
-- KRAKEN_API_KEY
-- KRAKEN_API_SECRET
-- COINBASE_API_KEY
-- COINBASE_API_SECRET
-- BINANCE_US_API_KEY
-- BINANCE_US_API_SECRET
-
-Needed if Kalshi estimate calls start returning 401:
-
-- KALSHI_KEY_ID
-- KALSHI_PRIVATE_KEY   (full PEM, including BEGIN/END lines)
-
-After saving a secret, run Actions → record-hourly → Run workflow.
+Repo → Settings → Secrets and variables → Actions. After changing a secret: Actions →
+record-hourly → Run workflow.

@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """Record Kalshi perp (margin) public-ish market state.
 
-Funding estimate and market ticker. If KALSHI_KEY_ID + KALSHI_PRIVATE_KEY are set,
-requests are signed. If not, the script still tries the unauthenticated estimate
-endpoint and records whatever comes back.
+Funding estimate and market ticker from the UNAUTHENTICATED public endpoints only. No
+keys, no signing (removed 2026-10-01 per CLAUDE.md). A 401 is recorded as a failure in meta.
 
     python3 collectors/kalshi_hourly.py --out raw/kalshi_1h
 """
@@ -28,33 +27,11 @@ COLS = ["t", "ticker", "funding_rate", "mark_price", "next_funding", "premium_in
 
 
 def signed_headers(method: str, path: str) -> dict:
-    key_id = os.environ.get("KALSHI_KEY_ID", "")
-    pem = os.environ.get("KALSHI_PRIVATE_KEY", "")
-    if not key_id or not pem:
-        return {}
-    try:
-        from cryptography.hazmat.primitives import hashes, serialization
-        from cryptography.hazmat.primitives.asymmetric import padding, ed25519
-    except Exception:
-        return {"KALSHI-ACCESS-KEY": key_id}
-    ts = str(int(time.time() * 1000))
-    msg = (ts + method + path).encode()
-    pem_bytes = pem.replace("\\n", "\n").encode()
-    try:
-        key = serialization.load_pem_private_key(pem_bytes, password=None)
-    except Exception:
-        return {"KALSHI-ACCESS-KEY": key_id}
-    if hasattr(key, "sign") and key.__class__.__name__.startswith("Ed25519"):
-        import base64
-        sig = base64.b64encode(key.sign(msg)).decode()
-    else:
-        import base64
-        sig = base64.b64encode(key.sign(msg, padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.DIGEST_LENGTH), hashes.SHA256())).decode()
-    return {
-        "KALSHI-ACCESS-KEY": key_id,
-        "KALSHI-ACCESS-SIGNATURE": sig,
-        "KALSHI-ACCESS-TIMESTAMP": ts,
-    }
+    """Signing removed 2026-10-01. Standing rule (CLAUDE.md): read-only public endpoints, no
+    exchange keys of any kind. A Kalshi API key can place orders, so it does not belong anywhere
+    near this repo, even as an optional secret. If the public estimate endpoint 401s, the row is
+    recorded as a failure in meta, not fetched with a key."""
+    return {}
 
 
 def get(path: str, query: str = "") -> dict:
@@ -100,10 +77,10 @@ def main() -> int:
             "run": datetime.now(timezone.utc).isoformat(),
             "ok": bool(rows),
             "rows": len(rows),
-            "signed": bool(os.environ.get("KALSHI_KEY_ID")),
+            "signed": False,
             "errors": errors[:8],
         }) + "\n")
-    print(f"kalshi: {len(rows)} estimates, {len(errors)} errors, signed={bool(os.environ.get('KALSHI_KEY_ID'))}")
+    print(f"kalshi: {len(rows)} estimates, {len(errors)} errors")
     return 0 if rows else 1
 
 
