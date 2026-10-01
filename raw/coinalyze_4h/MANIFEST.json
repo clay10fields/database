@@ -1,0 +1,1451 @@
+[
+ {
+  "file": "AAVE_perp_close_1.csv",
+  "coin": "AAVE",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1761926400,
+  "t1": 1768320000,
+  "cols": 2
+ },
+ {
+  "file": "AAVE_perp_close_2.csv",
+  "coin": "AAVE",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1768320000,
+  "t1": 1774713600,
+  "cols": 2
+ },
+ {
+  "file": "AAVE_perp_close_3.csv",
+  "coin": "AAVE",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1774713600,
+  "t1": 1781107200,
+  "cols": 2
+ },
+ {
+  "file": "AAVE_perp_close_4.csv",
+  "coin": "AAVE",
+  "kind": "perp_close",
+  "rows": 444,
+  "t0": 1781107200,
+  "t1": 1787486400,
+  "cols": 2
+ },
+ {
+  "file": "AAVE_perp_close_5.csv",
+  "coin": "AAVE",
+  "kind": "perp_close",
+  "rows": 230,
+  "t0": 1787500800,
+  "t1": 1790798400,
+  "cols": 2
+ },
+ {
+  "file": "AAVE_perp_oi_1.csv",
+  "coin": "AAVE",
+  "kind": "perp_oi",
+  "rows": 652,
+  "t0": 1761926400,
+  "t1": 1771300800,
+  "cols": 2
+ },
+ {
+  "file": "AAVE_perp_oi_2.csv",
+  "coin": "AAVE",
+  "kind": "perp_oi",
+  "rows": 654,
+  "t0": 1771300800,
+  "t1": 1780704000,
+  "cols": 2
+ },
+ {
+  "file": "AAVE_perp_oi_3.csv",
+  "coin": "AAVE",
+  "kind": "perp_oi",
+  "rows": 701,
+  "t0": 1780704000,
+  "t1": 1790784000,
+  "cols": 2
+ },
+ {
+  "file": "AAVE_spot_vol_takerbuy_1.csv",
+  "coin": "AAVE",
+  "kind": "spot_vol_takerbuy",
+  "rows": 445,
+  "t0": 1761926400,
+  "t1": 1768320000,
+  "cols": 3
+ },
+ {
+  "file": "AAVE_spot_vol_takerbuy_2.csv",
+  "coin": "AAVE",
+  "kind": "spot_vol_takerbuy",
+  "rows": 445,
+  "t0": 1768320000,
+  "t1": 1774713600,
+  "cols": 3
+ },
+ {
+  "file": "AAVE_spot_vol_takerbuy_3.csv",
+  "coin": "AAVE",
+  "kind": "spot_vol_takerbuy",
+  "rows": 445,
+  "t0": 1774713600,
+  "t1": 1781107200,
+  "cols": 3
+ },
+ {
+  "file": "AAVE_spot_vol_takerbuy_4.csv",
+  "coin": "AAVE",
+  "kind": "spot_vol_takerbuy",
+  "rows": 444,
+  "t0": 1781107200,
+  "t1": 1787486400,
+  "cols": 3
+ },
+ {
+  "file": "AAVE_spot_vol_takerbuy_5.csv",
+  "coin": "AAVE",
+  "kind": "spot_vol_takerbuy",
+  "rows": 230,
+  "t0": 1787500800,
+  "t1": 1790798400,
+  "cols": 3
+ },
+ {
+  "file": "ADA_perp_close_1.csv",
+  "coin": "ADA",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1761926400,
+  "t1": 1768320000,
+  "cols": 2
+ },
+ {
+  "file": "ADA_perp_close_2.csv",
+  "coin": "ADA",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1768320000,
+  "t1": 1774713600,
+  "cols": 2
+ },
+ {
+  "file": "ADA_perp_close_3.csv",
+  "coin": "ADA",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1774713600,
+  "t1": 1781107200,
+  "cols": 2
+ },
+ {
+  "file": "ADA_perp_close_4.csv",
+  "coin": "ADA",
+  "kind": "perp_close",
+  "rows": 444,
+  "t0": 1781107200,
+  "t1": 1787486400,
+  "cols": 2
+ },
+ {
+  "file": "ADA_perp_close_5.csv",
+  "coin": "ADA",
+  "kind": "perp_close",
+  "rows": 229,
+  "t0": 1787500800,
+  "t1": 1790784000,
+  "cols": 2
+ },
+ {
+  "file": "ADA_perp_oi_1.csv",
+  "coin": "ADA",
+  "kind": "perp_oi",
+  "rows": 652,
+  "t0": 1761926400,
+  "t1": 1771300800,
+  "cols": 2
+ },
+ {
+  "file": "ADA_perp_oi_2.csv",
+  "coin": "ADA",
+  "kind": "perp_oi",
+  "rows": 654,
+  "t0": 1771300800,
+  "t1": 1780704000,
+  "cols": 2
+ },
+ {
+  "file": "ADA_perp_oi_3.csv",
+  "coin": "ADA",
+  "kind": "perp_oi",
+  "rows": 701,
+  "t0": 1780704000,
+  "t1": 1790784000,
+  "cols": 2
+ },
+ {
+  "file": "ADA_spot_vol_takerbuy_1.csv",
+  "coin": "ADA",
+  "kind": "spot_vol_takerbuy",
+  "rows": 444,
+  "t0": 1761926400,
+  "t1": 1768305600,
+  "cols": 3
+ },
+ {
+  "file": "ADA_spot_vol_takerbuy_2.csv",
+  "coin": "ADA",
+  "kind": "spot_vol_takerbuy",
+  "rows": 442,
+  "t0": 1768320000,
+  "t1": 1774684800,
+  "cols": 3
+ },
+ {
+  "file": "ADA_spot_vol_takerbuy_3.csv",
+  "coin": "ADA",
+  "kind": "spot_vol_takerbuy",
+  "rows": 445,
+  "t0": 1774713600,
+  "t1": 1781107200,
+  "cols": 3
+ },
+ {
+  "file": "ADA_spot_vol_takerbuy_4.csv",
+  "coin": "ADA",
+  "kind": "spot_vol_takerbuy",
+  "rows": 419,
+  "t0": 1781107200,
+  "t1": 1787126400,
+  "cols": 3
+ },
+ {
+  "file": "ADA_spot_vol_takerbuy_5.csv",
+  "coin": "ADA",
+  "kind": "spot_vol_takerbuy",
+  "rows": 255,
+  "t0": 1787140800,
+  "t1": 1790798400,
+  "cols": 3
+ },
+ {
+  "file": "AVAX_perp_close_1.csv",
+  "coin": "AVAX",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1761926400,
+  "t1": 1768320000,
+  "cols": 2
+ },
+ {
+  "file": "AVAX_perp_close_2.csv",
+  "coin": "AVAX",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1768320000,
+  "t1": 1774713600,
+  "cols": 2
+ },
+ {
+  "file": "AVAX_perp_close_3.csv",
+  "coin": "AVAX",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1774713600,
+  "t1": 1781107200,
+  "cols": 2
+ },
+ {
+  "file": "AVAX_perp_close_4.csv",
+  "coin": "AVAX",
+  "kind": "perp_close",
+  "rows": 444,
+  "t0": 1781107200,
+  "t1": 1787486400,
+  "cols": 2
+ },
+ {
+  "file": "AVAX_perp_close_5.csv",
+  "coin": "AVAX",
+  "kind": "perp_close",
+  "rows": 229,
+  "t0": 1787500800,
+  "t1": 1790784000,
+  "cols": 2
+ },
+ {
+  "file": "AVAX_perp_oi_1.csv",
+  "coin": "AVAX",
+  "kind": "perp_oi",
+  "rows": 652,
+  "t0": 1761926400,
+  "t1": 1771300800,
+  "cols": 2
+ },
+ {
+  "file": "AVAX_perp_oi_2.csv",
+  "coin": "AVAX",
+  "kind": "perp_oi",
+  "rows": 654,
+  "t0": 1771300800,
+  "t1": 1780704000,
+  "cols": 2
+ },
+ {
+  "file": "AVAX_perp_oi_3.csv",
+  "coin": "AVAX",
+  "kind": "perp_oi",
+  "rows": 701,
+  "t0": 1780704000,
+  "t1": 1790784000,
+  "cols": 2
+ },
+ {
+  "file": "BCH_perp_close_1.csv",
+  "coin": "BCH",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1761926400,
+  "t1": 1768320000,
+  "cols": 2
+ },
+ {
+  "file": "BCH_perp_close_2.csv",
+  "coin": "BCH",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1768320000,
+  "t1": 1774713600,
+  "cols": 2
+ },
+ {
+  "file": "BCH_perp_close_3.csv",
+  "coin": "BCH",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1774713600,
+  "t1": 1781107200,
+  "cols": 2
+ },
+ {
+  "file": "BCH_perp_close_4.csv",
+  "coin": "BCH",
+  "kind": "perp_close",
+  "rows": 444,
+  "t0": 1781107200,
+  "t1": 1787486400,
+  "cols": 2
+ },
+ {
+  "file": "BCH_perp_close_5.csv",
+  "coin": "BCH",
+  "kind": "perp_close",
+  "rows": 230,
+  "t0": 1787500800,
+  "t1": 1790798400,
+  "cols": 2
+ },
+ {
+  "file": "BCH_perp_oi_1.csv",
+  "coin": "BCH",
+  "kind": "perp_oi",
+  "rows": 652,
+  "t0": 1761926400,
+  "t1": 1771300800,
+  "cols": 2
+ },
+ {
+  "file": "BCH_perp_oi_2.csv",
+  "coin": "BCH",
+  "kind": "perp_oi",
+  "rows": 654,
+  "t0": 1771300800,
+  "t1": 1780704000,
+  "cols": 2
+ },
+ {
+  "file": "BCH_perp_oi_3.csv",
+  "coin": "BCH",
+  "kind": "perp_oi",
+  "rows": 701,
+  "t0": 1780704000,
+  "t1": 1790784000,
+  "cols": 2
+ },
+ {
+  "file": "BCH_spot_vol_takerbuy_1.csv",
+  "coin": "BCH",
+  "kind": "spot_vol_takerbuy",
+  "rows": 445,
+  "t0": 1761926400,
+  "t1": 1768320000,
+  "cols": 3
+ },
+ {
+  "file": "BCH_spot_vol_takerbuy_2.csv",
+  "coin": "BCH",
+  "kind": "spot_vol_takerbuy",
+  "rows": 445,
+  "t0": 1768320000,
+  "t1": 1774713600,
+  "cols": 3
+ },
+ {
+  "file": "BCH_spot_vol_takerbuy_3.csv",
+  "coin": "BCH",
+  "kind": "spot_vol_takerbuy",
+  "rows": 445,
+  "t0": 1774713600,
+  "t1": 1781107200,
+  "cols": 3
+ },
+ {
+  "file": "BCH_spot_vol_takerbuy_4.csv",
+  "coin": "BCH",
+  "kind": "spot_vol_takerbuy",
+  "rows": 444,
+  "t0": 1781107200,
+  "t1": 1787486400,
+  "cols": 3
+ },
+ {
+  "file": "BCH_spot_vol_takerbuy_5.csv",
+  "coin": "BCH",
+  "kind": "spot_vol_takerbuy",
+  "rows": 230,
+  "t0": 1787500800,
+  "t1": 1790798400,
+  "cols": 4
+ },
+ {
+  "file": "BTC_perp_close_1.csv",
+  "coin": "BTC",
+  "kind": "perp_close",
+  "rows": 453,
+  "t0": 1761926400,
+  "t1": 1768435200,
+  "cols": 2
+ },
+ {
+  "file": "BTC_perp_close_2.csv",
+  "coin": "BTC",
+  "kind": "perp_close",
+  "rows": 453,
+  "t0": 1768449600,
+  "t1": 1774958400,
+  "cols": 2
+ },
+ {
+  "file": "BTC_perp_close_3.csv",
+  "coin": "BTC",
+  "kind": "perp_close",
+  "rows": 453,
+  "t0": 1774972800,
+  "t1": 1781481600,
+  "cols": 2
+ },
+ {
+  "file": "BTC_perp_close_4.csv",
+  "coin": "BTC",
+  "kind": "perp_close",
+  "rows": 452,
+  "t0": 1781496000,
+  "t1": 1788004800,
+  "cols": 2
+ },
+ {
+  "file": "BTC_perp_close_5.csv",
+  "coin": "BTC",
+  "kind": "perp_close",
+  "rows": 195,
+  "t0": 1787990400,
+  "t1": 1790784000,
+  "cols": 2
+ },
+ {
+  "file": "BTC_perp_oi_1.csv",
+  "coin": "BTC",
+  "kind": "perp_oi",
+  "rows": 651,
+  "t0": 1761926400,
+  "t1": 1771286400,
+  "cols": 2
+ },
+ {
+  "file": "BTC_perp_oi_2.csv",
+  "coin": "BTC",
+  "kind": "perp_oi",
+  "rows": 653,
+  "t0": 1771300800,
+  "t1": 1780689600,
+  "cols": 2
+ },
+ {
+  "file": "BTC_perp_oi_3.csv",
+  "coin": "BTC",
+  "kind": "perp_oi",
+  "rows": 701,
+  "t0": 1780704000,
+  "t1": 1790784000,
+  "cols": 2
+ },
+ {
+  "file": "DOGE_perp_close_1.csv",
+  "coin": "DOGE",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1761926400,
+  "t1": 1768320000,
+  "cols": 2
+ },
+ {
+  "file": "DOGE_perp_close_2.csv",
+  "coin": "DOGE",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1768320000,
+  "t1": 1774713600,
+  "cols": 2
+ },
+ {
+  "file": "DOGE_perp_close_3.csv",
+  "coin": "DOGE",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1774713600,
+  "t1": 1781107200,
+  "cols": 2
+ },
+ {
+  "file": "DOGE_perp_close_4.csv",
+  "coin": "DOGE",
+  "kind": "perp_close",
+  "rows": 444,
+  "t0": 1781107200,
+  "t1": 1787486400,
+  "cols": 2
+ },
+ {
+  "file": "DOGE_perp_close_5.csv",
+  "coin": "DOGE",
+  "kind": "perp_close",
+  "rows": 229,
+  "t0": 1787500800,
+  "t1": 1790784000,
+  "cols": 2
+ },
+ {
+  "file": "DOGE_perp_oi_1.csv",
+  "coin": "DOGE",
+  "kind": "perp_oi",
+  "rows": 652,
+  "t0": 1761926400,
+  "t1": 1771300800,
+  "cols": 2
+ },
+ {
+  "file": "DOGE_perp_oi_2.csv",
+  "coin": "DOGE",
+  "kind": "perp_oi",
+  "rows": 654,
+  "t0": 1771300800,
+  "t1": 1780704000,
+  "cols": 2
+ },
+ {
+  "file": "DOGE_perp_oi_3.csv",
+  "coin": "DOGE",
+  "kind": "perp_oi",
+  "rows": 701,
+  "t0": 1780704000,
+  "t1": 1790784000,
+  "cols": 2
+ },
+ {
+  "file": "DOGE_spot_vol_takerbuy_1.csv",
+  "coin": "DOGE",
+  "kind": "spot_vol_takerbuy",
+  "rows": 439,
+  "t0": 1762012800,
+  "t1": 1768320000,
+  "cols": 3
+ },
+ {
+  "file": "DOGE_spot_vol_takerbuy_2.csv",
+  "coin": "DOGE",
+  "kind": "spot_vol_takerbuy",
+  "rows": 445,
+  "t0": 1768320000,
+  "t1": 1774713600,
+  "cols": 3
+ },
+ {
+  "file": "DOGE_spot_vol_takerbuy_3.csv",
+  "coin": "DOGE",
+  "kind": "spot_vol_takerbuy",
+  "rows": 445,
+  "t0": 1774713600,
+  "t1": 1781107200,
+  "cols": 3
+ },
+ {
+  "file": "DOGE_spot_vol_takerbuy_4.csv",
+  "coin": "DOGE",
+  "kind": "spot_vol_takerbuy",
+  "rows": 444,
+  "t0": 1781107200,
+  "t1": 1787486400,
+  "cols": 3
+ },
+ {
+  "file": "DOGE_spot_vol_takerbuy_5.csv",
+  "coin": "DOGE",
+  "kind": "spot_vol_takerbuy",
+  "rows": 230,
+  "t0": 1787500800,
+  "t1": 1790798400,
+  "cols": 3
+ },
+ {
+  "file": "DOT_perp_close_1.csv",
+  "coin": "DOT",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1761926400,
+  "t1": 1768320000,
+  "cols": 2
+ },
+ {
+  "file": "DOT_perp_close_2.csv",
+  "coin": "DOT",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1768320000,
+  "t1": 1774713600,
+  "cols": 2
+ },
+ {
+  "file": "DOT_perp_close_3.csv",
+  "coin": "DOT",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1774713600,
+  "t1": 1781107200,
+  "cols": 2
+ },
+ {
+  "file": "DOT_perp_close_4.csv",
+  "coin": "DOT",
+  "kind": "perp_close",
+  "rows": 444,
+  "t0": 1781107200,
+  "t1": 1787486400,
+  "cols": 2
+ },
+ {
+  "file": "DOT_perp_close_5.csv",
+  "coin": "DOT",
+  "kind": "perp_close",
+  "rows": 230,
+  "t0": 1787500800,
+  "t1": 1790798400,
+  "cols": 2
+ },
+ {
+  "file": "DOT_perp_oi_1.csv",
+  "coin": "DOT",
+  "kind": "perp_oi",
+  "rows": 652,
+  "t0": 1761926400,
+  "t1": 1771300800,
+  "cols": 2
+ },
+ {
+  "file": "DOT_perp_oi_2.csv",
+  "coin": "DOT",
+  "kind": "perp_oi",
+  "rows": 654,
+  "t0": 1771300800,
+  "t1": 1780704000,
+  "cols": 2
+ },
+ {
+  "file": "DOT_perp_oi_3.csv",
+  "coin": "DOT",
+  "kind": "perp_oi",
+  "rows": 701,
+  "t0": 1780704000,
+  "t1": 1790784000,
+  "cols": 2
+ },
+ {
+  "file": "DOT_spot_vol_takerbuy_1.csv",
+  "coin": "DOT",
+  "kind": "spot_vol_takerbuy",
+  "rows": 445,
+  "t0": 1761926400,
+  "t1": 1768320000,
+  "cols": 3
+ },
+ {
+  "file": "DOT_spot_vol_takerbuy_2.csv",
+  "coin": "DOT",
+  "kind": "spot_vol_takerbuy",
+  "rows": 445,
+  "t0": 1768320000,
+  "t1": 1774713600,
+  "cols": 3
+ },
+ {
+  "file": "DOT_spot_vol_takerbuy_3.csv",
+  "coin": "DOT",
+  "kind": "spot_vol_takerbuy",
+  "rows": 445,
+  "t0": 1774713600,
+  "t1": 1781107200,
+  "cols": 3
+ },
+ {
+  "file": "DOT_spot_vol_takerbuy_4.csv",
+  "coin": "DOT",
+  "kind": "spot_vol_takerbuy",
+  "rows": 444,
+  "t0": 1781107200,
+  "t1": 1787486400,
+  "cols": 3
+ },
+ {
+  "file": "DOT_spot_vol_takerbuy_5.csv",
+  "coin": "DOT",
+  "kind": "spot_vol_takerbuy",
+  "rows": 230,
+  "t0": 1787500800,
+  "t1": 1790798400,
+  "cols": 3
+ },
+ {
+  "file": "ETH_perp_oi_1.csv",
+  "coin": "ETH",
+  "kind": "perp_oi",
+  "rows": 651,
+  "t0": 1761926400,
+  "t1": 1771286400,
+  "cols": 2
+ },
+ {
+  "file": "ETH_perp_oi_2.csv",
+  "coin": "ETH",
+  "kind": "perp_oi",
+  "rows": 653,
+  "t0": 1771300800,
+  "t1": 1780689600,
+  "cols": 2
+ },
+ {
+  "file": "ETH_perp_oi_3.csv",
+  "coin": "ETH",
+  "kind": "perp_oi",
+  "rows": 196,
+  "t0": 1780704000,
+  "t1": 1783512000,
+  "cols": 2
+ },
+ {
+  "file": "ETH_perp_ohlc_1.csv",
+  "coin": "ETH",
+  "kind": "perp_ohlc",
+  "rows": 401,
+  "t0": 1761926400,
+  "t1": 1767686400,
+  "cols": 4
+ },
+ {
+  "file": "ETH_perp_ohlc_2.csv",
+  "coin": "ETH",
+  "kind": "perp_ohlc",
+  "rows": 403,
+  "t0": 1767700800,
+  "t1": 1773489600,
+  "cols": 4
+ },
+ {
+  "file": "ETH_perp_ohlc_3.csv",
+  "coin": "ETH",
+  "kind": "perp_ohlc",
+  "rows": 403,
+  "t0": 1773504000,
+  "t1": 1779292800,
+  "cols": 4
+ },
+ {
+  "file": "ETH_perp_ohlc_4.csv",
+  "coin": "ETH",
+  "kind": "perp_ohlc",
+  "rows": 293,
+  "t0": 1779307200,
+  "t1": 1783512000,
+  "cols": 4
+ },
+ {
+  "file": "ETH_spot_vol_takerbuy_1.csv",
+  "coin": "ETH",
+  "kind": "spot_vol_takerbuy",
+  "rows": 439,
+  "t0": 1762012800,
+  "t1": 1768320000,
+  "cols": 3
+ },
+ {
+  "file": "ETH_spot_vol_takerbuy_2.csv",
+  "coin": "ETH",
+  "kind": "spot_vol_takerbuy",
+  "rows": 443,
+  "t0": 1768320000,
+  "t1": 1774684800,
+  "cols": 3
+ },
+ {
+  "file": "ETH_spot_vol_takerbuy_3.csv",
+  "coin": "ETH",
+  "kind": "spot_vol_takerbuy",
+  "rows": 444,
+  "t0": 1774713600,
+  "t1": 1781092800,
+  "cols": 3
+ },
+ {
+  "file": "ETH_spot_vol_takerbuy_4.csv",
+  "coin": "ETH",
+  "kind": "spot_vol_takerbuy",
+  "rows": 444,
+  "t0": 1781107200,
+  "t1": 1787486400,
+  "cols": 3
+ },
+ {
+  "file": "ETH_spot_vol_takerbuy_5.csv",
+  "coin": "ETH",
+  "kind": "spot_vol_takerbuy",
+  "rows": 230,
+  "t0": 1787500800,
+  "t1": 1790798400,
+  "cols": 3
+ },
+ {
+  "file": "HBAR_perp_close_1.csv",
+  "coin": "HBAR",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1761926400,
+  "t1": 1768320000,
+  "cols": 2
+ },
+ {
+  "file": "HBAR_perp_close_2.csv",
+  "coin": "HBAR",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1768320000,
+  "t1": 1774713600,
+  "cols": 2
+ },
+ {
+  "file": "HBAR_perp_close_3.csv",
+  "coin": "HBAR",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1774713600,
+  "t1": 1781107200,
+  "cols": 2
+ },
+ {
+  "file": "HBAR_perp_close_4.csv",
+  "coin": "HBAR",
+  "kind": "perp_close",
+  "rows": 444,
+  "t0": 1781107200,
+  "t1": 1787486400,
+  "cols": 2
+ },
+ {
+  "file": "HBAR_perp_close_5.csv",
+  "coin": "HBAR",
+  "kind": "perp_close",
+  "rows": 229,
+  "t0": 1787500800,
+  "t1": 1790784000,
+  "cols": 2
+ },
+ {
+  "file": "HBAR_perp_oi_1.csv",
+  "coin": "HBAR",
+  "kind": "perp_oi",
+  "rows": 652,
+  "t0": 1761926400,
+  "t1": 1771300800,
+  "cols": 2
+ },
+ {
+  "file": "HBAR_perp_oi_2.csv",
+  "coin": "HBAR",
+  "kind": "perp_oi",
+  "rows": 654,
+  "t0": 1771300800,
+  "t1": 1780704000,
+  "cols": 2
+ },
+ {
+  "file": "HBAR_perp_oi_3.csv",
+  "coin": "HBAR",
+  "kind": "perp_oi",
+  "rows": 701,
+  "t0": 1780704000,
+  "t1": 1790784000,
+  "cols": 2
+ },
+ {
+  "file": "LINK_perp_close_1.csv",
+  "coin": "LINK",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1761926400,
+  "t1": 1768320000,
+  "cols": 2
+ },
+ {
+  "file": "LINK_perp_close_2.csv",
+  "coin": "LINK",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1768320000,
+  "t1": 1774713600,
+  "cols": 2
+ },
+ {
+  "file": "LINK_perp_close_3.csv",
+  "coin": "LINK",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1774713600,
+  "t1": 1781107200,
+  "cols": 2
+ },
+ {
+  "file": "LINK_perp_close_4.csv",
+  "coin": "LINK",
+  "kind": "perp_close",
+  "rows": 444,
+  "t0": 1781107200,
+  "t1": 1787486400,
+  "cols": 2
+ },
+ {
+  "file": "LINK_perp_close_5.csv",
+  "coin": "LINK",
+  "kind": "perp_close",
+  "rows": 229,
+  "t0": 1787500800,
+  "t1": 1790784000,
+  "cols": 2
+ },
+ {
+  "file": "LINK_perp_oi_1.csv",
+  "coin": "LINK",
+  "kind": "perp_oi",
+  "rows": 652,
+  "t0": 1761926400,
+  "t1": 1771300800,
+  "cols": 2
+ },
+ {
+  "file": "LINK_perp_oi_2.csv",
+  "coin": "LINK",
+  "kind": "perp_oi",
+  "rows": 654,
+  "t0": 1771300800,
+  "t1": 1780704000,
+  "cols": 2
+ },
+ {
+  "file": "LINK_perp_oi_3.csv",
+  "coin": "LINK",
+  "kind": "perp_oi",
+  "rows": 701,
+  "t0": 1780704000,
+  "t1": 1790784000,
+  "cols": 2
+ },
+ {
+  "file": "LTC_perp_close_1.csv",
+  "coin": "LTC",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1761926400,
+  "t1": 1768320000,
+  "cols": 2
+ },
+ {
+  "file": "LTC_perp_close_2.csv",
+  "coin": "LTC",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1768320000,
+  "t1": 1774713600,
+  "cols": 2
+ },
+ {
+  "file": "LTC_perp_close_3.csv",
+  "coin": "LTC",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1774713600,
+  "t1": 1781107200,
+  "cols": 2
+ },
+ {
+  "file": "LTC_perp_close_4.csv",
+  "coin": "LTC",
+  "kind": "perp_close",
+  "rows": 444,
+  "t0": 1781107200,
+  "t1": 1787486400,
+  "cols": 2
+ },
+ {
+  "file": "LTC_perp_close_5.csv",
+  "coin": "LTC",
+  "kind": "perp_close",
+  "rows": 229,
+  "t0": 1787500800,
+  "t1": 1790784000,
+  "cols": 2
+ },
+ {
+  "file": "LTC_perp_oi_1.csv",
+  "coin": "LTC",
+  "kind": "perp_oi",
+  "rows": 652,
+  "t0": 1761926400,
+  "t1": 1771300800,
+  "cols": 2
+ },
+ {
+  "file": "LTC_perp_oi_2.csv",
+  "coin": "LTC",
+  "kind": "perp_oi",
+  "rows": 654,
+  "t0": 1771300800,
+  "t1": 1780704000,
+  "cols": 2
+ },
+ {
+  "file": "LTC_perp_oi_3.csv",
+  "coin": "LTC",
+  "kind": "perp_oi",
+  "rows": 701,
+  "t0": 1780704000,
+  "t1": 1790784000,
+  "cols": 2
+ },
+ {
+  "file": "SHIB_perp_close_1.csv",
+  "coin": "SHIB",
+  "kind": "perp_close",
+  "rows": 444,
+  "t0": 1761926400,
+  "t1": 1768305600,
+  "cols": 2
+ },
+ {
+  "file": "SHIB_perp_close_2.csv",
+  "coin": "SHIB",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1768320000,
+  "t1": 1774713600,
+  "cols": 2
+ },
+ {
+  "file": "SHIB_perp_close_3.csv",
+  "coin": "SHIB",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1774713600,
+  "t1": 1781107200,
+  "cols": 2
+ },
+ {
+  "file": "SHIB_perp_close_4.csv",
+  "coin": "SHIB",
+  "kind": "perp_close",
+  "rows": 444,
+  "t0": 1781107200,
+  "t1": 1787486400,
+  "cols": 2
+ },
+ {
+  "file": "SHIB_perp_close_5.csv",
+  "coin": "SHIB",
+  "kind": "perp_close",
+  "rows": 230,
+  "t0": 1787500800,
+  "t1": 1790798400,
+  "cols": 2
+ },
+ {
+  "file": "SHIB_perp_oi_1.csv",
+  "coin": "SHIB",
+  "kind": "perp_oi",
+  "rows": 652,
+  "t0": 1761926400,
+  "t1": 1771300800,
+  "cols": 2
+ },
+ {
+  "file": "SHIB_perp_oi_2.csv",
+  "coin": "SHIB",
+  "kind": "perp_oi",
+  "rows": 654,
+  "t0": 1771300800,
+  "t1": 1780704000,
+  "cols": 2
+ },
+ {
+  "file": "SHIB_perp_oi_3.csv",
+  "coin": "SHIB",
+  "kind": "perp_oi",
+  "rows": 702,
+  "t0": 1780704000,
+  "t1": 1790798400,
+  "cols": 2
+ },
+ {
+  "file": "SOL_perp_oi_1.csv",
+  "coin": "SOL",
+  "kind": "perp_oi",
+  "rows": 651,
+  "t0": 1761926400,
+  "t1": 1771286400,
+  "cols": 2
+ },
+ {
+  "file": "SOL_perp_oi_2.csv",
+  "coin": "SOL",
+  "kind": "perp_oi",
+  "rows": 653,
+  "t0": 1771300800,
+  "t1": 1780689600,
+  "cols": 2
+ },
+ {
+  "file": "SOL_perp_oi_3.csv",
+  "coin": "SOL",
+  "kind": "perp_oi",
+  "rows": 196,
+  "t0": 1780704000,
+  "t1": 1783512000,
+  "cols": 2
+ },
+ {
+  "file": "SOL_perp_ohlc_1.csv",
+  "coin": "SOL",
+  "kind": "perp_ohlc",
+  "rows": 401,
+  "t0": 1761926400,
+  "t1": 1767686400,
+  "cols": 5
+ },
+ {
+  "file": "SOL_perp_ohlc_2.csv",
+  "coin": "SOL",
+  "kind": "perp_ohlc",
+  "rows": 403,
+  "t0": 1767700800,
+  "t1": 1773489600,
+  "cols": 5
+ },
+ {
+  "file": "SOL_perp_ohlc_3.csv",
+  "coin": "SOL",
+  "kind": "perp_ohlc",
+  "rows": 403,
+  "t0": 1773504000,
+  "t1": 1779292800,
+  "cols": 5
+ },
+ {
+  "file": "SOL_perp_ohlc_4.csv",
+  "coin": "SOL",
+  "kind": "perp_ohlc",
+  "rows": 293,
+  "t0": 1779307200,
+  "t1": 1783512000,
+  "cols": 5
+ },
+ {
+  "file": "XLM_perp_close_1.csv",
+  "coin": "XLM",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1761926400,
+  "t1": 1768320000,
+  "cols": 2
+ },
+ {
+  "file": "XLM_perp_close_2.csv",
+  "coin": "XLM",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1768320000,
+  "t1": 1774713600,
+  "cols": 2
+ },
+ {
+  "file": "XLM_perp_close_3.csv",
+  "coin": "XLM",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1774713600,
+  "t1": 1781107200,
+  "cols": 2
+ },
+ {
+  "file": "XLM_perp_close_4.csv",
+  "coin": "XLM",
+  "kind": "perp_close",
+  "rows": 444,
+  "t0": 1781107200,
+  "t1": 1787486400,
+  "cols": 2
+ },
+ {
+  "file": "XLM_perp_close_5.csv",
+  "coin": "XLM",
+  "kind": "perp_close",
+  "rows": 229,
+  "t0": 1787500800,
+  "t1": 1790784000,
+  "cols": 2
+ },
+ {
+  "file": "XLM_perp_oi_1.csv",
+  "coin": "XLM",
+  "kind": "perp_oi",
+  "rows": 652,
+  "t0": 1761926400,
+  "t1": 1771300800,
+  "cols": 2
+ },
+ {
+  "file": "XLM_perp_oi_2.csv",
+  "coin": "XLM",
+  "kind": "perp_oi",
+  "rows": 654,
+  "t0": 1771300800,
+  "t1": 1780704000,
+  "cols": 2
+ },
+ {
+  "file": "XLM_perp_oi_3.csv",
+  "coin": "XLM",
+  "kind": "perp_oi",
+  "rows": 701,
+  "t0": 1780704000,
+  "t1": 1790784000,
+  "cols": 2
+ },
+ {
+  "file": "XRP_perp_close_1.csv",
+  "coin": "XRP",
+  "kind": "perp_close",
+  "rows": 444,
+  "t0": 1761926400,
+  "t1": 1768305600,
+  "cols": 2
+ },
+ {
+  "file": "XRP_perp_close_2.csv",
+  "coin": "XRP",
+  "kind": "perp_close",
+  "rows": 444,
+  "t0": 1768320000,
+  "t1": 1774699200,
+  "cols": 2
+ },
+ {
+  "file": "XRP_perp_close_3.csv",
+  "coin": "XRP",
+  "kind": "perp_close",
+  "rows": 444,
+  "t0": 1774713600,
+  "t1": 1781092800,
+  "cols": 2
+ },
+ {
+  "file": "XRP_perp_close_4.csv",
+  "coin": "XRP",
+  "kind": "perp_close",
+  "rows": 444,
+  "t0": 1781107200,
+  "t1": 1787486400,
+  "cols": 2
+ },
+ {
+  "file": "XRP_perp_close_5.csv",
+  "coin": "XRP",
+  "kind": "perp_close",
+  "rows": 229,
+  "t0": 1787500800,
+  "t1": 1790784000,
+  "cols": 2
+ },
+ {
+  "file": "XRP_perp_oi_1.csv",
+  "coin": "XRP",
+  "kind": "perp_oi",
+  "rows": 651,
+  "t0": 1761926400,
+  "t1": 1771286400,
+  "cols": 2
+ },
+ {
+  "file": "XRP_perp_oi_2.csv",
+  "coin": "XRP",
+  "kind": "perp_oi",
+  "rows": 653,
+  "t0": 1771300800,
+  "t1": 1780689600,
+  "cols": 2
+ },
+ {
+  "file": "XRP_perp_oi_3.csv",
+  "coin": "XRP",
+  "kind": "perp_oi",
+  "rows": 701,
+  "t0": 1780704000,
+  "t1": 1790784000,
+  "cols": 2
+ },
+ {
+  "file": "XRP_spot_vol_takerbuy_1.csv",
+  "coin": "XRP",
+  "kind": "spot_vol_takerbuy",
+  "rows": 439,
+  "t0": 1762012800,
+  "t1": 1768320000,
+  "cols": 3
+ },
+ {
+  "file": "XRP_spot_vol_takerbuy_2.csv",
+  "coin": "XRP",
+  "kind": "spot_vol_takerbuy",
+  "rows": 443,
+  "t0": 1768320000,
+  "t1": 1774684800,
+  "cols": 3
+ },
+ {
+  "file": "XRP_spot_vol_takerbuy_3.csv",
+  "coin": "XRP",
+  "kind": "spot_vol_takerbuy",
+  "rows": 443,
+  "t0": 1774713600,
+  "t1": 1781078400,
+  "cols": 3
+ },
+ {
+  "file": "XRP_spot_vol_takerbuy_4.csv",
+  "coin": "XRP",
+  "kind": "spot_vol_takerbuy",
+  "rows": 442,
+  "t0": 1781092800,
+  "t1": 1787443200,
+  "cols": 3
+ },
+ {
+  "file": "XRP_spot_vol_takerbuy_5.csv",
+  "coin": "XRP",
+  "kind": "spot_vol_takerbuy",
+  "rows": 230,
+  "t0": 1787500800,
+  "t1": 1790798400,
+  "cols": 3
+ },
+ {
+  "file": "XTZ_perp_close_1.csv",
+  "coin": "XTZ",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1761926400,
+  "t1": 1768320000,
+  "cols": 2
+ },
+ {
+  "file": "XTZ_perp_close_2.csv",
+  "coin": "XTZ",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1768320000,
+  "t1": 1774713600,
+  "cols": 2
+ },
+ {
+  "file": "XTZ_perp_close_3.csv",
+  "coin": "XTZ",
+  "kind": "perp_close",
+  "rows": 445,
+  "t0": 1774713600,
+  "t1": 1781107200,
+  "cols": 2
+ },
+ {
+  "file": "XTZ_perp_close_4.csv",
+  "coin": "XTZ",
+  "kind": "perp_close",
+  "rows": 444,
+  "t0": 1781107200,
+  "t1": 1787486400,
+  "cols": 2
+ },
+ {
+  "file": "XTZ_perp_close_5.csv",
+  "coin": "XTZ",
+  "kind": "perp_close",
+  "rows": 230,
+  "t0": 1787500800,
+  "t1": 1790798400,
+  "cols": 2
+ },
+ {
+  "file": "XTZ_perp_oi_1.csv",
+  "coin": "XTZ",
+  "kind": "perp_oi",
+  "rows": 652,
+  "t0": 1761926400,
+  "t1": 1771300800,
+  "cols": 2
+ },
+ {
+  "file": "XTZ_perp_oi_2.csv",
+  "coin": "XTZ",
+  "kind": "perp_oi",
+  "rows": 654,
+  "t0": 1771300800,
+  "t1": 1780704000,
+  "cols": 2
+ },
+ {
+  "file": "XTZ_perp_oi_3.csv",
+  "coin": "XTZ",
+  "kind": "perp_oi",
+  "rows": 702,
+  "t0": 1780704000,
+  "t1": 1790798400,
+  "cols": 2
+ }
+]

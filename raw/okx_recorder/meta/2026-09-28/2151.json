@@ -1,0 +1,21 @@
+{
+ "run_ts": "2026-09-28T21:51:59+00:00",
+ "notes": [
+  "liq: 46 instruments hit OKX's 100-fill page cap \u2014 their windows are truncated, flagged per row"
+ ],
+ "rows": {
+  "liq": 100,
+  "book": 60,
+  "flow": 40,
+  "state": 493
+ },
+ "seconds": 39.1,
+ "throttled_429": 0,
+ "universe": 493,
+ "written": [
+  "data/liq/2026-09-28/2151.csv.gz (100 rows, 3 KB)",
+  "data/book/2026-09-28/2151.csv.gz (60 rows, 3 KB)",
+  "data/flow/2026-09-28/2151.csv.gz (40 rows, 1 KB)",
+  "data/state/2026-09-28/2151.csv.gz (493 rows, 22 KB)"
+ ]
+}
