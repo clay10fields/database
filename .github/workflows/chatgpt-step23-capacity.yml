@@ -1,0 +1,44 @@
+name: ChatGPT Step 23 Capacity
+
+on:
+  push:
+    branches: [chatgpt-step23-capacity]
+    paths:
+      - 'research/capacity/code/**'
+      - '.github/workflows/chatgpt-step23-capacity.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  step23:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install research dependencies
+        run: pip install numpy pandas scipy
+      - name: Prepare panel path
+        run: sudo mkdir -p /home/claude && sudo chown "$USER":"$USER" /home/claude
+      - name: Build 4h research panel
+        working-directory: research/crowding-2026-10-01
+        run: python build.py
+      - name: Run Step 23
+        run: python research/capacity/code/capacity.py
+      - name: Commit Step 23 results
+        run: |
+          git config user.name 'chatgpt-research'
+          git config user.email 'noreply@openai.com'
+          git add research/capacity/results
+          if git diff --cached --quiet; then
+            echo 'No result changes'
+          else
+            git commit -m 'research: step 23 capacity and slippage results'
+            git push
+          fi
