@@ -4,7 +4,7 @@ on:
   push:
     branches: [chatgpt-step20-events]
     paths:
-      - 'research/events/**'
+      - 'research/events/code/**'
       - '.github/workflows/chatgpt-step20-events.yml'
   workflow_dispatch:
 
