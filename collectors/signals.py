@@ -20,6 +20,9 @@ high = max of the 4 hourly highs, fund = the 8h funding settlement if the bar cl
 History before the recorder started is seeded from raw/binance_vision (metrics: ls and top, daily to ~yesterday;
 klines_4h: highs, monthly to last month; fundingRate: monthly) and derived/panel/4h_backfill (closes for last month).
 
+spot_pct = spot taker-buy flow (2*sbv/sv-1, 24h mean) ranked against the coin's own history; a size rule, not a gate
+(research/spot-vs-perp): crowd short full size when spot_pct <= 0.6, flush long full size when >= 0.5. Live-only (no archive seed).
+
 Outputs (derived/signals/): ledger.csv, state.csv, new.md (same as before).
 """
 from __future__ import annotations
@@ -103,7 +106,8 @@ def bars(coin: str) -> pd.DataFrame | None:
     d = pd.read_csv(p).drop_duplicates("t").set_index("t").sort_index()
     d["T"] = ((d.index + 3600 + H4 - 1) // H4) * H4          # 4h close this hour belongs to
     g = d.groupby("T")
-    live = pd.DataFrame({"c": g.c.last(), "oi": g.oi.last(), "ls": g.ls.last(), "h": g.h.max(), "rate": g.fund.last()})
+    live = pd.DataFrame({"c": g.c.last(), "oi": g.oi.last(), "ls": g.ls.last(), "h": g.h.max(), "rate": g.fund.last(),
+                         "sv": g.sv.sum(min_count=1), "sbv": g.sbv.sum(min_count=1)})
     live = live[d.groupby("T").size() == 4].dropna(subset=["c"])   # complete bars only
     # Coinalyze gives the current 8h funding rate in percent, every hour. Binance settles at 00/08/16 UTC,
     # so a 4h bar closing on one of those carries that settlement (as a fraction); the others carry 0.
@@ -127,6 +131,8 @@ def bars(coin: str) -> pd.DataFrame | None:
 
     def ago(col, sec):
         return pd.Series(live[col].reindex(idx - sec).values, index=idx)
+    snet = (2 * live.sbv / live.sv - 1).rolling(6, min_periods=3).mean()
+    live["spot_pct"] = snet.rolling(WIN, min_periods=MINP // 6).rank(pct=True)   # own rank; needs ~5 days of live spot data before it means much
     live["ret24"] = live.c / ago("c", 86400) - 1
     live["oi24"] = live.oi / ago("oi", 86400) - 1
     live["near_hi"] = live.c >= 0.97 * live.hi20
@@ -150,7 +156,7 @@ def main() -> int:
         now = max(now, int(b.index.max()))
         last = b.iloc[-1]
         state.append(dict(coin=coin, t=int(b.index[-1]), close=last.c, ls=last.ls, ls_pct=last.ls_pct,
-                          top_pct=last.top_pct, fund_pct=last.fund_pct, near_hi=bool(last.near_hi),
+                          top_pct=last.top_pct, fund_pct=last.fund_pct, near_hi=bool(last.near_hi), spot_pct=last.spot_pct,
                           ret24_pct=last.ret24 * 100, oi24_pct=last.oi24 * 100,
                           btc_pause=bool(pause.reindex([b.index[-1]]).fillna(False).iloc[0])))
         base = (b.ls_pct >= 0.9) & (b.ret24 > 0)
@@ -189,13 +195,13 @@ def main() -> int:
                                  exit=px if px is not None else np.nan, how=how if px is not None else "open",
                                  status="closed" if px is not None else "open",
                                  ret_pct=r * 100, ls_pct=b.ls_pct.iloc[i], top_pct=b.top_pct.iloc[i],
-                                 fund_pct=b.fund_pct.iloc[i], ret24_pct=b.ret24.iloc[i] * 100, oi24_pct=b.oi24.iloc[i] * 100))
+                                 fund_pct=b.fund_pct.iloc[i], spot_pct=b.spot_pct.iloc[i], ret24_pct=b.ret24.iloc[i] * 100, oi24_pct=b.oi24.iloc[i] * 100))
                 nxt = np.searchsorted(T, int(T[j]) if j is not None else exit_t)
                 i = max(i + 1, int(nxt))
     cols = ["coin", "rule", "side", "entry_t", "entry_utc", "entry", "exit_utc", "exit", "how", "status",
-            "ret_pct", "ls_pct", "top_pct", "fund_pct", "ret24_pct", "oi24_pct"]
+            "ret_pct", "ls_pct", "top_pct", "fund_pct", "spot_pct", "ret24_pct", "oi24_pct"]
     led = pd.DataFrame(rows, columns=cols).sort_values(["entry_t", "coin"])
-    led.round({"entry": 8, "exit": 8, "ret_pct": 4, "ls_pct": 4, "top_pct": 4, "fund_pct": 4,
+    led.round({"entry": 8, "exit": 8, "ret_pct": 4, "ls_pct": 4, "top_pct": 4, "fund_pct": 4, "spot_pct": 4,
                "ret24_pct": 3, "oi24_pct": 3}).to_csv(f"{OUT}/ledger.csv", index=False)
     pd.DataFrame(state).round(4).to_csv(f"{OUT}/state.csv", index=False)
 
@@ -208,7 +214,7 @@ def main() -> int:
         for r in fresh.itertuples():
             lines.append(f"- **{r.rule}** {r.coin} {r.side} at {r.entry:g} "
                          f"({r.entry_utc:%Y-%m-%d %H:%M} UTC), exit by {r.exit_utc:%Y-%m-%d %H:%M} UTC. "
-                         f"crowd pct {r.ls_pct:.2f}, big accts pct {r.top_pct:.2f}, funding pct {r.fund_pct:.2f}, "
+                         f"crowd pct {r.ls_pct:.2f}, big accts pct {r.top_pct:.2f}, funding pct {r.fund_pct:.2f}, spot pct {r.spot_pct:.2f}, "
                          f"price 24h {r.ret24_pct:+.1f}%")
         for rule in RULES:
             k = closed[closed.rule == rule]
