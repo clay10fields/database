@@ -1,6 +1,6 @@
 # Big accounts vs the crowd: what we know
 
-Status: **tested 2026-10-01. Verdict: one side is a lead, the other is dead. Not traded, not in the watcher.**
+Status: **tested 2026-10-01; premise re-examined 2026-10-01. The long side looked like a lead (t 2.79) but its premise is false — big accounts do not lead price (corr +0.002); the edge is the crowd being contrarian, which the crowd short / flush long already capture. Retire as a standalone. Not traded.**
 Same data and methods as research/crowd-short. The top-trader ratio (Binance, top 20% of accounts by margin) only exists from 2023,
 so this is 3.7 years, not 5. Both ratios ranked against the coin's own 90 days.
 
@@ -39,3 +39,20 @@ Long the 3 least-crowded coins, short the 3 most-crowded, every day, hold 24h: *
 * If anything gets watched, it's: top > 90th pct, crowd < 10th, in a stress regime, long 72h. Too few live signals to learn from for a year.
 
 Files: code/deep.py (every rule), code/cuts.py (regime/coin cuts and the basket), results/*.csv. Run from this folder.
+
+
+## PREMISE TEST — the hypothesis does not make sense as stated (2026-10-01)
+`code/premise.py`. Before tuning big-accounts-long, we tested its premise ("big accounts are smart money,
+side with them") directly. It fails:
+* **corr(big-account L/S percentile, next-72h return) = +0.002** — big-account positioning does not predict
+  price at all. Their quintiles are flat noise (short→long: +0.43 / +0.23 / +0.03 / +0.19 / +0.55).
+* **corr(crowd L/S percentile, next-72h return) = -0.048, cleanly monotonic**: crowd most-short +0.81% →
+  crowd most-long -0.20%. The crowd is a contrarian signal; the big accounts are not a signal.
+* The "divergence" edge is a mirage: big-long+crowd-short +1.69% vs big-long+crowd-long -0.28% — big
+  accounts are long in both, so the crowd's side explains the entire difference.
+
+**Conclusion.** Big-accounts-long cannot be re-engineered into a smart-money strategy because there is no
+smart-money signal in the data. The edge it showed (+2.4%) is the crowd-contrarian edge wearing a disguise,
+and conditioning on big-accounts-long is a spurious filter that happened to select 2024 (hence t 2.79, one
+year carrying it). **Retire it as a standalone; it is already captured by the crowd short / flush long.**
+This is the honest form of "re-engineering": test the premise, find the real driver (the crowd), fold in.
