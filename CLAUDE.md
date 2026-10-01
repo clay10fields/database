@@ -16,4 +16,10 @@ Layout: `raw/` recorded truth · `derived/panel/<interval>/<COIN>.csv` what calc
 and the resampler. Sister repo: `clay10fields/crypto-research-machine` (the OKX whole-market
 recorder lives there; its output is mirrored under `raw/okx_recorder/`).
 
+Branches: `main` is the only live branch. The 15 `chatgpt-*` branches and `claude-review-2026-10-01` were merged
+into `main` on 2026-10-01 (PR #1) and are **superseded** — every file on them is contained in `main`, verified
+file-by-file. Do not branch from them, cherry-pick from them, or treat them as unmerged work; they are pending
+deletion only because ref deletion is blocked from the agent sandbox. The 13 `chatgpt-*.yml` workflows they carried
+were dropped deliberately: each was pinned to its own branch and could never fire again.
+
 Research: start at `research/HANDOFF-2026-10-01.md` (state of play, open problems, what to do next), then `research/FULL-TREATMENT.md` (the method). One hypothesis at a time, every step, its own folder; `research/README.md` is the index.

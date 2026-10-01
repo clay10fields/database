@@ -1,5 +1,12 @@
 """Synchronize collectors/signals.py with CURRENT-BOOK-2026-10-01.md.
 
+SUPERSEDED (2026-10-01). This was a one-shot synchronizer and its job is done: signals.py already
+carries the current book spec. signals.py has since moved past it (the FLUSH_D rule and the BTC
+market-state columns added for collectors/paper_books.py), so its constants anchor no longer
+matches and it now raises 'constants anchor not found'. That is the intended failure mode -- it
+refuses to half-rewrite production code -- and it makes no change when it fires. Kept for the
+record of what was synchronized; edit signals.py directly rather than re-pointing this.
+
 This is a deterministic code migration, not strategy research. It makes four already-decided changes:
 1) CS72 requires >=180d positioning history and positive 6m trend.
 2) Flush-B uses the validated seven-coin set and >=180d positioning history.
@@ -8,7 +15,8 @@ This is a deterministic code migration, not strategy research. It makes four alr
 """
 from pathlib import Path
 
-p=Path('collectors/signals.py')
+_RT=Path(__file__).resolve().parents[3]  # absolute: this script runs from its own folder
+p=_RT/'collectors'/'signals.py'
 s=p.read_text()
 
 # Documentation text.

@@ -2,7 +2,7 @@ hypothesis,file,comparison_rows,columns
 Crowd Short,research/crowd-short/results/bycoin_results.csv,171,n|raw|edge|win|t|med|worst|version|dim|key|test|yrs_pos|yrs
 Crowd Short,research/crowd-short/results/combo_results.csv,36,n|raw|edge|win|t|med|worst|rule|hold|stop|train|test|t_test|per_yr_trades|usd_per_yr_1k|y2022|y2023|y2024|y2025|y2026
 Crowd Short,research/crowd-short/results/deep_results.csv,74,n|raw|edge|win|t|med|worst|section|label|train_edge|test_edge|yrs_pos|hold
-Crowd Short,research/crowd-short/results/deep_results_allcoins.csv,88,n|raw|edge|win|t|med|worst|section|label|train_edge|test_edge|yrs_pos|hold
+Crowd Short,research/crowd-short/results/deep_results_allcoins.csv,79,n|raw|edge|win|t|med|worst|section|label|train_edge|test_edge|yrs_pos|hold
 Crowd Short,research/crowd-short/results/entry_results.csv,20,n|raw|edge|win|t|med|worst|rule|entry|test|total
 Crowd Short,research/crowd-short/results/final_results.csv,7,trades|final|cagr|maxdd|sharpe|win|avg_pnl|fees|worst_month|pnl_2022|pnl_2023|pnl_2024|pnl_2025|pnl_2026|trades_per_month|start|plan
 Crowd Short,research/crowd-short/results/fundcheck_results.csv,4,trades|final|cagr|maxdd|sharpe|win|avg_pnl|fees|worst_month|pnl_2022|pnl_2023|pnl_2024|pnl_2025|pnl_2026|rule
@@ -16,6 +16,7 @@ Crowd Short,research/crowd-short/results/port_results.csv,120,trades|final|cagr|
 Crowd Short,research/crowd-short/results/trade_results.csv,54,n|raw|edge|win|t|med|worst|version|exit|bars_held|test|ret_per_day|sharpe_like
 Flush-B,research/flush-long/results/combo_results.csv,27,n|raw|edge|win|t|med|worst|rule|hold|train|test|t_train|t_test|new8|yrs_pos|per_yr|stress|calm
 Flush-B,research/flush-long/results/deep_results.csv,74,n|raw|edge|win|t|med|worst|section|label|train_edge|test_edge|yrs_pos|hold
+Flush-B,research/flush-long/results/deep_results_allcoins.csv,79,n|raw|edge|win|t|med|worst|section|label|train_edge|test_edge|yrs_pos|hold
 Flush-B,research/flush-long/results/entry_results.csv,11,n|raw|edge|win|t|med|worst|entry|test|total
 Flush-B,research/flush-long/results/final_results.csv,6,trades|final|cagr|maxdd|sharpe|win|fees|worst_month|pnl_2022|pnl_2023|pnl_2024|pnl_2025|pnl_2026|plan|cap|size
 Flush-B,research/flush-long/results/hypotheses_results.csv,13,n|raw|edge|win|t|med|worst|hyp|train|test|yrs_pos|new8|bars|total

@@ -82,6 +82,10 @@ compression cap, not the Calm cap.** The Calm result was a blunt proxy that happ
   "throttle when BTC is quiet", not as a precise threshold.
 * The drawdown episode driving all of this is still the **single 2022 window**. The mechanism is pre-existing and
   independently measured; the account-level benefit is one episode.
+* **These tests cost Flush-B at the multiple-testing gate.** Re-running the Step 19 ledger after this work raised
+  Flush-B's documented comparison rows from 326 to 405 and its Bonferroni threshold from 3.786 to 3.839, against an
+  unchanged t of 3.706 — so the gap widened. Worth doing anyway (removing hand-picked coins is a bias fix, not an edge
+  claim), but it is the reason to stop searching here and let the paper record decide.
 * 9 more configurations here — **35 account configurations total** across `FLUSH-MEMBERSHIP` (16),
   `FLUSH-REGIME-CAP` (10) and this file (9) for the Step 19 ledger.
 * Everything here is on the rule-based 16-coin universe, so none of it depends on hand-picked coins. That remains the

@@ -128,7 +128,9 @@ for dim in ('regime','type','coin','yr'):
 for st in (0.03,0.05,0.08,0.12):
     rec('6 stop loss',f'stop {st*100:.0f}% against',run(BASE,18,st))
 out=pd.DataFrame(R)
-out.to_csv('results/deep_results.csv',index=False)
+out.to_csv('results/deep_results.csv' if 'PANEL' not in os.environ else 'results/deep_results_allcoins.csv',index=False)
+# same convention as crowd-short/code/deep.py: a PANEL override (the 30-coin panel, set by newcoins.py)
+# writes its own file instead of clobbering the 16-coin base result this study's prose is about.
 pd.set_option('display.width',250); pd.set_option('display.max_rows',400)
 cols=['section','label','n','raw','edge','win','t','train_edge','test_edge','yrs_pos','worst']
 print(out[cols].round(2).to_string(index=False))
