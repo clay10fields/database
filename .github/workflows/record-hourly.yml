@@ -54,5 +54,11 @@ jobs:
           git config user.name "database-recorder"
           git config user.email "recorder@users.noreply.github.com"
           git add raw/coinalyze_1h raw/kraken_1h raw/coinbase_1h raw/binance_us_1h raw/kalshi_1h derived
-          git diff --cached --quiet || git commit -qm "record: $(date -u +%Y-%m-%dT%H:%MZ)"
-          git pull -q --rebase && git push -q
+          if git diff --cached --quiet; then
+            echo "no new rows"
+            exit 0
+          fi
+          git commit -m "record: $(date -u +%Y-%m-%dT%H:%MZ)"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
