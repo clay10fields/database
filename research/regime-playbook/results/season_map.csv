@@ -1,0 +1,13 @@
+strategy,regime,edge_pct,n
+CS72 (crowd short),Calm,0.34,1076
+CS72 (crowd short),Trend up,4.05,173
+CS72 (crowd short),Trend down,1.35,139
+CS72 (crowd short),Stress,3.68,165
+Flush-B (flush long),Calm,0.38,1535
+Flush-B (flush long),Trend up,2.65,391
+Flush-B (flush long),Trend down,0.94,234
+Flush-B (flush long),Stress,1.29,1018
+MOM20 (20d-high cont.),Calm,-0.38,7652
+MOM20 (20d-high cont.),Trend up,0.99,4998
+MOM20 (20d-high cont.),Trend down,-1.98,69
+MOM20 (20d-high cont.),Stress,3.17,1989

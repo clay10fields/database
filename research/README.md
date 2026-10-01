@@ -17,6 +17,7 @@ train/test halves, coins the rule was never built on). Every number has a script
 | misc/ | laggards, weekend, ETF flows, grid leads | dead, except crowd-short-alone as a mild long tailwind |
 | hedging/ | BTC hedge, seven ways | all lower the edge; the hedge that works is running both trades |
 | playbook/ | size and exit by regime, environment and token category; the loss-limiting math (CVaR, MAE, Kelly per cell) | **regime × signal-strength sizing adopted** (Sharpe 2.97); category sizing rejected |
+| regime-playbook/ | the season map: which strategy is in season in which BTC regime + a live what-is-in-season readout | CS72 best in trend-up/stress; Flush-B trend-up; MOM20 stress-only; liq buy cascades; calm is thin for all (REGIME-PLAYBOOK.md) |
 | momentum-20d/ | 20-day-high continuation (the rescued level-break fade) | **LEAD** t 2.02; premise confirmed (fade loses -0.76%); watched live as MOM20, not traded (`MOMENTUM-20D.md`) |
 | premise-sweep/ | mechanism test of the dead/lead ideas | 2 dead by false premise, 3 weak tilts, level-break was backwards (`PREMISE-SWEEP.md`) |
 | forward-sim/ | Monte-Carlo one-month simulation of the candidate books | median month ~+3.4% (D), ~27% of months down, right-skewed; a projection if the edge holds, not a forecast (`FORWARD-MONTH-2026-10-01.md`) |
