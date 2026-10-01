@@ -14,20 +14,22 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 355
     steps:
-      - name: dispatch record-daily if the last success is older than 20 hours
+      - name: dispatch the two daily jobs if the last success is older than 20 hours
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
         run: |
-          last=$(gh run list --repo "$REPO" --workflow record-daily.yml --status success --limit 1 --json updatedAt --jq '.[0].updatedAt // empty')
-          age=999999
-          if [ -n "$last" ]; then age=$(( ($(date +%s) - $(date -d "$last" +%s)) / 3600 )); fi
-          echo "last daily success: ${last:-none} age_hours=$age"
-          if [ "$age" -ge 20 ]; then
-            gh workflow run record-daily.yml --repo "$REPO" --ref main && echo "dispatched record-daily" || echo "daily dispatch failed"
-          else
-            echo "daily is fresh"
-          fi
+          for wf in record-daily.yml record-coingecko.yml; do
+            last=$(gh run list --repo "$REPO" --workflow "$wf" --status success --limit 1 --json updatedAt --jq '.[0].updatedAt // empty')
+            age=999999
+            if [ -n "$last" ]; then age=$(( ($(date +%s) - $(date -d "$last" +%s)) / 3600 )); fi
+            echo "$wf last success: ${last:-none} age_hours=$age"
+            if [ "$age" -ge 20 ]; then
+              gh workflow run "$wf" --repo "$REPO" --ref main && echo "dispatched $wf" || echo "dispatch failed $wf"
+            else
+              echo "$wf is fresh"
+            fi
+          done
       - name: dispatch record-hourly now and at :18 every hour
         env:
           GH_TOKEN: ${{ github.token }}
