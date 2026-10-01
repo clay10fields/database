@@ -3,3 +3,4 @@ pulled: 2026-09-30
 coins: ADA DOGE XRP AVAX ETH SOL LTC HBAR
 have: daily metrics 5min OI/LS/taker, monthly 4h klines, monthly fundingRate
 not rewritten. append-only.
+spot_klines_4h: Binance spot monthly 4h, includes taker buy base volume. pulled 2026-09-30
