@@ -1,0 +1,80 @@
+panel,test_year,layer,value,top10_count
+30,2024,crowd,CS72_48h,10
+30,2024,flush,Flush_nc50_deep,6
+30,2024,flush,Flush_nc50,4
+30,2024,cs24,CS24_all,10
+30,2024,liq,True,7
+30,2024,liq,False,3
+30,2024,season,True,9
+30,2024,season,False,1
+30,2024,no2nd,True,7
+30,2024,no2nd,False,3
+30,2024,cfg,cap3 max8,7
+30,2024,cfg,nocap max5,3
+30,2024,tilt,True,10
+30,2025,crowd,CS72_48h,8
+30,2025,crowd,CS72,2
+30,2025,flush,Flush_nc50_deep,8
+30,2025,flush,Flush_nc50,2
+30,2025,cs24,CS24_core,10
+30,2025,liq,True,10
+30,2025,season,True,8
+30,2025,season,False,2
+30,2025,no2nd,True,8
+30,2025,no2nd,False,2
+30,2025,cfg,cap3 max8,10
+30,2025,tilt,False,5
+30,2025,tilt,True,5
+30,2026,crowd,CS72_48h,10
+30,2026,flush,Flush_nc50_deep,7
+30,2026,flush,Flush_nc40_deep,3
+30,2026,cs24,CS24_core,9
+30,2026,cs24,CS24_all,1
+30,2026,liq,True,10
+30,2026,season,True,8
+30,2026,season,False,2
+30,2026,no2nd,True,6
+30,2026,no2nd,False,4
+30,2026,cfg,cap3 max8,6
+30,2026,cfg,nocap max5,4
+30,2026,tilt,False,7
+30,2026,tilt,True,3
+16,2024,crowd,CS72_48h,10
+16,2024,flush,Flush_nc50,8
+16,2024,flush,Flush_nc30,2
+16,2024,cs24,CS24_all,5
+16,2024,cs24,CS24_core,5
+16,2024,liq,True,8
+16,2024,liq,False,2
+16,2024,season,True,8
+16,2024,season,False,2
+16,2024,no2nd,True,8
+16,2024,no2nd,False,2
+16,2024,cfg,nocap max5,8
+16,2024,cfg,cap3 max8,2
+16,2024,tilt,True,8
+16,2024,tilt,False,2
+16,2025,crowd,CS72_48h,8
+16,2025,crowd,CS72,2
+16,2025,flush,Flush_nc50,10
+16,2025,cs24,CS24_all,5
+16,2025,cs24,CS24_core,5
+16,2025,liq,True,10
+16,2025,season,True,6
+16,2025,season,False,4
+16,2025,no2nd,False,6
+16,2025,no2nd,True,4
+16,2025,cfg,nocap max5,10
+16,2025,tilt,True,10
+16,2026,crowd,CS72_48h,8
+16,2026,crowd,CS72,2
+16,2026,flush,Flush_nc50,10
+16,2026,cs24,CS24_all,5
+16,2026,cs24,CS24_core,5
+16,2026,liq,True,10
+16,2026,season,False,6
+16,2026,season,True,4
+16,2026,no2nd,True,6
+16,2026,no2nd,False,4
+16,2026,cfg,nocap max5,10
+16,2026,tilt,True,10

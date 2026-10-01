@@ -17,6 +17,8 @@ train/test halves, coins the rule was never built on). Every number has a script
 | misc/ | laggards, weekend, ETF flows, grid leads | dead, except crowd-short-alone as a mild long tailwind |
 | hedging/ | BTC hedge, seven ways | all lower the edge; the hedge that works is running both trades |
 | playbook/ | size and exit by regime, environment and token category; the loss-limiting math (CVaR, MAE, Kelly per cell) | **regime × signal-strength sizing adopted** (Sharpe 2.97); category sizing rejected |
+| **experiments-2026-10-01/** | 13 phases, ~13,000 account sims: every combination, configs, walk-forward, strict nested folds, spot layer, symptoms, coin-group rotation | **candidate book E beats the current book out of sample (~2.9 vs ~2.45 Sharpe, unseen years); loses 2026 YTD on 30 coins.** Every number in `test-ledger/LEDGER.csv`. Read `NOTES.md` FINAL READ |
+| **test-ledger/** | append-only record of every test result with its full configuration | answers change with the combination — the config travels with every number |
 | regime-playbook/ | the season map: which strategy is in season in which BTC regime + a live what-is-in-season readout | CS72 best in trend-up/stress; Flush-B trend-up; MOM20 stress-only; liq buy cascades; calm is thin for all (REGIME-PLAYBOOK.md). **THE-PLAYBOOK.md** assembles the whole chain — season → regime → coin → set-up → symptoms → eyes on the trade — for the three real edges |
 | momentum-20d/ | 20-day-high continuation (the rescued level-break fade) | **LEAD** t 2.02; premise confirmed (fade loses -0.76%); watched live as MOM20, not traded (`MOMENTUM-20D.md`) |
 | premise-sweep/ | mechanism test of the dead/lead ideas | 2 dead by false premise, 3 weak tilts, level-break was backwards (`PREMISE-SWEEP.md`) |

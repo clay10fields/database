@@ -1,0 +1,19 @@
+panel,test_year,book,choice,sel_sharpe,sharpe,cagr,dd
+30,2024,FOLD PICK #1,crowd=CS72_48h | flush=Flush_nc50 | cs24=CS24_all | liq=True | season=True | no2nd=True | cfg=cap3 max8 | tilt=True,3.27,4.21,470.9,-14.2
+30,2024,current book,CS72+FlushB,,3.78,366.0,-8.9
+30,2024,median of top-10 picks,,,4.06,,
+30,2025,FOLD PICK #1,crowd=CS72_48h | flush=Flush_nc50_deep | cs24=CS24_core | liq=True | season=True | no2nd=True | cfg=cap3 max8 | tilt=False,3.75,3.61,302.2,-12.6
+30,2025,current book,CS72+FlushB,,2.19,92.5,-15.7
+30,2025,median of top-10 picks,,,3.54,,
+30,2026,FOLD PICK #1,crowd=CS72_48h | flush=Flush_nc50_deep | cs24=CS24_core | liq=True | season=True | no2nd=True | cfg=cap3 max8 | tilt=False,3.7,0.92,27.9,-16.8
+30,2026,current book,CS72+FlushB,,1.32,42.8,-11.4
+30,2026,median of top-10 picks,,,0.95,,
+16,2024,FOLD PICK #1,crowd=CS72_48h | flush=Flush_nc50 | cs24=CS24_all | liq=True | season=True | no2nd=True | cfg=nocap max5 | tilt=True,3.1,3.73,477.2,-12.7
+16,2024,current book,CS72+FlushB,,2.95,165.4,-11.0
+16,2024,median of top-10 picks,,,3.7,,
+16,2025,FOLD PICK #1,crowd=CS72_48h | flush=Flush_nc50 | cs24=CS24_all | liq=True | season=False | no2nd=False | cfg=nocap max5 | tilt=True,3.34,2.47,64.1,-7.2
+16,2025,current book,CS72+FlushB,,1.76,44.8,-8.1
+16,2025,median of top-10 picks,,,2.36,,
+16,2026,FOLD PICK #1,crowd=CS72_48h | flush=Flush_nc50 | cs24=CS24_all | liq=True | season=False | no2nd=True | cfg=nocap max5 | tilt=True,3.13,2.68,67.4,-8.0
+16,2026,current book,CS72+FlushB,,2.74,54.8,-6.3
+16,2026,median of top-10 picks,,,2.68,,

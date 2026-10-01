@@ -141,3 +141,20 @@ Top to bottom is the decision order: what cycle are we in → what regime is BTC
 down) → is this coin one that carries the trade → did the set-up fire → do the symptoms say full or half size → then
 watch the one mid-trade signal that matters and let the standing exit be the backup. Every figure traces to a cited
 file; if a number here and a source file ever disagree, the source file wins and this one is stale.
+
+---
+
+## Update 2026-10-01 evening — the experiments changed the candidate book
+`research/experiments-2026-10-01/NOTES.md` (FINAL READ) tested ~13,000 account configurations with strict nested walk-forward.
+What the past selects every fold, and what that changes in this card:
+* **Regime:** Flush-B stands down when BTC 20-bar vol is in the bottom ~half of its year (deep flushes — price also down >5% —
+  excepted). This is the compression flag in §2 turned into a rule; it fixes 2022. It is **Flush-only** — standing the crowd short
+  down in compression lost 15 of 16 head-to-heads.
+* **Set-up:** the crowd short exits at **48h** instead of 72h (picked 54/60); the **24h crowd short** rejoins (60/60; on
+  established coins on the wide universe — it fails on new hype listings); the **filtered liquidation buy** rejoins the book (55/60).
+* **Symptoms:** the hot-run split is real per trade (hot flush +3.4–3.7% vs +0.3–0.5%), but sizing or gating on it does not beat the
+  stand-down — they remove the same cold-bleed flushes. Skip second-day flushes (39/60). The CS72 "first dip + OI peak" symptom did
+  **not** reproduce.
+* **Coin category:** the majors → big alts → L1s → memes rotation is not in the data (last step runs backwards). A per-regime group
+  tilt helps on the wide universe only.
+* Out of sample this book averages ~2.9 Sharpe on unseen years vs ~2.45 for the current book; 2026 YTD it loses on 30 coins.

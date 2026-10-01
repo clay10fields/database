@@ -186,3 +186,31 @@ PEPE PENGU→Memes; SUI WLD RENDER VVV→New/AI). Weekly, non-overlapping sample
   disfavoured, mirrored for shorts) **wins all 3 unseen years on 30c** (4.37→4.42, 4.14→4.26, 0.94→1.26; avg 3.15→3.31) and is
   neutral on 16c (2.79 vs 2.78). Caveat: the 30c gain leans on "New/AI" in trend regimes — 3–4 young coins. Lead on the wide
   universe only. Skipping fork longs in trend-up: no effect.
+
+## Phase 13 — CAPSTONE: nested strict walk-forward over every surviving layer · `code/phase13.py`, `results/phase13*.csv`
+Each fold sets **every** layer from its own past only — crowd hold (72h/48h) × flush design (plain / compression stand-down
+0.30–0.50 / deep exception) × CS24 (off / all / established) × LiqBuy × season sizing × skip second-day flush × slots (cap3-max8 /
+no cap-max5) × group tilt = **1,344 books per fold**. The fold's #1 pick (and the median of its top 10) then trade the next year
+blind. Funding in.
+
+| average unseen-year Sharpe (2024, 2025, 2026 YTD) | fold pick #1 | median of top-10 picks | current book CS72+FlushB |
+|---|---:|---:|---:|
+| 16 coins | **2.96** | **2.91** | 2.48 |
+| 30 coins | **2.91** | **2.85** | 2.43 |
+
+* Wins 2024 and 2025 on both panels by a wide margin (30c 2025: 3.61 vs 2.19; 16c 2024: 3.73 vs 2.95). **2026 YTD is the
+  exception:** 30c 0.92 vs 1.32 (loses), 16c 2.68 vs 2.74 (tie) — the current thin/calm season.
+* Top-10 median ≈ #1 pick → not one lucky pick.
+* **Layer choices across all 60 top-10 picks:** Flush compression stand-down 58/60 (0.50 threshold 55/60), LiqBuy 55/60,
+  CS72 at 48h 54/60, CS24 on 60/60 (established 34, all 26), group tilt 46/60, season sizing 43/60, skip 2nd-day flush 39/60,
+  5 slots / no cap 35/60.
+* This lifts the 16-coin verdict from phase 7's tie (2.51 vs 2.48) to 2.96 vs 2.48 — the later layers (season, skip-2nd, tilt,
+  slot config) are what the folds use.
+* Remaining caveat: the layers were invented today with the full history visible, so the roster is not blind; the selection is.
+
+## FINAL READ (end of 2026-10-01)
+**The candidate book, as the past picks it every time:** crowd short 72h-rule held 48h + 24h crowd short + Flush-B standing down
+when BTC 20-bar vol is in the bottom ~50% of its year (deep flushes excepted) + filtered liquidation buy; season sizing; skip
+second-day flushes; group tilt on the wide universe; ~5 slots. Out of sample it beats the current book by ~+0.45 Sharpe on average,
+winning 2024–25 clearly and losing/tying 2026 YTD. The only fully clean test left is forward paper data (a book E alongside A–D in
+`collectors/paper_books.py`), which needs the recorder running — see the cron/VPS note in the session.
