@@ -17,6 +17,8 @@ train/test halves, coins the rule was never built on). Every number has a script
 | misc/ | laggards, weekend, ETF flows, grid leads | dead, except crowd-short-alone as a mild long tailwind |
 | hedging/ | BTC hedge, seven ways | all lower the edge; the hedge that works is running both trades |
 | playbook/ | size and exit by regime, environment and token category; the loss-limiting math (CVaR, MAE, Kelly per cell) | **regime × signal-strength sizing adopted** (Sharpe 2.97); category sizing rejected |
+| momentum-20d/ | 20-day-high continuation (the rescued level-break fade) | **LEAD** t 2.02; premise confirmed (fade loses -0.76%); watched live as MOM20, not traded (`MOMENTUM-20D.md`) |
+| premise-sweep/ | mechanism test of the dead/lead ideas | 2 dead by false premise, 3 weak tilts, level-break was backwards (`PREMISE-SWEEP.md`) |
 | forward-sim/ | Monte-Carlo one-month simulation of the candidate books | median month ~+3.4% (D), ~27% of months down, right-skewed; a projection if the edge holds, not a forecast (`FORWARD-MONTH-2026-10-01.md`) |
 | live/ | the live protocol: sample sizes, kill criteria, mid-trade dashboard | written before any money is risked; four candidate books now run in parallel via `collectors/paper_books.py` |
 | quant/ | sizing and risk techniques on the book | signal-strength sizing adopted; drawdown throttle, vol targeting rejected; Monte Carlo says plan for −30% |

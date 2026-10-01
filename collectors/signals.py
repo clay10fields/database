@@ -11,6 +11,9 @@ Evaluated at every 4h close (00, 04, 08, 12, 16, 20 UTC). Everything in a row is
                history, no name list. Feeds the rule-based paper books in collectors/paper_books.py
                (research/universe-refresh/FLUSH-MEMBERSHIP, -REGIME-CAP and -VOL-CAP). Logging only;
                the concurrency caps live in the book layer, not here.
+  MOM20        LEAD, logging-only: close within 3% of the 20-day high -> long 72h, no stop. The rescued
+               level-break idea (premise sweep: breaks continue, fading loses), t 2.02 in backtest -- below
+               the promotion bar, so it is WATCHED here to accrue a live record, not traded. research/momentum-20d.
   CROWD_24H    base AND funding not extreme (fund_pct < 0.90; moved from 0.70 by the plateau step 2026-10-01) AND not within 3% of the 20-day high -> short, 24h
   CROWD_72H    CROWD_24H AND top-trader pct >0.70 AND >=180d positioning history
                AND positive 6-month price return -> short, 72h
@@ -56,7 +59,7 @@ FEE = 0.001
 MIN_HISTORY_DAYS = 180
 FLUSH_B_COINS = {"XLM", "SOL", "XRP", "HBAR", "AVAX", "AAVE", "BCH"}
 RULES = {"CROWD_SHORT": (-1, 6), "FLUSH_LONG": (1, 18), "CROWD_24H": (-1, 6), "CROWD_72H": (-1, 18),
-         "FLUSH_B": (1, 18), "FLUSH_D": (1, 18)}
+         "FLUSH_B": (1, 18), "FLUSH_D": (1, 18), "MOM20": (1, 18)}
 STOPPED = {"CROWD_24H", "CROWD_72H"}       # rules that use the close stop / hard stop / BTC pause
 FLUSH_TIMED = {"FLUSH_B", "FLUSH_D"}       # rules using the 24h/48h/72h time cuts instead of price stops
 OUT = "derived/signals"
@@ -268,7 +271,8 @@ def main() -> int:
         sig = {"CROWD_SHORT": base, "FLUSH_LONG": (b.oi24 < -0.08) & (b.ls_pct < 0.5),
                "CROWD_24H": c24, "CROWD_72H": c24 & (b.top_pct > 0.7) & cs_eligible,
                "FLUSH_B": (b.oi24 < -0.08) & (b.ls_pct < 0.3) & fl_eligible,
-               "FLUSH_D": (b.oi24 < -0.08) & (b.ls_pct < 0.3) & mature}
+               "FLUSH_D": (b.oi24 < -0.08) & (b.ls_pct < 0.3) & mature,
+               "MOM20": b.near_hi.astype(bool) & mature}
         T = b.index.values
         c = b.c.values
         h = b.h.values

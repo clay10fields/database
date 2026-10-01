@@ -57,6 +57,6 @@ of +0.56% confirms it is not *purely* beta, but it is weak and regime-dependent.
   The disciplined move is to log it on the paper watcher and promote only if live/forward data lifts t over 3.
 
 ## Open
-* Add to the paper watcher as a logging-only lead (near 20d high, long 72h, no stop).
+* ~~Add to the paper watcher as a logging-only lead~~ **done 2026-10-01**: rule MOM20 in collectors/signals.py (near 20d high, long 72h, no stop), logging-only.
 * Revisit only with more data, or if a *pre-declared* regime hypothesis (momentum in stress/trend) is set
   before testing — not chosen from this table.
