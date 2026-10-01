@@ -1,0 +1,40 @@
+name: ChatGPT Flush History Gate Audit
+
+on:
+  push:
+    branches: [chatgpt-flush-history-gate-audit]
+    paths:
+      - 'research/flush-long/code/history_gate_audit.py'
+      - '.github/workflows/chatgpt-flush-history-gate-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install numpy pandas
+      - name: Prepare panel path
+        run: sudo mkdir -p /home/claude && sudo chown "$USER":"$USER" /home/claude
+      - name: Build 4h panel
+        working-directory: research/crowding-2026-10-01
+        run: python build.py
+      - name: Run Flush-B history gate audit
+        run: python research/flush-long/code/history_gate_audit.py
+      - name: Commit results
+        run: |
+          git config user.name 'chatgpt-research'
+          git config user.email 'noreply@openai.com'
+          git add research/flush-long/results/history_gate_*.csv
+          if git diff --cached --quiet; then echo 'No changes'; else
+            git commit -m 'research: Flush-B history-gate audit results'
+            git push
+          fi
