@@ -16,4 +16,4 @@ Layout: `raw/` recorded truth · `derived/panel/<interval>/<COIN>.csv` what calc
 and the resampler. Sister repo: `clay10fields/crypto-research-machine` (the OKX whole-market
 recorder lives there; its output is mirrored under `raw/okx_recorder/`).
 
-Research: `research/FULL-TREATMENT.md` is the method. One hypothesis at a time, every step, its own folder; `research/README.md` is the index.
+Research: start at `research/HANDOFF-2026-10-01.md` (state of play, open problems, what to do next), then `research/FULL-TREATMENT.md` (the method). One hypothesis at a time, every step, its own folder; `research/README.md` is the index.
