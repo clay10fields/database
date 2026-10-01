@@ -1,0 +1,59 @@
+name: ChatGPT Sync Current Book Watcher
+
+on:
+  push:
+    branches: [chatgpt-liqf-readmission-corrected-book]
+    paths:
+      - 'research/book/code/sync_current_watcher.py'
+      - '.github/workflows/chatgpt-sync-current-watcher.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install numpy pandas
+      - name: Apply deterministic watcher sync
+        run: python research/book/code/sync_current_watcher.py
+      - name: Compile watcher
+        run: python -m py_compile collectors/signals.py
+      - name: Run paper watcher against repository data
+        run: python collectors/signals.py
+      - name: Validate current-book eligibility in generated ledger
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          p='derived/signals/ledger.csv'
+          d=pd.read_csv(p)
+          cs=d[d.rule=='CROWD_72H']
+          fl=d[d.rule=='FLUSH_B']
+          bad_cs=cs[(cs.positioning_days < 180) | ~(cs.ret6m_pct > 0)]
+          allowed={'XLM','SOL','XRP','HBAR','AVAX','AAVE','BCH'}
+          bad_fl=fl[(fl.positioning_days < 180) | ~fl.coin.isin(allowed)]
+          assert bad_cs.empty, bad_cs[['coin','entry_utc','ret6m_pct','positioning_days']].to_string(index=False)
+          assert bad_fl.empty, bad_fl[['coin','entry_utc','positioning_days']].to_string(index=False)
+          closed=fl[fl.status=='closed']
+          allowed_how={'24h loss cut -8%','48h not-positive cut','hold 72h'}
+          assert set(closed['how'].dropna()).issubset(allowed_how), set(closed['how'].dropna())
+          print('validated',len(cs),'CS72 and',len(fl),'Flush-B paper records')
+          PY
+      - name: Restore generated signal outputs
+        run: git checkout -- derived/signals || true
+      - name: Commit synchronized watcher
+        run: |
+          git config user.name 'chatgpt-research'
+          git config user.email 'noreply@openai.com'
+          git add collectors/signals.py
+          if git diff --cached --quiet; then echo 'No watcher changes'; else
+            git commit -m 'paper: sync watcher to current book spec'
+            git push
+          fi
