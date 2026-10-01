@@ -1,0 +1,67 @@
+panel,test,book,burden,N,books,N_eff,mp_signal_eigs,sd_sharpe_across_books,annual_sharpe,SR0_annual,DSR,n,mean_pct,win_pct,t_day,train_pct,test_pct
+16,DSR with measured trials,bookE,N_eff of the book space,2.0,672.0,1.72,13.0,0.252,2.89,0.13,1.0,,,,,,
+16,DSR with measured trials,bookE,eigenvalues above Marchenko-Pastur,13.0,672.0,1.72,13.0,0.252,2.89,0.43,1.0,,,,,,
+16,DSR with measured trials,bookE,N = every book in the space,672.0,672.0,1.72,13.0,0.252,2.89,0.79,1.0,,,,,,
+16,DSR with measured trials,current,N_eff of the book space,2.0,672.0,1.72,13.0,0.252,2.12,0.13,1.0,,,,,,
+16,DSR with measured trials,current,eigenvalues above Marchenko-Pastur,13.0,672.0,1.72,13.0,0.252,2.12,0.43,1.0,,,,,,
+16,DSR with measured trials,current,N = every book in the space,672.0,672.0,1.72,13.0,0.252,2.12,0.79,0.9997,,,,,,
+16,coin vs BTC timing,FlushB,coin trade (as traded),,,,,,,,,843.0,1.853,52.3,3.4,0.862,3.177
+16,coin vs BTC timing,FlushB,"BTC instead, same window",,,,,,,,,843.0,0.443,53.9,1.9,0.234,0.721
+16,coin vs BTC timing,FlushB,coin minus BTC (beta-1 hedge),,,,,,,,,843.0,1.21,44.5,2.58,0.428,2.255
+16,coin vs BTC timing,FlushStd,coin trade (as traded),,,,,,,,,693.0,2.233,54.5,3.59,1.062,3.795
+16,coin vs BTC timing,FlushStd,"BTC instead, same window",,,,,,,,,693.0,0.66,57.1,2.57,0.382,1.03
+16,coin vs BTC timing,FlushStd,coin minus BTC (beta-1 hedge),,,,,,,,,693.0,1.373,44.2,2.52,0.48,2.565
+16,coin vs BTC timing,HotFlushC,coin trade (as traded),,,,,,,,,324.0,4.134,62.0,3.78,1.959,7.029
+16,coin vs BTC timing,HotFlushC,"BTC instead, same window",,,,,,,,,324.0,1.049,60.5,2.62,0.904,1.242
+16,coin vs BTC timing,HotFlushC,coin minus BTC (beta-1 hedge),,,,,,,,,324.0,2.885,49.4,2.93,0.856,5.587
+16,coin vs BTC timing,HotFlushD,coin trade (as traded),,,,,,,,,206.0,5.608,70.4,4.42,3.484,7.903
+16,coin vs BTC timing,HotFlushD,"BTC instead, same window",,,,,,,,,206.0,1.786,65.0,3.66,1.919,1.641
+16,coin vs BTC timing,HotFlushD,coin minus BTC (beta-1 hedge),,,,,,,,,206.0,3.622,55.3,3.1,1.365,6.062
+16,coin vs BTC timing,LiqBuy,coin trade (as traded),,,,,,,,,274.0,4.588,71.5,3.69,4.115,5.047
+16,coin vs BTC timing,LiqBuy,"BTC instead, same window",,,,,,,,,274.0,1.727,74.5,2.76,1.101,2.334
+16,coin vs BTC timing,LiqBuy,coin minus BTC (beta-1 hedge),,,,,,,,,274.0,2.661,57.3,2.14,2.814,2.513
+16,coin vs BTC timing,MOM20_7d,coin trade (as traded),,,,,,,,,1058.0,1.134,49.4,2.33,0.323,1.774
+16,coin vs BTC timing,MOM20_7d,"BTC instead, same window",,,,,,,,,1058.0,0.413,51.5,1.59,0.19,0.589
+16,coin vs BTC timing,MOM20_7d,coin minus BTC (beta-1 hedge),,,,,,,,,1058.0,0.52,40.4,1.31,-0.068,0.985
+16,coin vs BTC timing,CS72,coin trade (as traded),,,,,,,,,299.0,1.385,60.9,2.96,1.012,1.525
+16,coin vs BTC timing,CS72,"BTC instead, same window",,,,,,,,,299.0,0.35,51.8,1.16,-0.328,0.606
+16,coin vs BTC timing,CS72,coin minus BTC (beta-1 hedge),,,,,,,,,299.0,0.835,59.2,2.7,1.14,0.719
+16,coin vs BTC timing,CS72_48h,coin trade (as traded),,,,,,,,,338.0,0.929,58.9,3.05,0.827,0.966
+16,coin vs BTC timing,CS72_48h,"BTC instead, same window",,,,,,,,,338.0,0.043,49.7,0.22,-0.172,0.122
+16,coin vs BTC timing,CS72_48h,coin minus BTC (beta-1 hedge),,,,,,,,,338.0,0.686,61.5,3.19,0.799,0.644
+16,coin vs BTC timing,CS24_core,coin trade (as traded),,,,,,,,,1625.0,0.512,55.9,3.97,0.617,0.421
+16,coin vs BTC timing,CS24_core,"BTC instead, same window",,,,,,,,,1625.0,0.123,50.6,1.3,0.295,-0.027
+16,coin vs BTC timing,CS24_core,coin minus BTC (beta-1 hedge),,,,,,,,,1625.0,0.189,54.1,2.44,0.122,0.247
+30,DSR with measured trials,bookE,N_eff of the book space,2.0,672.0,2.24,16.0,0.223,2.84,0.12,1.0,,,,,,
+30,DSR with measured trials,bookE,eigenvalues above Marchenko-Pastur,16.0,672.0,2.24,16.0,0.223,2.84,0.4,1.0,,,,,,
+30,DSR with measured trials,bookE,N = every book in the space,672.0,672.0,2.24,16.0,0.223,2.84,0.7,1.0,,,,,,
+30,DSR with measured trials,current,N_eff of the book space,2.0,672.0,2.24,16.0,0.223,2.27,0.12,1.0,,,,,,
+30,DSR with measured trials,current,eigenvalues above Marchenko-Pastur,16.0,672.0,2.24,16.0,0.223,2.27,0.4,1.0,,,,,,
+30,DSR with measured trials,current,N = every book in the space,672.0,672.0,2.24,16.0,0.223,2.27,0.7,0.9999,,,,,,
+30,coin vs BTC timing,FlushB,coin trade (as traded),,,,,,,,,1503.0,1.89,53.7,4.67,0.997,2.789
+30,coin vs BTC timing,FlushB,"BTC instead, same window",,,,,,,,,1503.0,0.35,54.4,1.85,0.27,0.43
+30,coin vs BTC timing,FlushB,coin minus BTC (beta-1 hedge),,,,,,,,,1503.0,1.34,46.9,3.99,0.527,2.158
+30,coin vs BTC timing,FlushStd,coin trade (as traded),,,,,,,,,1227.0,2.477,55.9,5.2,1.293,3.636
+30,coin vs BTC timing,FlushStd,"BTC instead, same window",,,,,,,,,1227.0,0.554,56.7,2.62,0.423,0.682
+30,coin vs BTC timing,FlushStd,coin minus BTC (beta-1 hedge),,,,,,,,,1227.0,1.723,47.8,4.26,0.67,2.754
+30,coin vs BTC timing,HotFlushC,coin trade (as traded),,,,,,,,,573.0,4.353,61.3,5.17,2.413,6.144
+30,coin vs BTC timing,HotFlushC,"BTC instead, same window",,,,,,,,,573.0,0.839,59.5,2.64,0.738,0.933
+30,coin vs BTC timing,HotFlushC,coin minus BTC (beta-1 hedge),,,,,,,,,573.0,3.314,54.1,4.6,1.475,5.01
+30,coin vs BTC timing,HotFlushD,coin trade (as traded),,,,,,,,,355.0,5.957,70.1,6.09,3.962,7.45
+30,coin vs BTC timing,HotFlushD,"BTC instead, same window",,,,,,,,,355.0,1.396,63.7,3.45,1.518,1.304
+30,coin vs BTC timing,HotFlushD,coin minus BTC (beta-1 hedge),,,,,,,,,355.0,4.361,60.6,5.18,2.245,5.945
+30,coin vs BTC timing,LiqBuy,coin trade (as traded),,,,,,,,,274.0,4.588,71.5,3.69,4.115,5.047
+30,coin vs BTC timing,LiqBuy,"BTC instead, same window",,,,,,,,,274.0,1.727,74.5,2.76,1.101,2.334
+30,coin vs BTC timing,LiqBuy,coin minus BTC (beta-1 hedge),,,,,,,,,274.0,2.661,57.3,2.14,2.814,2.513
+30,coin vs BTC timing,MOM20_7d,coin trade (as traded),,,,,,,,,1807.0,1.505,49.4,3.71,0.298,2.282
+30,coin vs BTC timing,MOM20_7d,"BTC instead, same window",,,,,,,,,1807.0,0.422,51.2,1.85,0.231,0.545
+30,coin vs BTC timing,MOM20_7d,coin minus BTC (beta-1 hedge),,,,,,,,,1807.0,0.882,42.0,2.75,-0.134,1.537
+30,coin vs BTC timing,CS72,coin trade (as traded),,,,,,,,,582.0,1.348,59.8,3.16,0.356,1.637
+30,coin vs BTC timing,CS72,"BTC instead, same window",,,,,,,,,582.0,0.097,49.0,0.42,-0.565,0.289
+30,coin vs BTC timing,CS72,coin minus BTC (beta-1 hedge),,,,,,,,,582.0,1.052,62.2,3.51,0.721,1.148
+30,coin vs BTC timing,CS72_48h,coin trade (as traded),,,,,,,,,673.0,1.092,56.8,3.47,0.626,1.222
+30,coin vs BTC timing,CS72_48h,"BTC instead, same window",,,,,,,,,673.0,-0.023,47.8,-0.14,-0.251,0.041
+30,coin vs BTC timing,CS72_48h,coin minus BTC (beta-1 hedge),,,,,,,,,673.0,0.915,61.5,3.91,0.677,0.981
+30,coin vs BTC timing,CS24_core,coin trade (as traded),,,,,,,,,1625.0,0.512,55.9,3.97,0.617,0.421
+30,coin vs BTC timing,CS24_core,"BTC instead, same window",,,,,,,,,1625.0,0.123,50.6,1.3,0.295,-0.027
+30,coin vs BTC timing,CS24_core,coin minus BTC (beta-1 hedge),,,,,,,,,1625.0,0.189,54.1,2.44,0.122,0.247
