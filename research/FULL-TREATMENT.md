@@ -48,6 +48,8 @@ Pick 1–2 versions: a high-volume one and a high-quality one.
 
 **Step 11 — What kills it** (`kill.py`, `kill2.py`). Drawdown episodes deeper than 8–10%: start, bottom, depth, time to recover, what BTC looked like (30-day return, distance from 90-day high). Trade-level loser profile. Pause rules (BTC run-up, BTC bear leg, losing streak, clustering caps, second-day signals) tested on the account, not per trade. Most pause rules cost more than they save; report that honestly.
 
+**Step 12a — Quant sizing and risk** (`quant/code/quant.py` as the template). Signal-strength sizing, regime-conditional sizing, drawdown throttle, heat cap, Monte Carlo block-bootstrap of the trade sequence (median and 90th-pct max drawdown, P(−30%), P(−50%)), walk-forward halves. Adopt only what moves Sharpe or drawdown; so far: signal-strength sizing yes, throttle no, vol-target no (`quant/QUANT.md`).
+
 **Step 12 — Gates from the playbook** (`gates.py`). ADX bands (<20 / 20–25 / >25, with DI direction), ATR vs its median (compressed / normal / expanded), vol-expanding-and-trending. Kelly from the measured trades (quarter-Kelly is the ceiling). So far only "compressed ATR = dead zone" is consistent.
 
 **Step 13 — Further hypotheses on the trade** (`hypotheses.py`). 10–12 one-line ideas specific to the mechanism (persistence, longer windows, combined flags, alternative exits). Each reported win or lose.

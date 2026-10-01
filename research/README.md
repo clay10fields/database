@@ -16,6 +16,7 @@ train/test halves, coins the rule was never built on). Every number has a script
 | liquidations/ | liquidation spikes (daily, 2019–2026) | **long-liq spike = 3-day buy**, +2.1%, holds across 7 years; never short a short squeeze (−2.5%) |
 | misc/ | laggards, weekend, ETF flows, grid leads | dead, except crowd-short-alone as a mild long tailwind |
 | hedging/ | BTC hedge, seven ways | all lower the edge; the hedge that works is running both trades |
+| quant/ | sizing and risk techniques on the book | signal-strength sizing adopted; drawdown throttle, vol targeting rejected; Monte Carlo says plan for −30% |
 | book/ | both trades on one $5K account | Sharpe 2.6 combined vs 1.7 alone; drawdown unchanged |
 | crowding-2026-10-01/, step5-placebos-2026-10-01/, coin-types-2026-10-01/, batch1-2026-10-01/ | the earlier work these build on | see their NOTES / PREREG |
 | squeeze-2026-09-30/, regimes-2026-09-30/, binance_2021/, grok-regime-docs/, evidence-review/ | the 2026-09-30 squeeze study (level-break fade: later failed placebos) | archive |
