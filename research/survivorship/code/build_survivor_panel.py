@@ -9,7 +9,7 @@ _RT=os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)),'../
 # resolve from this file, not the cwd: FULL-TREATMENT says every script runs from its own folder
 spec=importlib.util.spec_from_file_location('B',os.path.join(_RT,'research','crowding-2026-10-01','build.py'))
 B=importlib.util.module_from_spec(spec); spec.loader.exec_module(B)
-B.R='raw/binance_vision'
+B.R=os.path.join(_RT,'raw','binance_vision')  # absolute: this script runs from its own folder
 DEAD={
     'ATOM':['ATOMUSDT'],
     'EOS':['EOSUSDT'],

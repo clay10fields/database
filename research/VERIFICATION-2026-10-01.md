@@ -32,12 +32,22 @@ own CSVs with different numbers is a reproducibility failure.
 
 | outcome | n | meaning |
 |---|---:|---|
-| **reproduce exactly** | **69** | re-ran, every committed CSV byte-identical |
-| could not run here | 5 | need `data.binance.vision`, blocked by this environment's egress policy |
-| path bug, now fixed | 2 | ran only from the repo root, not from their own folder as documented |
+| **reproduce exactly** | **71** | re-ran, every committed CSV byte-identical |
+| could not run here | 3 | the token-unlock scripts; need `data.binance.vision`, blocked by this environment's egress policy |
+| path bugs, now fixed | 2 scripts / 4 instances | ran only from the repo root, not from their own folder as documented |
 | overwrite a shared result file | 3 | run order decides what ends up committed |
 
-**No script produced different numbers from the same inputs.** Every reproducible result in this repo reproduces.
+> **Correction, same day.** The first version of this file reported 69 reproducing and 5 blocked, counting Step 17
+> survivorship among the blocked. That was wrong, and the cause was my own mistake twice over: when consolidating the
+> `chatgpt-*` branches I took `research/survivorship/` from `chatgpt-step17-survivorship` but **not the 5,156 raw
+> Binance Vision files the same branch added** for ATOM/EOS/MATIC/FTT/LUNA — so the control data was never missing from
+> the repo, only from my branch. And the path fix below was incomplete: I fixed the `importlib` path in both builders
+> and missed a second cwd-relative line, `B.R='raw/binance_vision'`, in each. With the raw data fetched and both lines
+> fixed, all five control coins build and **`survivorship.py` reproduces its committed CSVs exactly** (n=20 CS72 at
+> +2.62% edge, n=154 Flush-B at +0.76%, t 1.34 / 1.02 — matching `SURVIVORSHIP.md`). Step 17 is verified, not blocked.
+> Only the three token-unlock scripts remain unverifiable here.
+
+**No script produced different numbers from the same inputs.** (Step 17 survivorship included, after the correction below.) Every reproducible result in this repo reproduces.
 That is the main finding and it is a good one: the two engines' headline numbers (CS72 +1.45%/trade, Flush-B
 +1.80%/trade), the book (Sharpe 2.6), the playbook sizing (Sharpe 2.97), the quant sizing, the LIQF work, Steps 20-28
 — all re-ran clean.
@@ -61,15 +71,14 @@ cannot swallow them. Verified: all three abort, `git status` shows zero modified
 ### 2. The token-unlock numbers are reported, not verified
 Because of the same egress block, **the unlock study cannot be reproduced in this environment at all.**
 `TOKEN-UNLOCKS.md` was written from committed CSVs that could not be re-run — which is precisely the standard the
-earlier review held ChatGPT's work to. A warning now sits at the top of that file. The same applies to Step 17
-survivorship (`build_survivor_panel.py` builds nothing without the archive), so its +0.76% off-universe Flush edge is
-also unverified here.
+earlier review held ChatGPT's work to. A warning now sits at the top of that file.
 
-Both need one run somewhere with archive access to clear.
+The token-unlock study needs one run somewhere with archive access to clear. **Step 17 survivorship does not** — see
+the correction above; it reproduces exactly once the raw control data is present.
 
 ### 3. Two scripts only ran from the repo root (fixed)
-`crowd-short/code/build_new.py` and `survivorship/code/build_survivor_panel.py` resolved
-`research/crowding-2026-10-01/build.py` against the current working directory. `FULL-TREATMENT.md` §"How to run
+`crowd-short/code/build_new.py` and `survivorship/code/build_survivor_panel.py` each had **two** cwd-relative
+paths: the `importlib` load of `research/crowding-2026-10-01/build.py`, and `B.R='raw/binance_vision'`. `FULL-TREATMENT.md` §"How to run
 things" and the handoff both say every script runs from its own folder — these two threw `FileNotFoundError` when run
 that way, and took four dependent scripts down with them (`coinstate.py`, two `newcoins.py`, `survivorship.py`).
 
@@ -104,7 +113,7 @@ missing from the summary that travelled** — the hand-picked Flush universe beh
 lost on the way to the top-level file. That is a documentation discipline problem, not an integrity one.
 
 ## Still unverified after this sweep
-1. Token unlocks (3 scripts) and Step 17 survivorship (2 scripts) — need one run with `data.binance.vision` access.
+1. Token unlocks (3 scripts) — need one run with `data.binance.vision` access. Step 17 survivorship is now verified.
 2. The `deep_results.csv` ownership collision, deliberately left for a separate change.
 3. Everything that is forward-looking by nature: Step 24 venue leakage, real venue depth, and the live records of the
    four paper books, which cannot start accumulating until the hourly recorder runs on its own.
