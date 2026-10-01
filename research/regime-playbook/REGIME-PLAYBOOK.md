@@ -48,8 +48,31 @@ accumulating each strategy's live edge *by regime* — which forward-validates t
 there is a live record, is to turn the green/yellow/red into an explicit size multiplier per strategy per regime
 (the playbook grid in `research/playbook/` already has the CVaR/Kelly sizing math per cell to plug in).
 
+## Does the finer R1–R5 framework earn its keep? (`code/regime_r5.py`)
+The 2026-09-30 handoff asked for A/B/C as the primary regime axis (the evidence review says three regimes is all
+the data supports) with Grok's R1–R5 kept as a **finer labeling to test whether the extra states earn their keep.**
+I mechanized the Volume-Zone scorecard on BTC: directionality (ADX 14, efficiency ratio 30), volatility
+(ATR14 / median50), and an auction axis (daily value-area / POC overlap + migration). The auction axis is built
+from **4h quote-volume, a proxy for true volume-at-price**, which the repo does not record — treat it as approximate.
+
+Verdict: **it earns part of its keep, as a refinement of A/B/C, not a replacement.**
+* **Most bars are TRANSITION** (6,345 of ~10,400) — the mechanical "mixed score → no trade." Only ~40% of history
+  gets a clean R-label.
+* **The one thing it adds that the coarse clock hid:** it splits Calm into **R1 balance** (CS72 **+2.66**/trade) vs
+  **R5 compression** (CS72 **−1.15**, Flush −0.31, MOM20 −0.89 — *everything* loses). Compression (coiled, low-ADX,
+  sub-0.85 vol) is the genuinely dead season; ordinary balance still pays CS72. The 4-state "Calm" averaged these
+  together and hid it. **R5 = stand down** is a real, mechanism-sensible flag worth carrying.
+* **The rest is re-labeling.** R3 volatile-trend (CS72 +3.56, MOM20 +4.29) and R4 chaos (Flush +2.17, MOM20 +6.42)
+  are almost entirely the 4-state "Stress" under finer names (cross-tab: R3 is 486/600 Stress+Trend, R4 is 137/217
+  Stress). They confirm the Stress column, they don't separate it further in a way that changes the trade.
+
+So: keep **A/B/C (≈ the 4-state clock) as the deployment axis**, and add **R5-compression as an explicit "stand down"
+overlay** on top of Calm. Adopting all five regimes buys little beyond that one split and spends sample doing it.
+
 ## Caveats
 * These per-regime edges are measured on the same history the strategies were built on, so treat them as the
   *shape* of each strategy's season, not precise forward numbers. The live regime-tagged ledger is the test.
 * Regime is detected on BTC with hysteresis; it lags turns by a few bars by design (to avoid whipsaw).
 * Trend-down and the thinner stress cells have fewer spells; weight them less.
+* R1–R5 auction axis is a quote-volume proxy for volume-at-price (not recorded); the R5-compression split is the
+  only part robust enough to act on, and it leans on volatility + ADX, not the auction proxy.

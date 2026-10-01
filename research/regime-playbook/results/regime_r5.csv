@@ -1,0 +1,19 @@
+strategy,r5,edge,n
+CS72,R5 compression,-1.15,83
+CS72,R1 balance,2.66,170
+CS72,R2 trend,1.25,214
+CS72,R3 volatile-trend,3.56,44
+CS72,R4 chaos,-1.37,24
+CS72,TRANSITION,1.09,1018
+Flush-B,R5 compression,-0.31,161
+Flush-B,R1 balance,0.0,232
+Flush-B,R2 trend,1.8,553
+Flush-B,R3 volatile-trend,0.81,605
+Flush-B,R4 chaos,2.17,188
+Flush-B,TRANSITION,0.91,1439
+MOM20,R5 compression,-0.89,502
+MOM20,R1 balance,0.73,865
+MOM20,R2 trend,-0.5,3106
+MOM20,R3 volatile-trend,4.29,1142
+MOM20,R4 chaos,6.42,406
+MOM20,TRANSITION,0.24,8687
