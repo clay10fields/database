@@ -1,7 +1,9 @@
 # database
 
+The job is an edge on the coins that can be traded, Kraken and Kalshi. Paper only. No orders. Regime before the trade. One idea at a time. A close miss stays. Do not add to the current book from a backtest. The rules a new session must already know are in `CLAUDE.md`.
+
 Everything recorded, everything derived, everything studied — for the Kraken-US / Kalshi perp list:
-BTC ETH SOL XRP ADA DOGE LTC DOT LINK AAVE AVAX BCH HBAR SHIB XLM XTZ.
+BTC ETH SOL XRP ADA DOGE LTC DOT LINK AAVE AVAX BCH HBAR SHIB XLM XTZ, plus the watcher names that do not yet have liquidation history: ZEC NEAR ALGO WLD RENDER.
 
 ## Why this exists
 Free history for the variables that matter is short: Coinalyze keeps ~60–80 days of hourly OI,
