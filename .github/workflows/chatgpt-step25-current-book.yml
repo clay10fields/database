@@ -1,0 +1,43 @@
+name: ChatGPT Step 25 Current Book Refresh
+
+on:
+  push:
+    branches: [chatgpt-liqf-readmission-corrected-book]
+    paths:
+      - 'research/liquidation-safety/code/current_book_refresh.py'
+      - '.github/workflows/chatgpt-step25-current-book.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  safety:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install numpy pandas scipy
+      - name: Prepare panel path
+        run: mkdir -p /home/claude
+      - name: Build 4h panel
+        run: |
+          cd research/crowding-2026-10-01
+          python build.py
+          cp /home/runner/panel4h.pkl /home/claude/panel4h.pkl 2>/dev/null || true
+          find /home/runner -name panel4h.pkl -print -quit | xargs -r -I{} cp {} /home/claude/panel4h.pkl
+      - name: Run corrected-book Step 25
+        run: python research/liquidation-safety/code/current_book_refresh.py
+      - name: Commit results
+        run: |
+          git config user.name 'chatgpt-research'
+          git config user.email 'noreply@openai.com'
+          git add research/liquidation-safety/results/current_book_*.csv
+          if git diff --cached --quiet; then echo 'No result changes'; else
+            git commit -m 'research: refresh Step 25 on corrected book'
+            git push
+          fi
