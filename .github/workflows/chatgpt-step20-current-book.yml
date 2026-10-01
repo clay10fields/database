@@ -36,5 +36,6 @@ jobs:
           git add research/events/results/current_book_*.csv
           if git diff --cached --quiet; then echo 'No result changes'; else
             git commit -m 'research: refresh Step 20 on corrected book'
+            git pull --rebase origin chatgpt-liqf-readmission-corrected-book
             git push
           fi
