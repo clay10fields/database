@@ -23,27 +23,15 @@ jobs:
         run: python3 collectors/coinalyze_hourly.py --out raw/coinalyze_1h
         continue-on-error: true
       - name: record Kraken futures
-        env:
-          KRAKEN_API_KEY: ${{ secrets.KRAKEN_API_KEY }}
-          KRAKEN_API_SECRET: ${{ secrets.KRAKEN_API_SECRET }}
         run: python3 collectors/kraken_hourly.py --out raw/kraken_1h
         continue-on-error: true
       - name: record Coinbase spot
-        env:
-          COINBASE_API_KEY: ${{ secrets.COINBASE_API_KEY }}
-          COINBASE_API_SECRET: ${{ secrets.COINBASE_API_SECRET }}
         run: python3 collectors/coinbase_hourly.py --out raw/coinbase_1h
         continue-on-error: true
       - name: record Binance US spot
-        env:
-          BINANCE_US_API_KEY: ${{ secrets.BINANCE_US_API_KEY }}
-          BINANCE_US_API_SECRET: ${{ secrets.BINANCE_US_API_SECRET }}
         run: python3 collectors/binance_us_hourly.py --out raw/binance_us_1h
         continue-on-error: true
       - name: record Kalshi perps
-        env:
-          KALSHI_KEY_ID: ${{ secrets.KALSHI_KEY_ID }}
-          KALSHI_PRIVATE_KEY: ${{ secrets.KALSHI_PRIVATE_KEY }}
         run: python3 collectors/kalshi_hourly.py --out raw/kalshi_1h
         continue-on-error: true
       - name: rebuild derived panels (1h 4h 8h 12h 1d)
