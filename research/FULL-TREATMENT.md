@@ -59,6 +59,36 @@ Add the idea to `research/README.md` and, if it survives, to `research/book/` (t
 
 **Step 15 — Verify.** Hand-check 3 random trades against the panel (entry, exit, funding, fee). Re-run every script from a clean shell. Confirm the CSVs match the tables in the file.
 
+
+## 1b. Steps added 2026-10-01 (not yet run on the first two trades; run them, then they're part of the checklist)
+**Step 16 — Look-ahead audit.** For every feature, prove it was known at the bar close it's used on: shift each input forward one bar and confirm the edge *drops* (if it rises, something leaks). Check the recorder's live columns match the archive's definitions (funding units, ratio timing) with a side-by-side on the overlap days.
+
+**Step 17 — Survivorship.** The 16 coins are the ones Kraken lists *today*. Pull the Binance archive for coins that were big in 2022 and have since faded or been delisted (e.g. LUNA, FTT, MATIC, EOS, ATOM) and run both trades on them. If the edge holds on the dead and the fading, it isn't a survivor effect.
+
+**Step 18 — Parameter plateau.** Every threshold ±1 step (crowd 0.85/0.90/0.95, hold ±1 bar, OI −6/−8/−10%, stop 4/5/6%). A real edge sits on a plateau; if one setting is a spike and its neighbours are flat, it's noise. Report the grid.
+
+**Step 19 — Multiple-testing ledger.** Count every variant tried on the hypothesis (it's usually 50–150) and report the t the best one would need to survive that many tries. Say it in the file.
+
+**Step 20 — Event behaviour.** The named days: FTX (Nov 2022), the Aug 5 2024 flush, the Oct 10 2025 liquidation day, FOMC days, big unlock days. How did each open trade do, and did the signal fire into them? The book's worst months, trade by trade.
+
+**Step 21 — Clock effects.** Signal hour (00/04/08/12/16/20 UTC: US vs Asia session), day of week, and distance to the next funding settlement. Cheap, and funding-settlement proximity is a known cost on perps.
+
+**Step 22 — Diversification measured, not assumed.** Correlation of each trade's daily P&L with BTC and with the other trades; the book's Sharpe with each trade removed. Add a third trade only if it lowers the book's drawdown or raises its Sharpe.
+
+**Step 23 — Capacity and slippage.** Position size vs the coin's 4h volume at the signal (participation rate); fills at the next bar's open instead of the signal close as a slippage proxy; what the book does at $25K / $100K with whole contracts and Kraken US depth. The flush long fires when books are thinnest: price that in.
+
+**Step 24 — Venue leakage.** Kraken US funding is daily at 15:00 CT in dollars per contract; Binance is 8h in rate terms; Kalshi 8h. Re-run the trade with the venue's funding instead of Binance's once 90 days of venue data exist. Also the basis between the venue and Binance at signal time.
+
+**Step 25 — Liquidation safety on the actual venue.** At the planned sizes (up to 50% notional × 5 open) with isolated vs cross margin, what adverse move liquidates the account? Use the Sizer formulas (`crowd-short/FORMULAS.md` references). The planned stops must sit well inside the liquidation distance.
+
+**Step 26 — The live protocol, written before going live.** (a) Sample size: with per-trade sd ≈ 6% and expected +1.5%, ~65 trades give t ≈ 2 — that's the minimum live record before sizing up. (b) Expected-vs-realized: log slippage, funding and fees per trade against the backtest's assumptions. (c) Kill criteria decided now: e.g. 40 live trades with average below +0.3%, or a drawdown past the Monte Carlo 90th percentile (−28%) → pause and re-examine. (d) The mid-trade dashboard: the "symptoms" to watch while in a trade (crowd re-crowding, OI rebuilding, spot flow flipping, BTC regime change), each with the number from path.py that says whether it changes the expected outcome.
+
+**Step 27 — Universe refresh rule.** Coins enter and leave by rule, not by name: tradeable on Kraken/Kalshi, Coinalyze coverage, ≥ 180 days of positioning data, and (for the short) up over the last 6 months. Re-run yearly; log what changed.
+
+**Step 28 — Regime transitions.** Performance in the 5 bars before and after a BTC regime change (calm→stress, trend→calm). Signals that fire *into* a regime change are the ones to size down.
+
+Run order for the backlog on the two live trades: 16, 18, 26 first (they decide whether to trust anything), then 20, 22, 23, 25, then the rest.
+
 ## 2. What the screens have already settled (don't re-test; cite)
 * Shorting a short squeeze, shorting extreme funding, chasing a breakout with OI, buying a laggard, weekend longs, ETF-flow days, the daily crowding basket, the level-break fade, martingale, Grid cell scores: **dead** (see `funding/`, `liquidations/`, `misc/`, `step5-placebos-2026-10-01/`, `crowd-short/FORMULAS.md`).
 * Big accounts alone: nothing. Big accounts vs crowd: long side only, a lead (`big-accounts/`).
