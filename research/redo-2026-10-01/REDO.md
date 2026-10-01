@@ -1,7 +1,7 @@
 # Redo 2026-10-01 — killed ideas walked again
 
 Written in this repo only. Not in crypto-research-machine. Not in hype-pressure-kit.
-A loss on the original wording is not a ban. Section 5 is the alterations.
+A loss on the original wording is not a ban. Section 5 is the alterations. Section 6 is the pairs.
 Fee 0.10% round trip. t clustered by entry day. No orders.
 
 ## 1. Level-break fade — not a trade
@@ -26,20 +26,25 @@ Hedging that long with BTC cuts it from +0.75% to +0.15%. Martingale on it wipes
 
 ## 5. Alterations of the rules that lost on the first wording
 Same daily archive, 16 coins, 2019-09-12 to 2026-10-01.
+Shorting a short-liquidation spike stays red under every alteration (delay, chop, compressed, funding not hot, established coins, after a run-up). Long that spike: +2.34% over 3 days, t 6.00. Holes are 2022 and 2026.
+Crowd-high short stays red except compressed vol (+0.33%, t 1.19; with funding below the 70th, +0.60%, t 2.00). That flip is 2020 and 2022. 2024 is -2.38%.
+Perp-led rally short stays red under every alteration. Spot-led rally long, left as worded: +1.34%, t 3.01.
 
-Shorting a short-liquidation spike, base: 2246 trades, -2.54%, t -6.51.
-Wait a day: -2.03%. Short only if the next day is still up: -2.24%. Chop only: -1.14%. Compressed only: -1.80%.
-Funding not extreme: -2.07%. Established coins: -2.07%. After a +15% week: -4.09%, worse.
-No short version flipped. Long the same spike, 3 days: +2.34%, t 6.00, 5 years positive. 7 days: +4.24%, t 7.05.
-Holes are 2022 (-0.44%) and 2026 (-0.22%). Same mechanism as the liquidation buy.
+## 6. Complementary pairs
+Same daily archive. Hold 3 days. Account is $5k, 10% of equity, max 5 open, no second position in the same coin. Daily bars, no funding. The dollar end is a ranking, not a forecast.
 
-Crowd at its 90-day high, short, base: 5301 trades, -0.59%, t -2.94.
-Price already up, funding extreme, chop, a one-day delay, spot not buying: all still red.
-The one flip is compressed vol: 2055 trades, +0.33%, t 1.19. Add funding below its 70th: +0.60%, t 2.00, 1187 trades.
-That flip is 2020 and 2022. 2024 is -2.38%. Lead only, and not outside a quiet bear.
+Alone: long-liq buy +2.03% (t 4.29). Short-liq spike, bought, +2.34% (t 6.00). Crowd-low long +0.87% (t 3.23). Funding-low long +0.75% (t 2.20). Spot-led long +1.36% (t 2.94). Quiet crowd-high short +0.33% (t 1.19).
 
-Perp-led rally short, base: 164 trades, -2.35%, t -2.36.
-Funding hot, after a run-up, chop, wait a day: all still red. After a +15% week it is -5.80%.
-The long side of that bar: +2.15%, t 2.16. Spot-led rally long, unaltered: +1.34%, t 3.01, 969 trades. Restricting it to expanded vol or a down week made it worse.
+Same coin, same day, better together:
+Long-liq buy AND crowd already low: 304 trades, +4.32%, t 3.38. The buy alone without that crowd filter is +1.63%.
+Both liquidation sides on the same day (longs and shorts both flushed): 549 trades, +4.36%, t 3.71.
+Crowd-low AND funding-low: 291 trades, +1.62%, t 1.92. Better than either alone, smaller sample.
+Spot-led does not stack. It fires on a different day (2% overlap with the liq buy) and adding crowd-low cuts it to +1.17%, t 0.74.
 
-Altering did not save the shorts. It saved the other side, which is the book already running.
+Side by side, not the same trade:
+Short-liq long alone ends $65,268, drop -24.7%. Add crowd-low next to it: ends $107,448, drop -33.9%. More money, deeper hole.
+Both liq sides together: ends $101,582, drop -30.7%.
+Liq-buy plus the quiet crowd short: ends $41,749, drop -25.0%. The short is the diversifier. It does not add much money. It does not deepen the hole.
+Crowd-low alone has the deepest hole, -34%.
+
+The pair that belongs together is the liquidation buy with the crowd already short. Same mechanism, both conditions. The pair that sits next to it without digging a deeper hole is the quiet-tape crowd short. Spot-led is a separate day, leave it alone.
