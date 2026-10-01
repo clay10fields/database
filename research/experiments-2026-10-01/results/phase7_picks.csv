@@ -1,0 +1,7 @@
+panel,fold,chosen,flush,crowd,cs24
+30,sel 2022-2023 -> test 2024,CS72_48h+Flush_nc50_deep+CS24_all,Flush_nc50_deep,CS72_48h,CS24_all
+30,sel 2022-2024 -> test 2025,CS72_48h+Flush_nc50_deep+CS24_core+LiqBuy,Flush_nc50_deep,CS72_48h,CS24_core
+30,sel 2022-2025 -> test 2026,CS72_48h+Flush_nc50_deep+CS24_core+LiqBuy,Flush_nc50_deep,CS72_48h,CS24_core
+16,sel 2022-2023 -> test 2024,CS72_48h+Flush_nc30_deep+CS24_all+BigLong,Flush_nc30_deep,CS72_48h,CS24_all
+16,sel 2022-2024 -> test 2025,CS72_48h+Flush_nc30+CS24_all+LiqBuy,Flush_nc30,CS72_48h,CS24_all
+16,sel 2022-2025 -> test 2026,CS72_48h+Flush_nc40_deep+CS24_all+LiqBuy,Flush_nc40_deep,CS72_48h,CS24_all

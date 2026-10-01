@@ -96,3 +96,21 @@ FlushStd + filtered LiqBuy, season-sized, 8 slots, Flush cap 3. Next: walk-forwa
 * **Caveat:** this validates the *ranking*, not the *invention*. FlushStd, CS24_core and CS72_48h were designed today on data
   that includes the unseen window, so the roster carries hindsight (CS24_core most directly). Stricter test next: multi-fold
   walk-forward with design choices made inside each fold; then the forward paper record.
+
+## Phase 7 — STRICT multi-fold walk-forward, funding included · `code/phase7.py`, `results/phase7*.csv`
+Funding now in every 4h trade (exact settlements in bars i+1..i+H; longs pay positive funding). Inside each fold every design
+choice is made on selection data only (Flush compression threshold + deep exception, CS72 hold, CS24 universe, stepwise
+LiqBuy/BigLong/MOM20_7d), then tested on the next unseen year. Folds: sel 2022-23 → 2024; sel 2022-24 → 2025; sel 2022-25 → 2026 (Jan–Aug).
+* **Funding** cuts Sharpe ~0.2–0.3 but keeps the order (full period, finalist vs current book: 30c 2.63 vs 2.27; 16c 2.76 vs 2.12).
+* **Strict out-of-sample, fold-chosen vs current book (unseen-year Sharpe):**
+  30c: 2024 3.60 vs 3.78 · 2025 **3.46 vs 2.19** · 2026 1.26 vs 1.32 → average **2.77 vs 2.43**.
+  16c: 2024 3.23 vs 2.95 · 2025 2.23 vs 1.76 · 2026 2.08 vs **2.74** → average **2.51 vs 2.48 (a tie)**.
+* **The improvement is real on average but modest and year-dependent** — it is mostly 2025. Earlier phases (built with
+  hindsight) overstated it: the hindsight finalist scored 4.73 in 2024 vs 3.60 for the honest fold choice.
+* **Robust design choices (made from the past, every fold):** CS72 at 48h (6/6), Flush stand-down in compression (6/6;
+  threshold 0.30–0.50, deep exception 4/6), add CS24 (6/6), LiqBuy (4/6 — every fold whose past includes 2024). BigLong 1/6,
+  MOM20_7d 0/6.
+* 2026 YTD is weak for everything on 30c (~1.3) — consistent with the current thin/calm season.
+
+**Honest read of the whole day:** the components the past keeps choosing are the durable findings. The size of the gain over
+the current book is modest out of sample (~+0.3 Sharpe on 30c, ~0 on 16c), not the +0.6–1.0 the in-sample tables suggested.
