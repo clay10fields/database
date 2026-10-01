@@ -1,0 +1,34 @@
+name: recorder-heartbeat
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "11 */3 * * *"
+permissions:
+  actions: write
+  contents: read
+concurrency:
+  group: heartbeat
+  cancel-in-progress: false
+jobs:
+  beat:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    steps:
+      - name: dispatch record-hourly now and at :18 every hour
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          end=$(( $(date +%s) + 340*60 ))
+          while true; do
+            gh workflow run record-hourly.yml --repo "$REPO" --ref main && echo "dispatched $(date -u +%FT%TZ)" || echo "dispatch failed"
+            now=$(date +%s); next=$(( (now/3600)*3600 + 18*60 )); [ "$next" -le "$now" ] && next=$((next+3600))
+            [ "$next" -ge "$end" ] && break
+            sleep $((next-now))
+          done
+      - name: hand off to the next heartbeat
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: gh workflow run recorder-heartbeat.yml --repo "$REPO" --ref main
