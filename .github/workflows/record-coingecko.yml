@@ -1,0 +1,29 @@
+name: record-coingecko
+on:
+  schedule:
+    - cron: "41 2 * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: record-coingecko
+  cancel-in-progress: false
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: CoinGecko daily market cap
+        env:
+          COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
+        run: python3 collectors/coingecko_daily.py
+      - name: commit
+        run: |
+          git config user.name "database-recorder"
+          git config user.email "recorder@users.noreply.github.com"
+          git add raw/marketcap
+          git diff --cached --quiet || git commit -qm "coingecko: $(date -u +%Y-%m-%d)"
+          git pull -q --rebase && git push -q
