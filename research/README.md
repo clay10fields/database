@@ -17,7 +17,7 @@ train/test halves, coins the rule was never built on). Every number has a script
 | misc/ | laggards, weekend, ETF flows, grid leads | dead, except crowd-short-alone as a mild long tailwind |
 | hedging/ | BTC hedge, seven ways | all lower the edge; the hedge that works is running both trades |
 | playbook/ | size and exit by regime, environment and token category; the loss-limiting math (CVaR, MAE, Kelly per cell) | **regime × signal-strength sizing adopted** (Sharpe 2.97); category sizing rejected |
-| live/ | the live protocol: sample sizes, kill criteria, mid-trade dashboard | written before any money is risked |
+| live/ | the live protocol: sample sizes, kill criteria, mid-trade dashboard | written before any money is risked; four candidate books now run in parallel via `collectors/paper_books.py` |
 | quant/ | sizing and risk techniques on the book | signal-strength sizing adopted; drawdown throttle, vol targeting rejected; Monte Carlo says plan for −30% |
 | book/ | both trades on one $5K account | Sharpe 2.6 combined vs 1.7 alone; drawdown unchanged |
 | **book/CURRENT-BOOK-2026-10-01.md** | the current two-engine build spec (CS72 + Flush-B; LIQF out) | **authoritative** — read with its two caveats |
@@ -31,7 +31,7 @@ train/test halves, coins the rule was never built on). Every number has a script
 | capacity/ | step 23 — participation and slippage stress | $5K fine; $25K needs depth logging; $100K not validated |
 | venue-leakage/ | step 24 — venue funding and basis | **blocked** until ~90d of Kraken/Kalshi history |
 | liquidation-safety/ | step 25 — margin buffers at planned sizes | no snapshot within 20% of modeled liquidation |
-| universe-refresh/ | step 27 — membership by rule, not by name | **CS72 yes; Flush-B now yes too** — the problem was concurrency: dynamic 16 + max 2 concurrent Flush gives Sharpe 2.71 vs the curated seven's 2.66 (`FLUSH-MEMBERSHIP-2026-10-01.md`); regime follow-up found the drawdown is made in **Calm**, and a post-hoc Calm-1 cap reaches Sharpe 2.78 at −11.80% DD (`FLUSH-REGIME-CAP-2026-10-01.md`) |
+| universe-refresh/ | step 27 — membership by rule, not by name | **CS72 yes; Flush-B now yes too** — the problem was concurrency: dynamic 16 + max 2 concurrent Flush gives Sharpe 2.71 vs the curated seven's 2.66 (`FLUSH-MEMBERSHIP-2026-10-01.md`); regime follow-up found the drawdown is made in **Calm**, and a post-hoc Calm-1 cap reaches Sharpe 2.78 at −11.80% DD (`FLUSH-REGIME-CAP-2026-10-01.md`); the mechanism version — cap on BTC vol compression — matches it on a plateau and keeps more return (`FLUSH-VOL-CAP-2026-10-01.md`) |
 | regime-transitions/ | step 28 — around BTC regime changes | no throttle; 2022-23 vs 2024-26 sign flip is forward-monitoring only |
 | token-unlocks/ | selling before the unlock | **LEAD**: pre-week −5.33% excess vs −1.64%, t −2.72, n 45; blocked on a point-in-time calendar |
 | crowding-2026-10-01/, step5-placebos-2026-10-01/, coin-types-2026-10-01/, batch1-2026-10-01/ | the earlier work these build on | see their NOTES / PREREG |

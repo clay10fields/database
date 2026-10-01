@@ -1,0 +1,9 @@
+book,coin,rule,entry_t,entry_utc,status,ret_pct,regime,btc_vol_pct,size_frac,admitted,why,contracts,notional,cost,pnl
+A_curated_nocap,XLM,CROWD_72H,1790798400,2026-09-30 20:00:00,open,,,,0.4375,True,,1,1132.7,1.29,
+A_curated_nocap,AAVE,CROWD_72H,1790827200,2026-10-01 04:00:00,open,,,,0.4187,True,,2,1658.1,2.41,
+B_dynamic_cap2,XLM,CROWD_72H,1790798400,2026-09-30 20:00:00,open,,,,0.4375,True,,1,1132.7,1.29,
+B_dynamic_cap2,AAVE,CROWD_72H,1790827200,2026-10-01 04:00:00,open,,,,0.4187,True,,2,1658.1,2.41,
+C_dynamic_calm1,XLM,CROWD_72H,1790798400,2026-09-30 20:00:00,open,,,,0.4375,True,,1,1132.7,1.29,
+C_dynamic_calm1,AAVE,CROWD_72H,1790827200,2026-10-01 04:00:00,open,,,,0.4187,True,,2,1658.1,2.41,
+D_dynamic_volcap,XLM,CROWD_72H,1790798400,2026-09-30 20:00:00,open,,,,0.4375,True,,1,1132.7,1.29,
+D_dynamic_volcap,AAVE,CROWD_72H,1790827200,2026-10-01 04:00:00,open,,,,0.4187,True,,2,1658.1,2.41,

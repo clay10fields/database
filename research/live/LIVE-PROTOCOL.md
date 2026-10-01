@@ -56,3 +56,25 @@ flush long cuts at 24h if down more than 8%, at 48h if not positive, otherwise t
 1. Recorder runs reliably (VPS) → 2. 120+ book paper trades logged → 3. monthly expected-vs-realized inside tolerance →
 4. one venue, smallest size that clears the contract minimum, 25% of planned size → 5. 40 live trades inside tolerance →
 6. full planned size. Any kill criterion resets to step 2.
+
+## Four candidate books run in parallel (added 2026-10-01)
+`collectors/paper_books.py` replays the paper signal stream through four admission policies at once. The signals
+are identical — only which Flush trades reach the account differs — so carrying all four costs bookkeeping and
+nothing else, and the live record decides instead of a backtest choice:
+
+| book | Flush universe | Flush concurrency cap | backtest Sharpe / max DD | why it is in |
+|---|---|---|---|---|
+| A_curated_nocap | curated seven | none | 2.659 / −12.94% | the current spec |
+| B_dynamic_cap2 | rule-based | 2 | 2.705 / −13.92% | predeclared fallback |
+| C_dynamic_calm1 | rule-based | 1 in Calm, else 2 | 2.784 / −11.80% | post-hoc; superseded by D |
+| **D_dynamic_volcap** | rule-based | 1 when BTC vol pct < 0.40, else 2 | 2.775 / −12.19% | mechanism version, on a plateau, declared in advance |
+
+Outputs: `derived/signals/books.csv`, `book_trades.csv` (every admitted *and rejected* signal with the reason),
+`books.md`. Runs hourly after `signals.py`. It places no orders and holds no credentials.
+
+The comparison that matters is **A against D**: A's −12.94% drawdown depends on seven coins chosen after seeing
+their results, D's does not. If D's live record holds, it is the book. Do not size up from a small sample in any of
+them — the sample-size and kill criteria above apply to each book separately.
+
+Backtest references: `research/universe-refresh/FLUSH-MEMBERSHIP-2026-10-01.md`, `FLUSH-REGIME-CAP-2026-10-01.md`,
+`FLUSH-VOL-CAP-2026-10-01.md`.

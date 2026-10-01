@@ -39,6 +39,9 @@ jobs:
       - name: paper signal watcher (no orders)
         run: python3 collectors/signals.py
         continue-on-error: true
+      - name: paper books — four admission policies on one signal stream (no orders)
+        run: python3 collectors/paper_books.py
+        continue-on-error: true
       - name: commit
         run: |
           git config user.name "database-recorder"

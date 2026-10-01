@@ -7,6 +7,10 @@ Evaluated at every 4h close (00, 04, 08, 12, 16, 20 UTC). Everything in a row is
   FLUSH_LONG   oi down > 8% in 24h and ls_pct < 0.5 -> long 72h (kept for continuity)
   FLUSH_B      curated 7 coins, >=180d positioning history, oi down >8% / crowd pct <0.30;
                cut at 24h if below -8%, at 48h if not positive, otherwise 72h.
+  FLUSH_D      same signal and exits on the RULE-BASED universe: every coin with >=180d positioning
+               history, no name list. Feeds the rule-based paper books in collectors/paper_books.py
+               (research/universe-refresh/FLUSH-MEMBERSHIP, -REGIME-CAP and -VOL-CAP). Logging only;
+               the concurrency caps live in the book layer, not here.
   CROWD_24H    base AND funding not extreme (fund_pct < 0.90; moved from 0.70 by the plateau step 2026-10-01) AND not within 3% of the 20-day high -> short, 24h
   CROWD_72H    CROWD_24H AND top-trader pct >0.70 AND >=180d positioning history
                AND positive 6-month price return -> short, 72h
@@ -24,6 +28,11 @@ klines_4h: highs, monthly to last month; fundingRate: monthly) and derived/panel
 
 spot_pct = spot taker-buy flow (2*sbv/sv-1, 24h mean) ranked against the coin's own history; a size rule, not a gate
 (research/spot-vs-perp): crowd short full size when spot_pct <= 0.6, flush long full size when >= 0.5. Seeded from the Binance spot archive before the recorder started.
+
+Every ledger row also carries the BTC market state at entry -- `regime` (Calm/Trend up/Trend down/Stress,
+the coin-types-2026-10-01/grid.py clock) and `btc_vol_pct` (20-bar log-return stdev ranked in its own
+trailing 250 bars) -- because the rule-based books cap Flush concurrency on those. Both are computed from
+BTC bars at or before the signal's close.
 
 Outputs (derived/signals/): ledger.csv, state.csv, new.md (same as before).
 """
@@ -46,8 +55,10 @@ MINP = 180           # 30 days minimum before a percentile is trusted
 FEE = 0.001
 MIN_HISTORY_DAYS = 180
 FLUSH_B_COINS = {"XLM", "SOL", "XRP", "HBAR", "AVAX", "AAVE", "BCH"}
-RULES = {"CROWD_SHORT": (-1, 6), "FLUSH_LONG": (1, 18), "CROWD_24H": (-1, 6), "CROWD_72H": (-1, 18), "FLUSH_B": (1, 18)}
+RULES = {"CROWD_SHORT": (-1, 6), "FLUSH_LONG": (1, 18), "CROWD_24H": (-1, 6), "CROWD_72H": (-1, 18),
+         "FLUSH_B": (1, 18), "FLUSH_D": (1, 18)}
 STOPPED = {"CROWD_24H", "CROWD_72H"}       # rules that use the close stop / hard stop / BTC pause
+FLUSH_TIMED = {"FLUSH_B", "FLUSH_D"}       # rules using the 24h/48h/72h time cuts instead of price stops
 OUT = "derived/signals"
 VB = "raw/binance_vision"
 
@@ -183,6 +194,37 @@ def bars(coin: str) -> pd.DataFrame | None:
     return live
 
 
+def btc_state(btc: pd.DataFrame | None) -> tuple[pd.Series, pd.Series]:
+    """BTC regime (grid.py clock) and 20-bar vol percentile, both from data at or before each close."""
+    if btc is None or len(btc) < 60:
+        return pd.Series(dtype=object), pd.Series(dtype=float)
+    c = btc.c
+    lr = np.log(c).diff()
+    vol = lr.rolling(20).std()
+    vol_pct = vol.rolling(250, min_periods=100).rank(pct=True)
+    vq90 = vol.rolling(250, min_periods=100).quantile(0.90)
+    vq75 = vol.rolling(250, min_periods=100).quantile(0.75)
+    er = (c - c.shift(30)).abs() / c.diff().abs().rolling(30).sum()
+    mv = c / c.shift(30) - 1
+
+    def hyst(enter, exitc, dwell=3):
+        out = np.zeros(len(enter), bool); on = False; since = 0
+        for i in range(len(enter)):
+            since += 1
+            if not on and enter[i] and since >= dwell:
+                on, since = True, 0
+            elif on and exitc[i] and since >= dwell:
+                on, since = False, 0
+            out[i] = on
+        return out
+
+    stress = hyst(np.nan_to_num((vol > vq90).values), np.nan_to_num((vol < vq75).values))
+    trend = hyst(np.nan_to_num((er > 0.35).values), np.nan_to_num((er < 0.22).values))
+    reg = np.where(stress, "Stress", np.where(trend, np.where(mv.values > 0, "Trend up", "Trend down"), "Calm"))
+    reg = np.where(np.isnan(vq90.values) | np.isnan(er.values), "", reg)
+    return pd.Series(reg, index=c.index), vol_pct
+
+
 def main() -> int:
     os.makedirs(OUT, exist_ok=True)
     old = set()
@@ -191,6 +233,7 @@ def main() -> int:
         old = set(zip(o.coin, o.rule, o.entry_t))
     btc = bars("BTC")
     pause = pd.Series(False, index=btc.index) if btc is None else (btc.c / pd.Series(btc.c.reindex(btc.index.values - 30 * 86400).values, index=btc.index) - 1 > 0.15).fillna(False)
+    btc_regime, btc_volpct = btc_state(btc)
     rows, state = [], []
     now = 0
     for coin in COINS:
@@ -207,12 +250,15 @@ def main() -> int:
                           ret24_pct=last.ret24 * 100, oi24_pct=last.oi24 * 100, ret6m_pct=last.ret6m * 100,
                           positioning_days=last.positioning_days, cs72_eligible=bool(cs_eligible.iloc[-1]),
                           flush_b_eligible=bool(fl_eligible.iloc[-1]),
-                          btc_pause=bool(pause.reindex([b.index[-1]]).fillna(False).iloc[0])))
+                          btc_pause=bool(pause.reindex([b.index[-1]]).fillna(False).iloc[0]),
+                          regime=(btc_regime.get(int(b.index[-1]), "") if len(btc_regime) else ""),
+                          btc_vol_pct=(btc_volpct.get(int(b.index[-1]), np.nan) if len(btc_volpct) else np.nan)))
         base = (b.ls_pct >= 0.9) & (b.ret24 > 0)
         c24 = base & (b.fund_pct < 0.9) & ~b.near_hi.astype(bool) & ~pause.reindex(b.index).fillna(False).astype(bool)
         sig = {"CROWD_SHORT": base, "FLUSH_LONG": (b.oi24 < -0.08) & (b.ls_pct < 0.5),
                "CROWD_24H": c24, "CROWD_72H": c24 & (b.top_pct > 0.7) & cs_eligible,
-               "FLUSH_B": (b.oi24 < -0.08) & (b.ls_pct < 0.3) & fl_eligible}
+               "FLUSH_B": (b.oi24 < -0.08) & (b.ls_pct < 0.3) & fl_eligible,
+               "FLUSH_D": (b.oi24 < -0.08) & (b.ls_pct < 0.3) & mature}
         T = b.index.values
         c = b.c.values
         h = b.h.values
@@ -226,7 +272,7 @@ def main() -> int:
                     continue
                 exit_t = int(T[i]) + hold * H4
                 px, how, j = None, "hold", None
-                if rule == "FLUSH_B":
+                if rule in FLUSH_TIMED:
                     j6 = pos.get(int(T[i]) + 6 * H4)
                     j12 = pos.get(int(T[i]) + 12 * H4)
                     j18 = pos.get(int(T[i]) + 18 * H4)
@@ -256,14 +302,19 @@ def main() -> int:
                                  status="closed" if px is not None else "open",
                                  ret_pct=r * 100, ls_pct=b.ls_pct.iloc[i], top_pct=b.top_pct.iloc[i],
                                  fund_pct=b.fund_pct.iloc[i], spot_pct=b.spot_pct.iloc[i], ret24_pct=b.ret24.iloc[i] * 100, oi24_pct=b.oi24.iloc[i] * 100,
-                                 ret6m_pct=b.ret6m.iloc[i] * 100, positioning_days=b.positioning_days.iloc[i]))
+                                 ret6m_pct=b.ret6m.iloc[i] * 100, positioning_days=b.positioning_days.iloc[i],
+                                 regime=(btc_regime.get(int(T[i]), "") if len(btc_regime) else ""),
+                                 btc_vol_pct=(btc_volpct.get(int(T[i]), np.nan) if len(btc_volpct) else np.nan),
+                                 flush_curated=bool(coin in FLUSH_B_COINS)))
                 nxt = np.searchsorted(T, int(T[j]) if j is not None else exit_t)
                 i = max(i + 1, int(nxt))
     cols = ["coin", "rule", "side", "entry_t", "entry_utc", "entry", "exit_utc", "exit", "how", "status",
-            "ret_pct", "ls_pct", "top_pct", "fund_pct", "spot_pct", "ret24_pct", "oi24_pct", "ret6m_pct", "positioning_days"]
+            "ret_pct", "ls_pct", "top_pct", "fund_pct", "spot_pct", "ret24_pct", "oi24_pct", "ret6m_pct",
+            "positioning_days", "regime", "btc_vol_pct", "flush_curated"]
     led = pd.DataFrame(rows, columns=cols).sort_values(["entry_t", "coin"])
     led.round({"entry": 8, "exit": 8, "ret_pct": 4, "ls_pct": 4, "top_pct": 4, "fund_pct": 4, "spot_pct": 4,
-               "ret24_pct": 3, "oi24_pct": 3, "ret6m_pct": 3, "positioning_days": 1}).to_csv(f"{OUT}/ledger.csv", index=False)
+               "ret24_pct": 3, "oi24_pct": 3, "ret6m_pct": 3, "positioning_days": 1,
+               "btc_vol_pct": 4}).to_csv(f"{OUT}/ledger.csv", index=False)
     pd.DataFrame(state).round(4).to_csv(f"{OUT}/state.csv", index=False)
 
     fresh = led[[(k not in old) and (t >= now - 8 * 3600)
