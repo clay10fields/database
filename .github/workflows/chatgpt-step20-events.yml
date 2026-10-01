@@ -1,0 +1,42 @@
+name: ChatGPT Step 20 Event Behavior
+
+on:
+  push:
+    branches: [chatgpt-step20-events]
+    paths:
+      - 'research/events/**'
+      - '.github/workflows/chatgpt-step20-events.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  step20:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install research dependencies
+        run: pip install numpy pandas scipy
+      - name: Build 4h research panel
+        working-directory: research/crowding-2026-10-01
+        run: python build.py
+      - name: Run Step 20 event behavior
+        run: python research/events/code/event_behavior.py
+      - name: Commit Step 20 results
+        run: |
+          git config user.name 'chatgpt-research'
+          git config user.email 'noreply@openai.com'
+          git add research/events/results
+          if git diff --cached --quiet; then
+            echo 'No result changes'
+          else
+            git commit -m 'research: step 20 event behavior results'
+            git push
+          fi
