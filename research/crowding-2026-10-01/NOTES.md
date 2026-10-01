@@ -27,3 +27,10 @@ mean (cluster = entry day). Placebos added. Edge, cluster t (ALL / train / test 
   The crowd condition is doing the work, not the up-move.
 * flush long 72h: +1.39%, t 3.4 / 2.2 / 2.6 / 2.5. Long on every bar: 0.00%.
 * plain ratio>3 short: +0.22%, t 1.9; new8 t 0.9. Weak, not promoted.
+
+## By regime and coin type (by_regime.py, by_regime.csv)
+* Crowd short works in calm (+0.43% edge, t 2.8) and both trends; fades out in stress (t 0.7).
+  Best on big alts (t 3.8) and old L1s (t 3.3); nothing on DeFi.
+* Flush long is mostly a stress trade: +2.8% edge per 72h in stress (t 3.2) vs +0.7% in calm (t 1.2).
+  Best on big alts and old L1s; weak on memes and forks.
+* Regime x type cells are 13–550 trades; most are too small to trust alone.
