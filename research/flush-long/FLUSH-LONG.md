@@ -1,6 +1,6 @@
 # Flush long: what we know so far
 
-Status: **first pass done on historical data (2026-10-01). Not traded. Paper watcher logs the base rule only.**
+Status: **studied on historical data (2026-10-01). Not traded. Paper watcher logs the base rule and version B.**
 Same data, costs and methods as research/crowd-short (16 coins, 4h bars, Dec 2021 to Aug 2026, 0.10% fee, funding counted,
 "edge" = return beyond a random long on the same coin and year, t clustered by day).
 
@@ -52,18 +52,62 @@ but the swings are too.
 * Kalshi (0.24% taker) vs Kraken perps: Kalshi slightly better here because it can trade the small coins at any size.
 * Drawdown episodes (15% × 3): May–Jun 2022 −19% (took 7 months to recover); Apr 2025 −11% (one month).
 
+
+## Entry (entry.py)
+* Enter at the signal close. Waiting costs edge fast: now +1.80%, after 4h +1.51%, after 8h +1.20%, after 12h +1.06%.
+* Waiting for a green 4h candle is worse (+1.19%). The bounce starts before the candle turns.
+* A limit order 1% below the signal close: +1.94% per trade and fills 83% of the time. Total profit a bit lower than entering now.
+  2% below, valid 24h: +1.91%, t 4.0, 76% fill. Reasonable for a patient trader; "enter now" for the machine.
+* Split entry (half now, half 2% lower): +1.49%. Worse than all-in now.
+* BTC hedge kills it: +1.80% → +1.01%, win 43%. The bounce is the whole market bouncing. Don't hedge.
+
+## Further hypotheses (hypotheses.py)
+| idea | result |
+|---|---|
+| Flush measured over 48h instead of 24h | worse (+0.74%). A fresh one-day flush is the signal. |
+| Two flush days in a row (persistence) | **dead** (−0.20%). If the flush continues a second day, the bounce is gone. |
+| Crowd at its 7-day low (positioning capitulation) | +1.62%, win 61%, n 132. No gain. |
+| **BTC also down > 3% in 24h (market-wide flush)** | **+2.59%, win 64%, train +2.37 / test +3.32, unseen coins +2.61**. The most balanced strengthener. Coin-only flushes: +1.00%. |
+| ATR expanded (panic tape) | +2.41% but 2024-heavy (train +0.92). |
+| Not in an established downtrend (ADX > 25 and falling) | +1.97% vs +0.73% inside one. A grind-down flush doesn't bounce. |
+| Exit when the crowd re-crowds (ls_pct > 0.5) | same return, 15% shorter hold. Small plus. |
+| Exit when OI rebuilds | bad (+0.62%). Leaves early. |
+| Big accounts long too | +4.83% but 2024+ only (train +0.68). Lead. |
+| Panic and not a grind-down, together | +3.27%, n 202, train +1.69 / test +5.76. Lead. |
+* On the account the market-flush version (B + BTC down > 3%) is weaker than plain B (+25% vs +70% at 25%/5), because it fires on every coin
+  at once and the slots fill in one crash. Use it as a "size up" signal inside B, not as the only trigger.
+
+## New coins (newcoins.py)
+Unlike the crowd short, the flush long works just as well on the new list: version B pooled +1.83% on the 14 vs +1.80% on the 16.
+| coin | version B per trade, win, years + | after Kalshi fees |
+|---|---|---|
+| **ZEC** | +5.03%, 60%, 4/5 (t 3.1) | +4.9% |
+| **SUI** | +4.37%, 67%, 3/4 (t 2.7) | +4.2% |
+| **PEPE** | +3.46%, 47%, 3/4 | +3.3% |
+| **ALGO** | +2.66%, 66%, 3/5 (t 2.1) | +2.5% (margin only: +1.4%) |
+| UNI | +1.98%, 52%, 4/5 | +1.8% |
+| TRX | +1.41%, 65%, 4/4 | +1.3% |
+| WLD, NEAR, RENDER, CRV | +0.4 to +1.6%, weak | — |
+| BNB | **−2.86%**, 30% win, 0/5 | skip |
+| HYPE, PENGU, VVV | too little history | wait |
+* Gates on the 16: ATR compressed is the dead zone again (+0.47%). Expanded volatility is best (+2.44%). ADX < 20 vs > 25 makes no difference,
+  except an established downtrend (ADX > 25 and falling) which is weak.
+* Kelly from the trades: f* = 0.22 (version B). Quarter-Kelly ≈ 5–6% of equity at risk per trade; with ~5% typical losses that's the 15–25% notional used above.
+
 ## Current best read (provisional)
 1. Version B: OI down > 8% in 24h, crowd below its 30th percentile → long at the 4h close, hold 72h.
 2. No stop, or at most a 12% stop on a 4h close. No target.
 3. 15% of equity per trade, max 5 open. Half the size of the crowd short.
 4. Trade every regime; expect the money to come in stress.
-5. Coins: XLM, SOL, XRP, HBAR, AVAX, AAVE, BCH first. Skip DOT, LTC, DOGE.
+5. Coins: XLM, SOL, XRP, HBAR, AVAX, AAVE, BCH, plus ZEC, SUI, PEPE, ALGO, UNI, TRX from the new list. Skip DOT, LTC, DOGE, BNB.
+7. Size up (double) when BTC is also down more than 3% on the day: that's the market-wide flush, +2.6% per trade, 64% win.
+8. Skip it inside an established downtrend (ADX > 25 and falling). Enter at the signal close; a limit 1% below is fine if you're watching.
 6. Pairs naturally with the crowd short: one is short into euphoria, the other long into panic, and they fire at different times.
 
 ## Not done yet
-* Entry timing (now vs wait for a green bar), BTC hedge, the 14 new coins, Kelly, the playbook gates: same tests as the crowd short.
-* The paper watcher logs the base rule (FLUSH_LONG). Add version B.
 * The big-accounts-long version needs the live top-trader feed (same gap as the crowd short's 72h version).
+* Kraken/Kalshi real spreads during a crash: the one time this trade fires is exactly when books are thin. Costs here are normal-day costs.
+* Live record: the watcher logs FLUSH_LONG (base) and FLUSH_B (version B, with the BTC-down flag) from 2026-10-01.
 
-Files: code/deep.py (every cut), code/combo.py (stacked versions), code/trade.py (exits, regimes), code/port.py and code/size.py (account), results/*.csv.
+Files: code/deep.py (every cut), combo.py (stacked versions), trade.py (exits, regimes), port.py and size.py (account), entry.py, hypotheses.py, newcoins.py; results/*.csv.
 Run from this folder: `python3 code/deep.py` (needs /home/claude/panel4h.pkl from research/crowding-2026-10-01/build.py).

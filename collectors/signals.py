@@ -5,6 +5,7 @@ run, so it holds no state of its own. Rules and numbers: research/crowd-short/CR
 Evaluated at every 4h close (00, 04, 08, 12, 16, 20 UTC). Everything in a row is known at that close.
   CROWD_SHORT  base rule from crowding-2026-10-01: ls_pct >= 0.90 and price up 24h -> short 24h (kept for continuity)
   FLUSH_LONG   oi down > 8% in 24h and ls_pct < 0.5 -> long 72h (kept for continuity)
+  FLUSH_B      oi down > 8% in 24h and ls_pct < 0.30 -> long 72h, no stop (research/flush-long)
   CROWD_24H    base AND funding not extreme (fund_pct < 0.70) AND not within 3% of the 20-day high -> short, 24h
   CROWD_72H    CROWD_24H AND top-trader ratio pct > 0.70 -> short, 72h
                (top-trader ratio is only in the Binance Vision daily files, ~1 day late; the newest
@@ -38,7 +39,7 @@ H4 = 4 * 3600
 WIN = 540            # 90 days of 4h readings
 MINP = 180           # 30 days minimum before a percentile is trusted
 FEE = 0.001
-RULES = {"CROWD_SHORT": (-1, 6), "FLUSH_LONG": (1, 18), "CROWD_24H": (-1, 6), "CROWD_72H": (-1, 18)}
+RULES = {"CROWD_SHORT": (-1, 6), "FLUSH_LONG": (1, 18), "CROWD_24H": (-1, 6), "CROWD_72H": (-1, 18), "FLUSH_B": (1, 18)}
 STOPPED = {"CROWD_24H", "CROWD_72H"}       # rules that use the close stop / hard stop / BTC pause
 OUT = "derived/signals"
 VB = "raw/binance_vision"
@@ -155,7 +156,8 @@ def main() -> int:
         base = (b.ls_pct >= 0.9) & (b.ret24 > 0)
         c24 = base & (b.fund_pct < 0.7) & ~b.near_hi.astype(bool) & ~pause.reindex(b.index).fillna(False).astype(bool)
         sig = {"CROWD_SHORT": base, "FLUSH_LONG": (b.oi24 < -0.08) & (b.ls_pct < 0.5),
-               "CROWD_24H": c24, "CROWD_72H": c24 & (b.top_pct > 0.7)}
+               "CROWD_24H": c24, "CROWD_72H": c24 & (b.top_pct > 0.7),
+               "FLUSH_B": (b.oi24 < -0.08) & (b.ls_pct < 0.3)}
         T = b.index.values
         c = b.c.values
         h = b.h.values
