@@ -1,0 +1,29 @@
+name: backfill-binance-vision
+# One-off: pulls Binance archive history for the extra coins on Kraken margin / Kalshi.
+# Runs once when this file is pushed, or by hand. Safe to re-run: existing files are skipped.
+on:
+  push:
+    paths: [".github/workflows/backfill-vision.yml", "collectors/binance_vision_backfill.py"]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: backfill-vision
+  cancel-in-progress: false
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: download
+        run: python3 collectors/binance_vision_backfill.py
+      - name: commit
+        run: |
+          git config user.name "database-recorder"
+          git config user.email "recorder@users.noreply.github.com"
+          git add raw/binance_vision
+          git diff --cached --quiet || git commit -qm "backfill: binance vision archive for Kraken margin / Kalshi coins"
+          for i in 1 2 3; do git pull -q --rebase && git push -q && break; sleep 20; done
