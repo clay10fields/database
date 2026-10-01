@@ -22,7 +22,13 @@ Never long and short the same coin at once. One pool of slots.
   chosen after seeing this data, costs are normal-day costs, and the flush long trades into thin crash books. Halve the expectation and it is still a good book.
 
 ## Current read
-Run both. 35–50% on the 72h crowd short, 15% on the flush long, max 5 open, never both sides of one coin. Expect −20–25% drawdowns.
-Paper first (the watcher logs both). The 24h crowd short joins once the 72h version has a live record.
+Run both, with conditional sizing (research/playbook, tested as a stack):
+* **Crowd short 72h**: base 45% × regime × signal strength, floor 20% cap 80%.
+* **Flush long B**: base 15% × regime × signal strength, floor 5% cap 35%.
+* Max 5 open across the book, never long and short the same coin. Regime multipliers: Stress and Trend up 1.3; Calm 0.8 (short) / 1.0 (long); Trend down 1.0 (short) / 0.8 (long).
+On this history that is **+162%/yr, −19% worst drop, Sharpe 2.97** against +136% / −17.6% / 2.68 flat. Adding category sizing, spot flow and
+symptom multipliers on top makes it worse, not better. The funding cut moving from the 70th to the 90th percentile (crowd-short plateau step)
+is already in these numbers.
+Expect −20% to −30% drawdowns (Monte Carlo 90th percentile −28%). Paper first; the watcher logs both. The 24h crowd short joins once the 72h has a live record.
 
 Files: code/book.py, results/book_results.csv, results/curve_cs72_fl15.csv (the equity curve of the main plan).

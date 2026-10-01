@@ -282,16 +282,25 @@ Per trade, 16 coins (SHIB out), same exits, 0.10% fee. ADX(14) and ATR(14) are c
 * Fees can change (Kraken says CME/Bitnomial/NFA fees may update).
 
 ## Current best read (provisional)
-1. Take the 72h version (crowd at its 90-day long extreme, price up over 24h, funding below its 90th percentile, price not at its 20-day high, big accounts long).
-2. Short at the 4h close the signal fires on. No waiting.
-3. Size each trade at 25–50% of the account, max 5 open. Don't scale by volatility.
-4. Exit if a 4h candle closes 5% against you; hard stop at 10%; otherwise close at 72h. A 3% target is optional (lower return, 70% win).
-5. Skip SHIB and XTZ. Don't trade new signals while BTC is up more than 15% over 30 days.
-6. Add the 24h version alongside it for more trades (plan D) once the 72h version has a live record.
-7. Venue, given the Kraken perp volumes: BTC on Kraken perps. Kalshi for the coins it lists (ETH SOL XRP ADA DOGE LINK LTC BCH AAVE SHIB ZEC NEAR WLD VVV).
-   Kraken margin only where the edge clears ~1% of costs (ZEC, NEAR, WLD, ALGO on the 72h version; RENDER on the 24h version), or inside the free $10K/month.
-8. New coins worth adding: ZEC, NEAR, ALGO, WLD (72h); RENDER (24h). Skip SUI, PEPE, PENGU, HYPE, TRX, BNB, UNI.
-9. Only short coins that are up over the last 6 months (see 'The coin's own state'). Skip a coin in a multi-year decline whatever its name.
+**Signal.** Crowd (Binance all-account long/short) at or above its own 90-day 90th percentile, price up over the last 24h,
+funding below its own 90th percentile, price not within 3% of its 20-day high. For the 72h version, also big accounts long (top-trader pct > 0.70).
+**Entry.** Short at the close of the 4h bar the signal fires on. No waiting — the edge decays about 0.3% per 4 hours.
+**Exit.** Out if a 4h bar closes 5% against you; hard stop 10% intrabar; otherwise the clock (72h, or 24h for the fast version).
+A 3% target is optional: 70% win rate, lower return.
+**Size (research/playbook).** Base 45% of equity × regime × signal strength, floor 20%, cap 80%, max 5 open.
+Regime: Stress 1.3 · Trend up 1.3 · Trend down 1.0 · Calm 0.8. Strength: 0.85 + 1.5 × (crowd_pct − 0.90).
+Do **not** size by coin category and do **not** scale by volatility — both lower the Sharpe. Spot flow (×0.7 when spot is buying)
+is the conservative dial if you want a quieter book, at the cost of return.
+**When to stand down.** No new shorts while BTC is up more than 15% over 30 days. Skip coins in a multi-year decline (only short coins up
+over the last 6 months). Skip SHIB and XTZ on Kraken perps. The weakest set-up is a short taken deep in a slide (price 15%+ below its
+14-day high: −0.10%, 43% win) — this trade belongs at the top of a run, not after the first leg down.
+**Where it pays most.** Stress (+3.28%) and Trend up (+3.17%) on the 72h version; Calm is the thin one (+0.88%). Old L1s (+2.28%) and
+big alts carry it; DeFi (+0.53%) and forks don't. The best single set-up: the first dip after a run, OI at its 30-day peak, crowd long for a week (+2.42%, 74% win).
+**Coins.** BTC ETH SOL XRP ADA DOGE LINK BCH AVAX HBAR XLM, plus ZEC NEAR ALGO WLD on the 72h version and RENDER on the 24h.
+Skip AAVE, LTC, XTZ, DOT, SUI, PEPE, PENGU, HYPE, TRX, BNB, UNI.
+**Venue.** BTC on Kraken US perps (the only one with depth). Kalshi for the coins it lists. Kraken margin only where the edge clears ~1%
+of costs, or inside the free $10K/month.
+**Order of adoption.** 72h version first; add the 24h version once the 72h has a live record (see research/live/LIVE-PROTOCOL.md).
 
 Files: see README.md in this folder. Every number here comes from a script in code/ and a table in results/.
 

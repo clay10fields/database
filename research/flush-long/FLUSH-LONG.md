@@ -171,14 +171,23 @@ crowd cut 0.2–0.5 all positive and smooth (0.25 marginally better than 0.30: +
 The price-based time cuts (24h if down > 8%, 48h if not positive) already catch those trades. Keep the OI reading as information, not as an exit.
 
 ## Current best read (provisional)
-1. Version B: OI down > 8% in 24h, crowd below its 30th percentile → long at the 4h close, hold 72h.
-2. No price stop. Two time rules only: cut at 24h if down more than 8%; cut at 48h if still not positive. No target.
-3. 15% of equity per trade, max 5 open. Half the size of the crowd short.
-4. Trade every regime; expect the money to come in stress.
-5. Coins: XLM, SOL, XRP, HBAR, AVAX, AAVE, BCH, plus ZEC, SUI, PEPE, ALGO, UNI, TRX from the new list. Skip DOT, LTC, DOGE, BNB.
-7. Size up (double) when the flush ends a hot run (funding hot the week before, or price up 30% in the month before), when BTC is also down more than 3% on the day (market-wide flush, +2.6%, 64% win) or when spot is buying the flush (+3.3%). Skip a second-day flush. Halve it when spot is selling.
-8. Skip it inside an established downtrend (ADX > 25 and falling). Enter at the signal close; a limit 1% below is fine if you're watching.
-6. Pairs naturally with the crowd short: one is short into euphoria, the other long into panic, and they fire at different times.
+**Signal.** Open interest (contracts) down more than 8% over 24h, crowd below its own 90-day 30th percentile. Long at the 4h close.
+**Exit.** No price stop — every one of them costs edge. Two time rules: cut at 24h if down more than 8%; cut at 48h if still not positive;
+otherwise the clock at 72h. No target: the profit is in the tail (median trade +0.3%, average +1.8%).
+**Size (research/playbook).** Base 15% of equity × regime × signal strength, floor 5%, cap 35%, max 5 open.
+Regime: Stress 1.3 · Trend up 1.3 · Calm 1.0 · Trend down 0.8. Strength: 0.8 + 2.5 × (OI drop beyond 8%, capped at 20%) + 0.8 × (0.30 − crowd_pct).
+Half the crowd short's size: this trade's worst-5% is −17% against the short's −9%. Don't size by category (it lowers the Sharpe) — use the coin list instead.
+**Size up** when the flush ends a hot run (funding ran hot the week before: +5.1% vs +0.4% cold; or price ran up 30%+ in the prior month: +5.7%),
+when BTC is also down more than 3% that day (+2.6%, 64% win), or when spot is buying the flush (+3.3%).
+**Size down or skip** a second-day flush (+0.4% vs +2.1%), a flush inside an established downtrend (ADX > 25 and falling), a month-long bleed
+with cold funding, or when spot is selling into it (+1.2%).
+**Expect to sit through it.** Median dip before the bounce −4.8%; one trade in ten dips past −12.6%. About half of all trades are under water
+at any given hour. Winners put in their low around 12h and their high around 56h. Don't cut a day-one loser: a trade down 5% at 12h still has
++0.2% left on average, and on the filtered versions much more.
+**Where it pays most.** Stress (+3.09%) and Trend up (+2.70%); Calm (+1.06%) and Trend down (+0.99%) are the thin ones. Big alts (+3.30%) and
+old L1s (+2.36%) carry it; forks (+0.20%) don't.
+**Coins.** XLM SOL XRP HBAR AVAX AAVE BCH, plus ZEC SUI PEPE ALGO UNI TRX from the margin/Kalshi list. Skip DOT, LTC, DOGE, BNB, forks.
+**Pairs with the crowd short**: one shorts euphoria, the other buys panic, and they fire at different times — together the book's Sharpe is 2.9+ against 1.7–1.8 alone.
 
 ## Not done yet
 * The big-accounts-long version needs the live top-trader feed (same gap as the crowd short's 72h version).
