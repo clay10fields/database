@@ -5,9 +5,11 @@ run, so it holds no state of its own. Rules and numbers: research/crowd-short/CR
 Evaluated at every 4h close (00, 04, 08, 12, 16, 20 UTC). Everything in a row is known at that close.
   CROWD_SHORT  base rule from crowding-2026-10-01: ls_pct >= 0.90 and price up 24h -> short 24h (kept for continuity)
   FLUSH_LONG   oi down > 8% in 24h and ls_pct < 0.5 -> long 72h (kept for continuity)
-  FLUSH_B      oi down > 8% in 24h and ls_pct < 0.30 -> long 72h, no stop (research/flush-long)
+  FLUSH_B      curated 7 coins, >=180d positioning history, oi down >8% / crowd pct <0.30;
+               cut at 24h if below -8%, at 48h if not positive, otherwise 72h.
   CROWD_24H    base AND funding not extreme (fund_pct < 0.90; moved from 0.70 by the plateau step 2026-10-01) AND not within 3% of the 20-day high -> short, 24h
-  CROWD_72H    CROWD_24H AND top-trader ratio pct > 0.70 -> short, 72h
+  CROWD_72H    CROWD_24H AND top-trader pct >0.70 AND >=180d positioning history
+               AND positive 6-month price return -> short, 72h
                (top-trader ratio is only in the Binance Vision daily files, ~1 day late; the newest
                 reading at or before the bar is used, so this one runs on data up to ~30h stale)
 Exits for CROWD_24H / CROWD_72H, first hit: a 4h close >= entry x 1.05; any 1h high >= entry x 1.10;
@@ -42,6 +44,8 @@ H4 = 4 * 3600
 WIN = 540            # 90 days of 4h readings
 MINP = 180           # 30 days minimum before a percentile is trusted
 FEE = 0.001
+MIN_HISTORY_DAYS = 180
+FLUSH_B_COINS = {"XLM", "SOL", "XRP", "HBAR", "AVAX", "AAVE", "BCH"}
 RULES = {"CROWD_SHORT": (-1, 6), "FLUSH_LONG": (1, 18), "CROWD_24H": (-1, 6), "CROWD_72H": (-1, 18), "FLUSH_B": (1, 18)}
 STOPPED = {"CROWD_24H", "CROWD_72H"}       # rules that use the close stop / hard stop / BTC pause
 OUT = "derived/signals"
@@ -99,6 +103,22 @@ def seed_bars(coin: str, start: int) -> pd.DataFrame:
     return d.loc[: start - 1]
 
 
+def seed_close_history(coin: str, start: int) -> pd.Series:
+    """Archive 4h closes before live history; enough depth for the 6-month CS72 trend gate."""
+    out = []
+    for sym in vsym(coin):
+        for k in _zips(f"{VB}/klines_4h/{sym}/*.zip", 8):
+            if str(k.iloc[0, 0]).startswith("open"):
+                k = k.iloc[1:]
+            k = k.iloc[:, [0, 4]].astype(float)
+            t = np.where(k.iloc[:, 0] > 1e14, k.iloc[:, 0] // 1_000_000, k.iloc[:, 0] // 1000).astype(int) + H4
+            out.append(pd.Series(k.iloc[:, 1].values, index=t))
+    if not out:
+        return pd.Series(dtype=float)
+    x = pd.concat(out)
+    return x[~x.index.duplicated(keep="last")].sort_index().loc[: start - 1]
+
+
 def seed_spot(coin: str, start: int) -> pd.Series:
     """Archive spot taker-buy flow per 4h bar (2*taker_buy_quote/quote_vol - 1) before `start`."""
     out = []
@@ -134,8 +154,15 @@ def bars(coin: str) -> pd.DataFrame | None:
     start = int(live.index.min())
     sm = seed_metrics(coin, start)
     sb = seed_bars(coin, start)
+    sc = seed_close_history(coin, start)
     full = pd.concat([pd.concat([sm, sb], axis=1), live[["ls", "h", "fund"]]])
     full = full[~full.index.duplicated(keep="last")].sort_index()
+    closes = pd.concat([sc, live.c]).sort_index()
+    closes = closes[~closes.index.duplicated(keep="last")]
+    first_ls = full.ls.first_valid_index()
+    live["positioning_days"] = np.nan if first_ls is None else (live.index.values - int(first_ls)) / 86400.0
+    old6 = pd.Series(closes.reindex(live.index.values - 180 * 86400).values, index=live.index)
+    live["ret6m"] = live.c / old6 - 1
     full["fund24"] = full.fund.rolling(6, min_periods=1).sum()
     live["ls_pct"] = full.ls.rolling(WIN, min_periods=MINP).rank(pct=True).reindex(live.index)
     live["fund_pct"] = full.fund24.rolling(WIN, min_periods=MINP).rank(pct=True).reindex(live.index)
@@ -172,15 +199,20 @@ def main() -> int:
             continue
         now = max(now, int(b.index.max()))
         last = b.iloc[-1]
+        mature = b.positioning_days >= MIN_HISTORY_DAYS
+        cs_eligible = mature & (b.ret6m > 0)
+        fl_eligible = mature & (coin in FLUSH_B_COINS)
         state.append(dict(coin=coin, t=int(b.index[-1]), close=last.c, ls=last.ls, ls_pct=last.ls_pct,
                           top_pct=last.top_pct, fund_pct=last.fund_pct, near_hi=bool(last.near_hi), spot_pct=last.spot_pct,
-                          ret24_pct=last.ret24 * 100, oi24_pct=last.oi24 * 100,
+                          ret24_pct=last.ret24 * 100, oi24_pct=last.oi24 * 100, ret6m_pct=last.ret6m * 100,
+                          positioning_days=last.positioning_days, cs72_eligible=bool(cs_eligible.iloc[-1]),
+                          flush_b_eligible=bool(fl_eligible.iloc[-1]),
                           btc_pause=bool(pause.reindex([b.index[-1]]).fillna(False).iloc[0])))
         base = (b.ls_pct >= 0.9) & (b.ret24 > 0)
         c24 = base & (b.fund_pct < 0.9) & ~b.near_hi.astype(bool) & ~pause.reindex(b.index).fillna(False).astype(bool)
         sig = {"CROWD_SHORT": base, "FLUSH_LONG": (b.oi24 < -0.08) & (b.ls_pct < 0.5),
-               "CROWD_24H": c24, "CROWD_72H": c24 & (b.top_pct > 0.7),
-               "FLUSH_B": (b.oi24 < -0.08) & (b.ls_pct < 0.3)}
+               "CROWD_24H": c24, "CROWD_72H": c24 & (b.top_pct > 0.7) & cs_eligible,
+               "FLUSH_B": (b.oi24 < -0.08) & (b.ls_pct < 0.3) & fl_eligible}
         T = b.index.values
         c = b.c.values
         h = b.h.values
@@ -193,18 +225,29 @@ def main() -> int:
                     i += 1
                     continue
                 exit_t = int(T[i]) + hold * H4
-                j = pos.get(exit_t)
-                px, how = None, "hold"
-                if rule in STOPPED:
-                    for k in range(i + 1, (j if j is not None else len(T) - 1) + 1):
-                        if h[k] >= c[i] * 1.10:
-                            px, how, j = c[i] * 1.10, "hard stop 10%", k
-                            break
-                        if c[k] >= c[i] * 1.05:
-                            px, how, j = c[k], "close stop 5%", k
-                            break
-                if px is None and j is not None:
-                    px = c[j]
+                px, how, j = None, "hold", None
+                if rule == "FLUSH_B":
+                    j6 = pos.get(int(T[i]) + 6 * H4)
+                    j12 = pos.get(int(T[i]) + 12 * H4)
+                    j18 = pos.get(int(T[i]) + 18 * H4)
+                    if j6 is not None and c[j6] / c[i] - 1 < -0.08:
+                        j, px, how = j6, c[j6], "24h loss cut -8%"
+                    elif j12 is not None and c[j12] / c[i] - 1 <= 0:
+                        j, px, how = j12, c[j12], "48h not-positive cut"
+                    elif j18 is not None:
+                        j, px, how = j18, c[j18], "hold 72h"
+                else:
+                    j = pos.get(exit_t)
+                    if rule in STOPPED:
+                        for k in range(i + 1, (j if j is not None else len(T) - 1) + 1):
+                            if h[k] >= c[i] * 1.10:
+                                px, how, j = c[i] * 1.10, "hard stop 10%", k
+                                break
+                            if c[k] >= c[i] * 1.05:
+                                px, how, j = c[k], "close stop 5%", k
+                                break
+                    if px is None and j is not None:
+                        px = c[j]
                 r = side * (px / c[i] - 1) - FEE if px is not None else np.nan
                 rows.append(dict(coin=coin, rule=rule, side="short" if side < 0 else "long",
                                  entry_t=int(T[i]), entry_utc=pd.Timestamp(int(T[i]), unit="s"),
@@ -212,14 +255,15 @@ def main() -> int:
                                  exit=px if px is not None else np.nan, how=how if px is not None else "open",
                                  status="closed" if px is not None else "open",
                                  ret_pct=r * 100, ls_pct=b.ls_pct.iloc[i], top_pct=b.top_pct.iloc[i],
-                                 fund_pct=b.fund_pct.iloc[i], spot_pct=b.spot_pct.iloc[i], ret24_pct=b.ret24.iloc[i] * 100, oi24_pct=b.oi24.iloc[i] * 100))
+                                 fund_pct=b.fund_pct.iloc[i], spot_pct=b.spot_pct.iloc[i], ret24_pct=b.ret24.iloc[i] * 100, oi24_pct=b.oi24.iloc[i] * 100,
+                                 ret6m_pct=b.ret6m.iloc[i] * 100, positioning_days=b.positioning_days.iloc[i]))
                 nxt = np.searchsorted(T, int(T[j]) if j is not None else exit_t)
                 i = max(i + 1, int(nxt))
     cols = ["coin", "rule", "side", "entry_t", "entry_utc", "entry", "exit_utc", "exit", "how", "status",
-            "ret_pct", "ls_pct", "top_pct", "fund_pct", "spot_pct", "ret24_pct", "oi24_pct"]
+            "ret_pct", "ls_pct", "top_pct", "fund_pct", "spot_pct", "ret24_pct", "oi24_pct", "ret6m_pct", "positioning_days"]
     led = pd.DataFrame(rows, columns=cols).sort_values(["entry_t", "coin"])
     led.round({"entry": 8, "exit": 8, "ret_pct": 4, "ls_pct": 4, "top_pct": 4, "fund_pct": 4, "spot_pct": 4,
-               "ret24_pct": 3, "oi24_pct": 3}).to_csv(f"{OUT}/ledger.csv", index=False)
+               "ret24_pct": 3, "oi24_pct": 3, "ret6m_pct": 3, "positioning_days": 1}).to_csv(f"{OUT}/ledger.csv", index=False)
     pd.DataFrame(state).round(4).to_csv(f"{OUT}/state.csv", index=False)
 
     fresh = led[[(k not in old) and (t >= now - 8 * 3600)
