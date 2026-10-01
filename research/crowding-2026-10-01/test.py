@@ -2,8 +2,8 @@
 long; long after a big OI flush. Entry at the signal bar's close, fixed hold, one position per
 coin at a time, 0.10% round-trip fee, funding included (shorts receive positive funding).
 Edge = trade return minus the same-direction return of every bar for that coin and year
-(so a bear year does not make every short look smart). t-stats use trades grouped by entry
-day (coins signal together, so per-trade t overstates)."""
+(so a bear year does not make every short look smart). t-stats are cluster-robust by entry
+day (coins signal together, so a plain per-trade t overstates)."""
 import numpy as np, pandas as pd, sys
 FEE=0.001
 p=pd.read_pickle('/home/claude/panel4h.pkl').sort_values(['coin','t']).reset_index(drop=True)
@@ -39,9 +39,11 @@ def baseline(side,H):
 
 def stats(tr):
     if len(tr)<5: return dict(n=len(tr))
-    day=tr.assign(d=tr.t//86400).groupby('d').ex.mean()
+    d=(tr.t//86400).values; e=tr.ex.values-tr.ex.mean()
+    S=pd.Series(e).groupby(d).sum().values; se=np.sqrt((S**2).sum())/len(tr)
+    day=tr.ex.groupby(d).mean()
     return dict(n=len(tr), raw=tr.r.mean()*100, edge=tr.ex.mean()*100, win=(tr.r>0).mean()*100,
-                t_day=day.mean()/day.std()*np.sqrt(len(day)) if len(day)>2 else np.nan)
+                t_day=tr.ex.mean()/se, day_eq_edge=day.mean()*100)
 
 def run(name, sig, side, H):
     tr=trades(sig,side,H)
@@ -60,6 +62,10 @@ for H in (6,9,18):
     for q in (0.9,0.95):
         R+=run(f'ls_pct>{q}', p.ls_pct>q, -1, H)
         R+=run(f'ls_pct>{q}&up', (p.ls_pct>q)&(p.ret6>0), -1, H)
+    R+=run('placebo: up24 only', p.ret6>0, -1, H)
+    R+=run('placebo: up24 & ls_pct<0.5', (p.ret6>0)&(p.ls_pct<0.5), -1, H)
+    R+=run('placebo: random 25%', pd.Series(np.random.default_rng(1).random(len(p))<0.25,index=p.index), -1, H)
+    R+=run('placebo: any bar long', pd.Series(True,index=p.index), 1, H)
     for th in (0.15,0.3):
         R+=run(f'ls_7d_chg>{th}', p.ls_chg>th, -1, H)
     for th in (-0.05,-0.08):
