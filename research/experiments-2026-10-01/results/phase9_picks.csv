@@ -1,0 +1,7 @@
+panel,fold,chosen,cs24_choice
+30,test 2024,CS72_48h+Flush_nc50_deep+LiqBuy+CS24_core,"CS24 core, uncapped"
+30,test 2025,CS72_48h+Flush_nc50_deep+LiqBuy+CS24_core,"CS24 core, uncapped"
+30,test 2026,CS72_48h+Flush_nc50_deep+LiqBuy+CS24_core,"CS24 core, uncapped"
+16,test 2024,CS72_48h+Flush_nc30_deep+CS24_core,"CS24 core, uncapped"
+16,test 2025,CS72_48h+Flush_nc30+LiqBuy+CS24_core,"CS24 core, uncapped"
+16,test 2026,CS72_48h+Flush_nc40_deep+LiqBuy+CS24_core,"CS24 core, uncapped"

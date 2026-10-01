@@ -126,3 +126,19 @@ Unseen years only, fold-chosen book vs current book, mean trade return by strate
 * **LiqBuy is the most consistent per-trade earner out of sample:** +2.7% to +4.2% per trade in 2025 and 2026 (~20 trades/yr).
 * **The compression stand-down is not free every year:** 16c 2024 the current book's compressed-tape trades made +4.28%.
 Next: CS24 off / slot-capped / smaller, then strict folds again.
+
+## Phase 9 — CS24 off / capped / smaller · `code/phase9.py`, `results/phase9*.csv` — and a correction to Phase 8
+* **Phase 8's "slot hog" read was wrong at the account level.** Removing CS24, capping it at 1–2 slots, or cutting it to
+  1/3 size lowers Sharpe in every test — full period, both panels, every unseen year. Every strict fold chose it uncapped.
+* What it actually does: **adds return and Sharpe, roughly doubles drawdown** (unseen years, with → without: 30c-2024
+  −12.6% → −6.9%, 30c-2026 −15.3% → −9.5%, 16c-2024 −17.7% → −8.5%, 16c-2026 −8.2% → −3.9%). A risk dial, not dead weight.
+* **Strict out-of-sample scoreboard, new vs current book:**
+  16c (hindsight-free — CS24 core = all coins there): **2.48 vs 2.48, a tie** (wins 2024, 2025; loses 2026 2.08 vs 2.74).
+  30c: phase 9's 3.18 vs 2.43 is hindsight-inflated (the established-coins restriction came from seeing 2026); the honest
+  30c number is phase 7's **2.77 vs 2.43**.
+
+## Bottom line of the day
+Components the past selects every fold — CS72 at 48h, Flush stand-down in compression, LiqBuy, CS24 as a return dial — are
+the durable findings. The out-of-sample edge of the new book over the current one is **positive on the wide universe, a tie on
+the original 16**, and the current book did better in 2026 YTD. Backtesting has reached its limit here; the clean remaining
+test is forward paper data (a book E alongside A–D in `collectors/paper_books.py` — not done; it changes the hourly job).

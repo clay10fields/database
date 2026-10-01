@@ -92,7 +92,7 @@ def trade_table(p, L):
                      isflush=np.full(m.sum(), nm.startswith('Flush')), mult=mm, name=nm)
     return T
 
-def sim(T, names, size=0.20, maxopen=5, flushcap=None, split_t=None, coins=None, series=False, trades=False):
+def sim(T, names, size=0.20, maxopen=5, flushcap=None, split_t=None, coins=None, series=False, trades=False, stratcap=None):
     e = np.concatenate([T[n]['entry'] for n in names]); x = np.concatenate([T[n]['exit'] for n in names])
     c = np.concatenate([T[n]['coin'] for n in names]); r = np.concatenate([T[n]['r'] for n in names])
     fl = np.concatenate([T[n]['isflush'] for n in names]); mu = np.concatenate([T[n]['mult'] for n in names])
@@ -106,17 +106,18 @@ def sim(T, names, size=0.20, maxopen=5, flushcap=None, split_t=None, coins=None,
         et = e[i]
         if op:
             keep = []
-            for (xx, cc, notional, rr, ff) in op:
+            for (xx, cc, notional, rr, ff, sn) in op:
                 if xx <= et:
                     eq += notional * rr; held.discard(cc); ev_t.append(xx); ev_eq.append(eq)
-                else: keep.append((xx, cc, notional, rr, ff))
+                else: keep.append((xx, cc, notional, rr, ff, sn))
             op = keep
         if len(op) >= maxopen or c[i] in held: continue
         if flushcap is not None and fl[i] and sum(1 for q in op if q[4]) >= flushcap: continue
-        op.append((x[i], c[i], eq * size * mu[i], r[i], fl[i])); held.add(c[i]); n += 1
+        if stratcap and nm[i] in stratcap and sum(1 for q in op if q[5] == nm[i]) >= stratcap[nm[i]]: continue
+        op.append((x[i], c[i], eq * size * mu[i], r[i], fl[i], nm[i])); held.add(c[i]); n += 1
         if trades: log.append((e[i], x[i], c[i], nm[i], r[i], eq * size * mu[i], eq))
         if eq <= 0: break
-    for (xx, cc, notional, rr, ff) in sorted(op):
+    for (xx, cc, notional, rr, ff, sn) in sorted(op):
         eq += notional * rr; ev_t.append(xx); ev_eq.append(eq)
     if len(ev_t) < 10: return None
     s = pd.Series(ev_eq, index=pd.to_datetime(ev_t, unit='s')).groupby(level=0).last()
