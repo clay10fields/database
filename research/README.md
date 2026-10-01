@@ -17,6 +17,7 @@ train/test halves, coins the rule was never built on). Every number has a script
 | misc/ | laggards, weekend, ETF flows, grid leads | dead, except crowd-short-alone as a mild long tailwind |
 | hedging/ | BTC hedge, seven ways | all lower the edge; the hedge that works is running both trades |
 | playbook/ | size and exit by regime, environment and token category; the loss-limiting math (CVaR, MAE, Kelly per cell) | **regime × signal-strength sizing adopted** (Sharpe 2.97); category sizing rejected |
+| forward-sim/ | Monte-Carlo one-month simulation of the candidate books | median month ~+3.4% (D), ~27% of months down, right-skewed; a projection if the edge holds, not a forecast (`FORWARD-MONTH-2026-10-01.md`) |
 | live/ | the live protocol: sample sizes, kill criteria, mid-trade dashboard | written before any money is risked; four candidate books now run in parallel via `collectors/paper_books.py` |
 | quant/ | sizing and risk techniques on the book | signal-strength sizing adopted; drawdown throttle, vol targeting rejected; Monte Carlo says plan for −30% |
 | book/ | both trades on one $5K account | Sharpe 2.6 combined vs 1.7 alone; drawdown unchanged |
