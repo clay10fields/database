@@ -1,6 +1,6 @@
 # Directions — read this first
 
-Clayten, 2026-10-01. This is the operating file. A new session starts here. Do not make him explain the job again.
+Clayten, 2026-10-01. This is the operating file. A new session starts at `START-HERE.md` in this folder, then here. Do not make him explain the job again.
 
 ## The goal
 Find an edge on the coins he can trade, on Kraken and Kalshi. Paper first. No orders. Progress means a rule that holds after costs, in a named regime, written so the next session can use it. A note is not progress. A failed test is progress if the reason is written and the next hypothesis comes from that reason.
