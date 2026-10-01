@@ -116,7 +116,7 @@ def main() -> int:
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--hours", type=int, default=48)
     a = ap.parse_args()
-    key = os.environ.get("COINALYZE_API_KEY", "")
+    key = os.environ.get("COINALYZE_API_KEY", "").strip()
     if not key:
         print("COINALYZE_API_KEY not set", file=sys.stderr)
         return 2
