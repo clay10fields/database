@@ -24,6 +24,8 @@ jobs:
           python-version: '3.11'
       - name: Install research dependencies
         run: pip install numpy pandas scipy
+      - name: Prepare Claude-compatible panel path
+        run: sudo mkdir -p /home/claude && sudo chown "$USER":"$USER" /home/claude
       - name: Build 4h research panel
         working-directory: research/crowding-2026-10-01
         run: python build.py
