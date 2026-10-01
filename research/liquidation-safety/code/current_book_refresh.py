@@ -19,8 +19,9 @@ cs=h['cs'].copy()
 fl=h['fl_src'][h['fl_src'].age_days>=180].copy()
 pC=h['pC']; ns=h['ns']; TT=h['TT']; C=h['C4']
 
-# Published Bitnomial maintenance percentages used by original Step 25.
-MM={'BTC':.15,'ETH':.15,'SOL':.15,'XRP':.21,'ADA':.15,'DOGE':.16,'LINK':.15,'BCH':.15,'AVAX':.15,'HBAR':.15,'XLM':.19,'AAVE':.17}
+# Published Bitnomial maintenance percentages, checked 2026-10-01.
+# LTC/DOT are included because the causal CS universe can admit them even though the old curated list did not.
+MM={'BTC':.15,'ETH':.15,'SOL':.15,'XRP':.21,'ADA':.15,'DOGE':.16,'LINK':.15,'BCH':.15,'AVAX':.15,'HBAR':.15,'XLM':.19,'AAVE':.17,'LTC':.15,'DOT':.16}
 
 btc=pC[pC.coin=='BTC'].set_index('t')
 os.chdir(os.path.join(ROOT,'research','book'))
