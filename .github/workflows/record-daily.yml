@@ -32,12 +32,12 @@ jobs:
         run: |
           git config user.name "database-recorder"
           git config user.email "recorder@users.noreply.github.com"
-          git fetch origin main
-          git rebase origin/main
           git add raw/coinalyze_daily raw/marketcap raw/binance_vision
           if git diff --cached --quiet; then
             echo "no new rows"
             exit 0
           fi
           git commit -m "record-daily: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git fetch origin main
+          git rebase origin/main
           git push origin HEAD:main
