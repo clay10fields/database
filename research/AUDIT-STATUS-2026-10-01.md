@@ -26,7 +26,7 @@ These are historical research statistics, not forecasts.
 Completed before this reconciliation. The important adopted change was the CS funding gate moving from the 70th to the 90th percentile. This is already part of the current CS72 rule.
 
 ### Step 27 — universe refresh
-Completed, then reconciled because its first implementation exposed an important hidden maturity difference.
+Completed and reconciled.
 
 Adopted:
 - dynamic CS72 universe: >=180d positioning history + positive 6-month trend;
@@ -57,10 +57,23 @@ Completed as an audit, not proof. Faded/delisted controls did not show a clean s
 ### Step 19 — multiple-testing ledger
 Completed. CS72 cleared an intentionally harsh Bonferroni threshold. Flush-B narrowly missed that conservative threshold while retaining independent year/coin/OOS support. No rule change; describe Flush-B as more search-burden-sensitive than CS72.
 
-### Step 20 — event behavior
-Completed on the pre-Step-27 playbook. No generic shock-day or FOMC pause was justified; blocking FOMC-date entries worsened the then-current account. Token-unlock behavior remains untested because the repository lacks an objective historical unlock calendar.
+### Step 20 — event behavior — REFRESHED ON CURRENT BOOK
+Corrected-book refresh completed using the same FOMC calendar and named shock dates as the original test.
 
-**Status after current-book correction:** qualitative no-calendar-filter verdict remains the standing rule, but exact account figures are stale and should be refreshed only if event behavior becomes decision-critical.
+Direct FOMC pause counterfactual:
+- baseline: 515 trades, CAGR 93.87%, max DD -12.94%, Sharpe 2.660;
+- no new FOMC-date entries: 495 trades, CAGR 87.02%, max DD -16.81%, Sharpe 2.592.
+
+FOMC-date admitted entries:
+- all: 17 trades, +5.64% mean return;
+- CS72: 4 trades, -3.13% mean, 0% win;
+- Flush-B: 13 trades, +8.34% mean, 61.5% win.
+
+The four CS72 observations are too few/clustered for a post-hoc CS-specific calendar gate, and the direct portfolio counterfactual rejects a blanket pause.
+
+Named shock days remain neutral-to-helpful under the corrected rules: the book had no position on the tested FTX date, while Aug-2024 and Oct-2025 risk-off/liquidation dates were profitable and Flush-B contributed positively.
+
+**Verdict:** no event-calendar filter. Token-unlock behavior remains blocked by lack of a verified point-in-time historical unlock calendar.
 
 ### Step 21 — clock effects
 Completed. No stable UTC-hour, weekday, or funding-settlement-proximity filter qualified. No rule change.
@@ -85,7 +98,7 @@ Account scale before market impact:
 - $25K: 530 trades, CAGR 103.87%, max DD -15.99%, Sharpe 2.670.
 - $100K: 530 trades, CAGR 105.94%, max DD -16.34%, Sharpe 2.675.
 
-The higher larger-account CAGR is still contract-granularity, not proof of free scalability.
+The higher larger-account CAGR is contract granularity, not proof of free scalability.
 
 Binance 4h-volume proxy:
 - $5K: no admitted trade exceeds 1% participation; CS p95 0.118%, Flush p95 0.064%.
@@ -99,10 +112,19 @@ Flat extra-slippage stress at $5K:
 
 **Verdict:** no strategy rule change. $5K remains small on the broad-market proxy; $25K requires actual venue-depth logging before blind scaling; $100K remains not capacity-validated. Binance volume is only a proxy for the intended U.S. venues.
 
-### Step 25 — liquidation safety
-Completed on the pre-Step-27 book. Historical admitted states stayed well away from modeled maintenance liquidation, including an across-the-board 25% maintenance stress. No tighter stop or blanket shrink was adopted. The theoretical five × 80%-equity all-short case is unsafe and must remain prohibited.
+### Step 25 — liquidation safety — REFRESHED ON CURRENT BOOK
+Corrected-book refresh completed with dynamic-CS maintenance-map coverage.
 
-**Status after current-book correction:** corrected-book refresh is running. Until it completes, retain the gross-exposure/margin-buffer guardrail and do not use the old exact minimum-buffer percentages as authoritative current-book numbers.
+Worst modeled synchronized adverse buffers:
+- $5K: 35.53% under published maintenance; 25.94% if all maintenance is forced to 25%.
+- $25K: 32.14% / 23.24%.
+- $100K: 31.58% / 22.71%.
+
+Across 476-483 entry snapshots per account size, no snapshot came within 20% of modeled maintenance liquidation in either margin case.
+
+The dynamic CS universe exposed an operational coverage gap: LTC can now be admitted even though it was absent from the old curated CS maintenance map. The current safety map therefore includes dynamic-universe LTC and DOT maintenance rates. This is a safety-model coverage fix, not a trading-rule change.
+
+**Verdict:** no tighter stop or blanket size reduction. Keep the live account-level margin-buffer/gross-exposure guardrail. The theoretical several-maximum-size all-short configuration remains prohibited.
 
 ### Step 26 — live protocol
 Completed earlier in `research/live/LIVE-PROTOCOL.md`: paper-first promotion, expected-vs-realized logging, preregistered kill criteria, and no sizing-up from tiny samples.
@@ -112,7 +134,7 @@ Completed. A blanket 0-5-bar post-transition throttle reduced portfolio quality.
 
 ## Blocked / data-limited rather than failed
 ### Step 24 — venue leakage / basis
-Blocked until at least ~90 days of usable Kraken/Kalshi/venue recorder history exist. The repository currently has only the beginning of the forward venue sample. Preserve the preregistered test; do not infer a venue result from a few days.
+Blocked until at least ~90 days of usable Kraken/Kalshi/venue recorder history exist. Preserve the preregistered test; do not infer a venue result from a few days.
 
 ### Token unlock event subtest
 Blocked by lack of a verified point-in-time historical unlock calendar. Do not hand-pick unlock dates after observing price moves.
@@ -123,10 +145,10 @@ Step 17 was run, but the faded/delisted control set remains too small and hetero
 ### Actual U.S. venue capacity
 Binance volume is only a liquidity proxy. The binding execution question above small account sizes remains actual displayed depth, spread, order-book walk and realized paper fills on the intended U.S. venues.
 
-## Immediate queue after this reconciliation
-1. Finish corrected-book Step 25 liquidation-safety refresh.
-2. Decide whether Step 20 event behavior needs a corrected-book rerun; only do it if the trade-composition change could alter an operational decision.
-3. Leave Step 24 blocked until its forward-data requirement is actually met.
-4. Continue forward monitoring of the recent Flush transition deterioration without turning it into a post-hoc production rule.
+## Immediate queue after reconciliation
+1. Keep the corrected two-engine specification frozen while the paper watcher accumulates live evidence.
+2. Leave Step 24 blocked until its forward venue-history requirement is met.
+3. Continue prospective monitoring of the recent Flush transition deterioration without turning the post-hoc observation into a production rule.
+4. Keep token unlocks and deeper survivorship work explicitly data-blocked rather than guessing.
 
 Do not re-open settled dead ideas (BTC hedging, vol targeting, drawdown throttle, tight Flush stops, clock filters) without new preregistered evidence.
