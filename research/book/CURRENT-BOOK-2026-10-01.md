@@ -128,9 +128,24 @@ simultaneous Flush positions goes 1 / 2 / 3 / 4 / 5. Capping at two gives:
 | **Sharpe** | 2.66 | **2.71** |
 | worst month | −5.70% | **−5.64%** |
 
-Better Sharpe and better worst month with no hand-picked coin list; ~7pp less CAGR. **Run both in paper** — the signals
-are identical and only admission differs, so it costs nothing to carry both until the live record settles it. The cap
-of 2 is itself an in-sample choice over 16 configurations; the monotone drawdown curve is the robust finding.
+Better Sharpe and better worst month with no hand-picked coin list; ~7pp less CAGR. The cap of 2 is itself an in-sample
+choice over 16 configurations; the monotone drawdown curve is the robust finding.
+
+A third candidate came out of the regime follow-up (`research/universe-refresh/FLUSH-REGIME-CAP-2026-10-01.md`): cap
+Calm at 1 and everything else at 2, because the max-drawdown episode's Flush trades are **Calm 30 / Stress 8** and Calm
+has the worst Flush edge (+1.80% vs Stress +3.21%).
+
+| | curated seven (this spec) | dynamic 16, flat cap 2 | dynamic 16, Calm 1 / else 2 |
+|---|---:|---:|---:|
+| CAGR | **93.94%** | 87.28% | 86.00% |
+| max DD | −12.94% | −13.92% | **−11.80%** |
+| Sharpe | 2.659 | 2.713 | **2.780** |
+| worst month | −5.70% | −5.64% | **−5.28%** |
+| universe picked after the fact | **yes** | no | no |
+
+**Run all three in paper.** The signals are identical and only admission differs, so carrying them costs nothing but
+bookkeeping, and the live record settles which one is real. The Calm cap is post-hoc on a single 2022 episode — re-declare
+it in writing before the forward sample starts.
 
 The 180-day maturity rule was specified in Step 27 and then isolated in a reconciliation audit. Versus no history gate it improved standalone edge from +2.66% to +2.93% and improved the corrected book on CAGR, drawdown, Sharpe, and worst month. A 365-day sensitivity looked attractive but is **not adopted** because it was not the preregistered rule and trims substantially more early history.
 

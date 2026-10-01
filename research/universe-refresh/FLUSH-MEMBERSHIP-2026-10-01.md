@@ -60,6 +60,12 @@ Going from two simultaneous flush longs to three costs 8.8pp of drawdown and buy
 one-bet problem showing up exactly where the correlation evidence says it should, and it is the single most useful
 number in this file. Step 27's diagnosis was right.
 
+**1b. Correction, from the follow-on test** (`FLUSH-REGIME-CAP-2026-10-01.md`): the "one bet on one bar" reading below
+is wrong about the timescale. Same-bar breadth is median 1 and only 10.5% of signals arrive on a bar with ≥3 coins
+firing, so simultaneous signals cannot be what drives the cap-3 drawdown. The concurrency that matters is **overlapping
+holds across days** — a Flush position runs up to 72h, so positions opened on different bars stack. The correlation
+mechanism is right; the timescale in this file is not.
+
 **2. Breadth de-sizing alone does not work** (C: −23.9% and −24.5%). Scaling by 1/m shrinks each position but still
 admits all of them, so the account still ends up long the same market event. The count of open positions matters more
 than the size of each — which is what you would expect if the coins are one bet. Breadth only helps *combined* with a
@@ -108,9 +114,11 @@ worth more than a 2.66 that does.
 ## What is still open
 1. The cap of 2 needs a forward sample, or a predeclared derivation from N_eff (≈ 2.5 in the correlation evidence,
    which is suspiciously close to 2 — worth testing whether N_eff computed on his own panel *predicts* the right cap).
-2. Whether the cap should be conditional on regime: in stress, flushes cluster hardest and that is also where Flush-B
-   pays most (+5.1% when funding was hot the week before). Cap 2 may be costing the most in exactly the regime that
-   earns the most. Not tested here.
+2. ~~Whether the cap should be conditional on regime.~~ **Tested — see `FLUSH-REGIME-CAP-2026-10-01.md`.** Both
+   predeclared directions (loosen Stress, tighten Trend down) failed; all six lost Sharpe to flat 2. The drawdown turns
+   out to be made in **Calm** (30 of 46 Flush trades in the max-DD episode) which also has the worst Flush edge
+   (+1.80%). A post-hoc schedule — Calm 1, everything else 2 — gives Sharpe 2.78 at −11.80% drawdown, beating the
+   curated seven on drawdown, Sharpe and worst month. In-sample; a forward candidate, not an adoption.
 3. The 16 configurations go in the Step 19 ledger.
 
 ## Evidence
