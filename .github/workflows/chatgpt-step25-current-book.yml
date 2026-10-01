@@ -23,13 +23,10 @@ jobs:
       - name: Install dependencies
         run: pip install numpy pandas scipy
       - name: Prepare panel path
-        run: mkdir -p /home/claude
+        run: sudo mkdir -p /home/claude && sudo chown "$USER":"$USER" /home/claude
       - name: Build 4h panel
-        run: |
-          cd research/crowding-2026-10-01
-          python build.py
-          cp /home/runner/panel4h.pkl /home/claude/panel4h.pkl 2>/dev/null || true
-          find /home/runner -name panel4h.pkl -print -quit | xargs -r -I{} cp {} /home/claude/panel4h.pkl
+        working-directory: research/crowding-2026-10-01
+        run: python build.py
       - name: Run corrected-book Step 25
         run: python research/liquidation-safety/code/current_book_refresh.py
       - name: Commit results
