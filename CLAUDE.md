@@ -21,8 +21,7 @@ Rules, none waived:
 
 Layout: `raw/` recorded truth · `derived/panel/<interval>/<COIN>.csv` what calculators read ·
 `research/` studies, each dated, with the code that produced them · `collectors/` the recorder
-and the resampler. Sister repo: `clay10fields/crypto-research-machine` (the OKX whole-market
-recorder lives there; its output is mirrored under `raw/okx_recorder/`). Do not write research there.
+and the resampler. Do not open another repo. The copy under `raw/okx_recorder/` is already here.
 
 Branches: `main` is the only live branch. The 15 `chatgpt-*` branches and `claude-review-2026-10-01` were merged
 into `main` on 2026-10-01 (PR #1) and are **superseded** — every file on them is contained in `main`, verified
