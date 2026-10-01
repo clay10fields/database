@@ -79,10 +79,12 @@ def trade_table(p, L):
                      isflush=np.full(m.sum(), nm.startswith('Flush')), name=nm)
     return T
 
-def sim(T, names, size=0.20, maxopen=5, flushcap=None, split_t=None):
+def sim(T, names, size=0.20, maxopen=5, flushcap=None, split_t=None, coins=None, series=False):
     e = np.concatenate([T[n]['entry'] for n in names]); x = np.concatenate([T[n]['exit'] for n in names])
     c = np.concatenate([T[n]['coin'] for n in names]); r = np.concatenate([T[n]['r'] for n in names])
     fl = np.concatenate([T[n]['isflush'] for n in names])
+    if coins is not None:
+        keep = np.isin(c, list(coins)); e, x, c, r, fl = e[keep], x[keep], c[keep], r[keep], fl[keep]
     o = np.argsort(e, kind='stable'); e, x, c, r, fl = e[o], x[o], c[o], r[o], fl[o]
     eq = 1.0; op = []; held = set(); ev_t = []; ev_eq = []; n = 0
     for i in range(len(e)):
@@ -111,6 +113,7 @@ def sim(T, names, size=0.20, maxopen=5, flushcap=None, split_t=None):
                maxdd_pct=(d / d.cummax() - 1).min() * 100, sharpe=sh(ret))
     cut = pd.Timestamp('2024-01-01')
     out['sharpe_train'] = sh(ret[ret.index < cut]); out['sharpe_test'] = sh(ret[ret.index >= cut])
+    if series: out['_daily'] = d
     return out
 
 def log(study, test, variant, panel_key, p, cfg, m, script):
