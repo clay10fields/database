@@ -1,6 +1,8 @@
+# READ EVERY FILE. HE TELLS YOU THIS PERSONALLY. DO IT.
+
 # database — read this first
 
-First action is to read `research/steward/WHAT-THE-FILES-SAY.md`. The verdicts are in it. Do not ask Clayten to explain the job, and do not stop at the index.
+**READ THE FILES. DO NOT SKIM THE INDEX AND START WRITING.** Clayten says this to every session in person. The verdicts are in `research/steward/WHAT-THE-FILES-SAY.md`. Open the study folders after that. Do not ask him to explain the job again.
 
 The job, already decided. Find an edge on the coins he can trade, Kraken and Kalshi. Paper only. No orders. This repo, main, no other repo. Regime before the trade: Stress, trend up, trend down, calm. Compression is stand-down. Do not short a bull leg unless that cell already paid. One idea at a time. A close miss stays. A failure is written with the reason, and that reason is the next hypothesis. Do not add to the current book from a backtest.
 
