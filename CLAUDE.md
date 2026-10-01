@@ -2,7 +2,7 @@
 
 # database — read this first
 
-**READ THE FILES. OPEN EVERY RESULT TABLE. DO NOT SKIM THE INDEX AND START WRITING.** Clayten says this to every session in person. The verdicts are in `research/steward/WHAT-THE-FILES-SAY.md`. The tables are in each study's `results/` folder. Open them. A note that cites a number without the table is not done. Do not ask him to explain the job again.
+**READ `research/steward/NOW.md` BEFORE ANYTHING ELSE.** Then the files. Then every result table. Do not skim the index and start writing. Clayten says this to every session in person. Do not ask him to explain the job again.
 
 The job, already decided. Find an edge on the coins he can trade, Kraken and Kalshi. Paper only. No orders. This repo, main. Do not open another repo. Regime before the trade: Stress, trend up, trend down, calm. Compression is stand-down. Do not short a bull leg unless that cell already paid. One idea at a time. A close miss stays. A failure is written with the reason, and that reason is the next hypothesis. Do not add to the current book from a backtest.
 
@@ -29,4 +29,4 @@ file-by-file. Do not branch from them, cherry-pick from them, or treat them as u
 deletion only because ref deletion is blocked from the agent sandbox. The 13 `chatgpt-*.yml` workflows they carried
 were dropped deliberately: each was pinned to its own branch and could never fire again.
 
-Research detail after the verdicts file: `research/README.md`.
+Research detail after NOW.md: `research/steward/WHAT-THE-FILES-SAY.md`, then `research/README.md`.
