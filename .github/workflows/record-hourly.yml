@@ -36,6 +36,9 @@ jobs:
         continue-on-error: true
       - name: rebuild derived panels (1h 4h 8h 12h 1d)
         run: python3 collectors/resample.py
+      - name: paper signal watcher (no orders)
+        run: python3 collectors/signals.py
+        continue-on-error: true
       - name: commit
         run: |
           git config user.name "database-recorder"

@@ -25,10 +25,13 @@ jobs:
           COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
         run: python3 collectors/coingecko_daily.py
         continue-on-error: true
+      - name: Binance Vision archive (new daily metrics files, incl. top-trader ratio; skips files already held)
+        run: python3 collectors/binance_vision_backfill.py BTCUSDT,ETHUSDT,SOLUSDT,XRPUSDT,ADAUSDT,DOGEUSDT,LTCUSDT,DOTUSDT,LINKUSDT,AAVEUSDT,AVAXUSDT,BCHUSDT,HBARUSDT,1000SHIBUSDT,XLMUSDT,XTZUSDT,ZECUSDT,NEARUSDT,ALGOUSDT,WLDUSDT,RENDERUSDT
+        continue-on-error: true
       - name: commit
         run: |
           git config user.name "database-recorder"
           git config user.email "recorder@users.noreply.github.com"
-          git add raw/coinalyze_daily raw/marketcap
+          git add raw/coinalyze_daily raw/marketcap raw/binance_vision
           git diff --cached --quiet || git commit -qm "record-daily: $(date -u +%Y-%m-%d)"
           git pull -q --rebase && git push -q

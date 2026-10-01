@@ -1,26 +1,25 @@
 #!/usr/bin/env python3
-"""Paper-watch the two crowding rules from research/crowding-2026-10-01 on live data.
-No orders. Rebuilt from raw/ + derived/panel/1h every run, so it holds no state of its own.
+"""Paper-watch the crowd short on live data. No orders. Rebuilt from raw/ + derived/panel/1h every
+run, so it holds no state of its own. Rules and numbers: research/crowd-short/CROWD-SHORT.md.
 
-Rules, evaluated at every 4h close (00, 04, 08, 12, 16, 20 UTC):
-  CROWD_SHORT  Binance account long/short ratio >= its own 90-day 90th percentile AND price up
-               over the last 24h -> short, exit 24h later.
-  FLUSH_LONG   open interest (contracts) down more than 8% over the last 24h AND long/short
-               ratio below its own 90-day median -> long, exit 72h later.
-One position per coin per rule at a time. Results are net of a 0.10% round-trip fee; funding
-is not included (backtest had it; it was small next to the moves).
+Evaluated at every 4h close (00, 04, 08, 12, 16, 20 UTC). Everything in a row is known at that close.
+  CROWD_SHORT  base rule from crowding-2026-10-01: ls_pct >= 0.90 and price up 24h -> short 24h (kept for continuity)
+  FLUSH_LONG   oi down > 8% in 24h and ls_pct < 0.5 -> long 72h (kept for continuity)
+  CROWD_24H    base AND funding not extreme (fund_pct < 0.70) AND not within 3% of the 20-day high -> short, 24h
+  CROWD_72H    CROWD_24H AND top-trader ratio pct > 0.70 -> short, 72h
+               (top-trader ratio is only in the Binance Vision daily files, ~1 day late; the newest
+                reading at or before the bar is used, so this one runs on data up to ~30h stale)
+Exits for CROWD_24H / CROWD_72H, first hit: a 4h close >= entry x 1.05; any 1h high >= entry x 1.10;
+the hold. No new CROWD_24H/72H entries while BTC is up > 15% over the last 30 days.
+One position per coin per rule. Results net of 0.10% fee, funding not included.
 
-Inputs: derived/panel/1h/<COIN>.csv (Coinalyze, Binance USDT perp). In that file row t carries
-the long/short reading taken at t and the close / OI at t+1h, so a 4h bar closing at T reads
-close and OI from row T-1h and the long/short ratio from row T-1h (one hour stale at most).
-The 90-day ratio history before the recorder started is seeded from raw/binance_vision metrics
-(same Binance series; checked 2026-10-01: ratio of the two sources 1.000, sd 0.002).
+Inputs: derived/panel/1h/<COIN>.csv (Coinalyze, Binance USDT perp): row t carries the ls reading at t and
+close/OI/high/funding for the hour t..t+1h. A 4h bar closing at T takes close/OI/ls from row T-1h,
+high = max of the 4 hourly highs, fund = the 8h funding settlement if the bar closes on 00/08/16 UTC (Coinalyze rate in % / 100), else 0.
+History before the recorder started is seeded from raw/binance_vision (metrics: ls and top, daily to ~yesterday;
+klines_4h: highs, monthly to last month; fundingRate: monthly) and derived/panel/4h_backfill (closes for last month).
 
-Outputs (derived/signals/):
-  ledger.csv  every signal since the recorder started, open or closed, with result
-  state.csv   latest 4h close per coin: ratio, its percentile, 24h price and OI change
-  new.md      signals that fired in the last 8 hours and were not in the previous ledger
-              (the workflow turns this into a GitHub issue, which notifies the repo owner)
+Outputs (derived/signals/): ledger.csv, state.csv, new.md (same as before).
 """
 from __future__ import annotations
 
@@ -39,27 +38,61 @@ H4 = 4 * 3600
 WIN = 540            # 90 days of 4h readings
 MINP = 180           # 30 days minimum before a percentile is trusted
 FEE = 0.001
-RULES = {"CROWD_SHORT": (-1, 6), "FLUSH_LONG": (1, 18)}   # side, hold in 4h bars
+RULES = {"CROWD_SHORT": (-1, 6), "FLUSH_LONG": (1, 18), "CROWD_24H": (-1, 6), "CROWD_72H": (-1, 18)}
+STOPPED = {"CROWD_24H", "CROWD_72H"}       # rules that use the close stop / hard stop / BTC pause
 OUT = "derived/signals"
-VB = "raw/binance_vision/metrics"
+VB = "raw/binance_vision"
 
 
-def seed_ls(coin: str, start: int) -> pd.Series:
-    """Binance archive ratio at each 4h close minus 1h, for the 95 days before `start`."""
-    sym = "1000SHIBUSDT" if coin == "SHIB" else coin + "USDT"
-    files = sorted(glob.glob(f"{VB}/{sym}/*.zip"))[-100:]
-    parts = []
-    for f in files:
+def vsym(coin: str) -> list[str]:
+    return {"SHIB": ["1000SHIBUSDT"], "RENDER": ["RNDRUSDT", "RENDERUSDT"]}.get(coin, [coin + "USDT"])
+
+
+def _zips(pattern: str, n: int) -> list[pd.DataFrame]:
+    out = []
+    for f in sorted(glob.glob(pattern))[-n:]:
         with zipfile.ZipFile(f) as z:
-            parts.append(pd.read_csv(io.BytesIO(z.read(z.namelist()[0])),
-                                     usecols=["create_time", "count_long_short_ratio"]))
+            out.append(pd.read_csv(io.BytesIO(z.read(z.namelist()[0]))))
+    return out
+
+
+def seed_metrics(coin: str, start: int) -> pd.DataFrame:
+    """Binance archive ls and top at each 4h close (reading at T-1h), before `start`."""
+    parts = []
+    for s in vsym(coin):
+        parts += _zips(f"{VB}/metrics/{s}/*.zip", 100)
     if not parts:
-        return pd.Series(dtype=float)
+        return pd.DataFrame(columns=["ls", "top"])
     m = pd.concat(parts)
     m["ts"] = (pd.to_datetime(m.create_time) - pd.Timestamp(0)) // pd.Timedelta("1s")
-    m = m[(m.ts + 3600) % H4 == 0]                    # readings at T-1h
-    s = pd.Series(m.count_long_short_ratio.values, index=m.ts.values + 3600)
-    return s[~s.index.duplicated()].sort_index().loc[: start - 1]
+    m = m[(m.ts + 3600) % H4 == 0]
+    d = pd.DataFrame({"ls": m.count_long_short_ratio.values, "top": m.sum_toptrader_long_short_ratio.values},
+                     index=m.ts.values + 3600)
+    return d[~d.index.duplicated()].sort_index().loc[: start - 1]
+
+
+def seed_bars(coin: str, start: int) -> pd.DataFrame:
+    """Archive 4h high and funding-in-bar before `start`, plus last-month closes from the Coinalyze backfill."""
+    hi, fu = [], []
+    for s in vsym(coin):
+        for k in _zips(f"{VB}/klines_4h/{s}/*.zip", 2):
+            if str(k.iloc[0, 0]).startswith("open"):
+                k = k.iloc[1:]
+            k = k.iloc[:, [0, 2]].astype(float)
+            hi.append(pd.Series(k.iloc[:, 1].values, index=(k.iloc[:, 0] // 1000).astype(int).values + H4))
+        for f in _zips(f"{VB}/fundingRate/{s}/*.zip", 4):
+            t = ((f.calc_time // 1000 - 1) // H4) * H4 + H4
+            fu.append(f.groupby(t).last_funding_rate.sum())
+    h = pd.concat(hi) if hi else pd.Series(dtype=float)
+    p = f"derived/panel/4h_backfill/{coin}.csv"
+    if os.path.exists(p):
+        b = pd.read_csv(p)
+        h = pd.concat([h, pd.Series(b.c.values, index=b.t.values + H4)])   # close as a stand-in for high
+    h = h[~h.index.duplicated(keep="first")].sort_index()
+    f = pd.concat(fu) if fu else pd.Series(dtype=float)
+    f = f[~f.index.duplicated(keep="last")].sort_index()
+    d = pd.DataFrame({"h": h, "fund": f})
+    return d.loc[: start - 1]
 
 
 def bars(coin: str) -> pd.DataFrame | None:
@@ -67,21 +100,35 @@ def bars(coin: str) -> pd.DataFrame | None:
     if not os.path.exists(p):
         return None
     d = pd.read_csv(p).drop_duplicates("t").set_index("t").sort_index()
-    T = d.index + 3600                                # close time of each 1h row
-    d = d.assign(T=T)[(T % H4) == 0].set_index("T")
-    live = d[["c", "oi", "ls"]].dropna(subset=["c"])
+    d["T"] = ((d.index + 3600 + H4 - 1) // H4) * H4          # 4h close this hour belongs to
+    g = d.groupby("T")
+    live = pd.DataFrame({"c": g.c.last(), "oi": g.oi.last(), "ls": g.ls.last(), "h": g.h.max(), "rate": g.fund.last()})
+    live = live[d.groupby("T").size() == 4].dropna(subset=["c"])   # complete bars only
+    # Coinalyze gives the current 8h funding rate in percent, every hour. Binance settles at 00/08/16 UTC,
+    # so a 4h bar closing on one of those carries that settlement (as a fraction); the others carry 0.
+    # Same convention as the archive seed and the backtest.
+    live["fund"] = np.where(live.index.values % 28800 == 0, live.rate / 100.0, 0.0)
     if live.empty:
         return None
-    ls = pd.concat([seed_ls(coin, int(live.index.min())), live.ls.dropna()])
-    ls = ls[~ls.index.duplicated(keep="last")].sort_index()
-    pct = ls.rolling(WIN, min_periods=MINP).rank(pct=True)
-    live = live.join(pct.rename("ls_pct"))
+    start = int(live.index.min())
+    sm = seed_metrics(coin, start)
+    sb = seed_bars(coin, start)
+    full = pd.concat([pd.concat([sm, sb], axis=1), live[["ls", "h", "fund"]]])
+    full = full[~full.index.duplicated(keep="last")].sort_index()
+    full["fund24"] = full.fund.rolling(6, min_periods=1).sum()
+    live["ls_pct"] = full.ls.rolling(WIN, min_periods=MINP).rank(pct=True).reindex(live.index)
+    live["fund_pct"] = full.fund24.rolling(WIN, min_periods=MINP).rank(pct=True).reindex(live.index)
+    live["hi20"] = full.h.rolling(120, min_periods=60).max().reindex(live.index)
+    top = full.top.dropna() if "top" in full else pd.Series(dtype=float)
+    live["top"] = top.reindex(live.index, method="ffill") if len(top) else np.nan
+    live["top_pct"] = top.rolling(WIN, min_periods=MINP).rank(pct=True).reindex(live.index, method="ffill") if len(top) else np.nan
     idx = live.index.values
+
     def ago(col, sec):
-        s = live[col]
-        return pd.Series(s.reindex(idx - sec).values, index=idx)
+        return pd.Series(live[col].reindex(idx - sec).values, index=idx)
     live["ret24"] = live.c / ago("c", 86400) - 1
     live["oi24"] = live.oi / ago("oi", 86400) - 1
+    live["near_hi"] = live.c >= 0.97 * live.hi20
     return live
 
 
@@ -91,6 +138,8 @@ def main() -> int:
     if os.path.exists(f"{OUT}/ledger.csv"):
         o = pd.read_csv(f"{OUT}/ledger.csv")
         old = set(zip(o.coin, o.rule, o.entry_t))
+    btc = bars("BTC")
+    pause = pd.Series(False, index=btc.index) if btc is None else (btc.c / pd.Series(btc.c.reindex(btc.index.values - 30 * 86400).values, index=btc.index) - 1 > 0.15).fillna(False)
     rows, state = [], []
     now = 0
     for coin in COINS:
@@ -99,14 +148,17 @@ def main() -> int:
             continue
         now = max(now, int(b.index.max()))
         last = b.iloc[-1]
-        state.append(dict(coin=coin, t=int(b.index[-1]), close=last.c, ls=last.ls,
-                          ls_pct=last.ls_pct, ret24_pct=last.ret24 * 100, oi24_pct=last.oi24 * 100))
-        sig = {
-            "CROWD_SHORT": (b.ls_pct >= 0.9) & (b.ret24 > 0),
-            "FLUSH_LONG": (b.oi24 < -0.08) & (b.ls_pct < 0.5),
-        }
+        state.append(dict(coin=coin, t=int(b.index[-1]), close=last.c, ls=last.ls, ls_pct=last.ls_pct,
+                          top_pct=last.top_pct, fund_pct=last.fund_pct, near_hi=bool(last.near_hi),
+                          ret24_pct=last.ret24 * 100, oi24_pct=last.oi24 * 100,
+                          btc_pause=bool(pause.reindex([b.index[-1]]).fillna(False).iloc[0])))
+        base = (b.ls_pct >= 0.9) & (b.ret24 > 0)
+        c24 = base & (b.fund_pct < 0.7) & ~b.near_hi.astype(bool) & ~pause.reindex(b.index).fillna(False).astype(bool)
+        sig = {"CROWD_SHORT": base, "FLUSH_LONG": (b.oi24 < -0.08) & (b.ls_pct < 0.5),
+               "CROWD_24H": c24, "CROWD_72H": c24 & (b.top_pct > 0.7)}
         T = b.index.values
         c = b.c.values
+        h = b.h.values
         pos = {t: i for i, t in enumerate(T)}
         for rule, (side, hold) in RULES.items():
             s = sig[rule].fillna(False).values
@@ -117,21 +169,31 @@ def main() -> int:
                     continue
                 exit_t = int(T[i]) + hold * H4
                 j = pos.get(exit_t)
-                r = side * (c[j] / c[i] - 1) - FEE if j is not None else np.nan
+                px, how = None, "hold"
+                if rule in STOPPED:
+                    for k in range(i + 1, (j if j is not None else len(T) - 1) + 1):
+                        if h[k] >= c[i] * 1.10:
+                            px, how, j = c[i] * 1.10, "hard stop 10%", k
+                            break
+                        if c[k] >= c[i] * 1.05:
+                            px, how, j = c[k], "close stop 5%", k
+                            break
+                if px is None and j is not None:
+                    px = c[j]
+                r = side * (px / c[i] - 1) - FEE if px is not None else np.nan
                 rows.append(dict(coin=coin, rule=rule, side="short" if side < 0 else "long",
                                  entry_t=int(T[i]), entry_utc=pd.Timestamp(int(T[i]), unit="s"),
-                                 entry=c[i], exit_utc=pd.Timestamp(exit_t, unit="s"),
-                                 exit=c[j] if j is not None else np.nan,
-                                 status="closed" if j is not None else "open",
-                                 ret_pct=r * 100, ls_pct=b.ls_pct.iloc[i],
-                                 ret24_pct=b.ret24.iloc[i] * 100, oi24_pct=b.oi24.iloc[i] * 100))
-                # next entry only after this one exits (or never, while open)
-                nxt = np.searchsorted(T, exit_t)
+                                 entry=c[i], exit_utc=pd.Timestamp(int(T[j]) if j is not None else exit_t, unit="s"),
+                                 exit=px if px is not None else np.nan, how=how if px is not None else "open",
+                                 status="closed" if px is not None else "open",
+                                 ret_pct=r * 100, ls_pct=b.ls_pct.iloc[i], top_pct=b.top_pct.iloc[i],
+                                 fund_pct=b.fund_pct.iloc[i], ret24_pct=b.ret24.iloc[i] * 100, oi24_pct=b.oi24.iloc[i] * 100))
+                nxt = np.searchsorted(T, int(T[j]) if j is not None else exit_t)
                 i = max(i + 1, int(nxt))
-    led = pd.DataFrame(rows, columns=["coin", "rule", "side", "entry_t", "entry_utc", "entry",
-                                      "exit_utc", "exit", "status", "ret_pct", "ls_pct",
-                                      "ret24_pct", "oi24_pct"]).sort_values(["entry_t", "coin"])
-    led.round({"entry": 8, "exit": 8, "ret_pct": 4, "ls_pct": 4,
+    cols = ["coin", "rule", "side", "entry_t", "entry_utc", "entry", "exit_utc", "exit", "how", "status",
+            "ret_pct", "ls_pct", "top_pct", "fund_pct", "ret24_pct", "oi24_pct"]
+    led = pd.DataFrame(rows, columns=cols).sort_values(["entry_t", "coin"])
+    led.round({"entry": 8, "exit": 8, "ret_pct": 4, "ls_pct": 4, "top_pct": 4, "fund_pct": 4,
                "ret24_pct": 3, "oi24_pct": 3}).to_csv(f"{OUT}/ledger.csv", index=False)
     pd.DataFrame(state).round(4).to_csv(f"{OUT}/state.csv", index=False)
 
@@ -143,8 +205,9 @@ def main() -> int:
         lines.append("Paper signal only — no order was placed.\n")
         for r in fresh.itertuples():
             lines.append(f"- **{r.rule}** {r.coin} {r.side} at {r.entry:g} "
-                         f"({r.entry_utc:%Y-%m-%d %H:%M} UTC), exit {r.exit_utc:%Y-%m-%d %H:%M} UTC. "
-                         f"ratio pct {r.ls_pct:.2f}, price 24h {r.ret24_pct:+.1f}%, OI 24h {r.oi24_pct:+.1f}%")
+                         f"({r.entry_utc:%Y-%m-%d %H:%M} UTC), exit by {r.exit_utc:%Y-%m-%d %H:%M} UTC. "
+                         f"crowd pct {r.ls_pct:.2f}, big accts pct {r.top_pct:.2f}, funding pct {r.fund_pct:.2f}, "
+                         f"price 24h {r.ret24_pct:+.1f}%")
         for rule in RULES:
             k = closed[closed.rule == rule]
             if len(k):

@@ -8,7 +8,7 @@ from concurrent.futures import ThreadPoolExecutor
 ROOT='raw/binance_vision'; BASE='https://data.binance.vision/data/futures/um'
 SYMS=sys.argv[1].split(',') if len(sys.argv)>1 else ['ZECUSDT','NEARUSDT','SUIUSDT','HYPEUSDT','UNIUSDT','WLDUSDT','1000PEPEUSDT',
      'PENGUUSDT','CRVUSDT','ALGOUSDT','TRXUSDT','RENDERUSDT','RNDRUSDT','BNBUSDT','VVVUSDT']
-START=dt.date(2020,1,1); END=dt.date(2026,9,30)
+START=dt.date(2020,1,1); END=dt.date.today()
 def months():
     d=START
     while d<=END:
