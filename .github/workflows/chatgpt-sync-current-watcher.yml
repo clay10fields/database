@@ -5,6 +5,7 @@ on:
     branches: [chatgpt-liqf-readmission-corrected-book]
     paths:
       - 'research/book/code/sync_current_watcher.py'
+      - 'research/book/code/test_current_watcher_synthetic.py'
       - '.github/workflows/chatgpt-sync-current-watcher.yml'
   workflow_dispatch:
 
@@ -23,9 +24,16 @@ jobs:
       - name: Install dependencies
         run: pip install numpy pandas
       - name: Apply deterministic watcher sync
-        run: python research/book/code/sync_current_watcher.py
+        run: |
+          if grep -q 'MIN_HISTORY_DAYS = 180' collectors/signals.py; then
+            echo 'watcher already synchronized'
+          else
+            python research/book/code/sync_current_watcher.py
+          fi
       - name: Compile watcher
         run: python -m py_compile collectors/signals.py
+      - name: Run non-vacuous synthetic regression
+        run: python research/book/code/test_current_watcher_synthetic.py
       - name: Run paper watcher against repository data
         run: python collectors/signals.py
       - name: Validate current-book eligibility in generated ledger
@@ -44,7 +52,7 @@ jobs:
           closed=fl[fl.status=='closed']
           allowed_how={'24h loss cut -8%','48h not-positive cut','hold 72h'}
           assert set(closed['how'].dropna()).issubset(allowed_how), set(closed['how'].dropna())
-          print('validated',len(cs),'CS72 and',len(fl),'Flush-B paper records')
+          print('repository-data validation:',len(cs),'CS72 and',len(fl),'Flush-B paper records')
           PY
       - name: Restore generated signal outputs
         run: git checkout -- derived/signals || true
