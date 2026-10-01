@@ -60,30 +60,49 @@ Completed. CS72 cleared an intentionally harsh Bonferroni threshold. Flush-B nar
 ### Step 20 — event behavior
 Completed on the pre-Step-27 playbook. No generic shock-day or FOMC pause was justified; blocking FOMC-date entries worsened the then-current account. Token-unlock behavior remains untested because the repository lacks an objective historical unlock calendar.
 
-**Status after current-book correction:** qualitative no-calendar-filter verdict remains the standing rule, but exact account figures are stale and should be refreshed if event behavior becomes decision-critical.
+**Status after current-book correction:** qualitative no-calendar-filter verdict remains the standing rule, but exact account figures are stale and should be refreshed only if event behavior becomes decision-critical.
 
 ### Step 21 — clock effects
 Completed. No stable UTC-hour, weekday, or funding-settlement-proximity filter qualified. No rule change.
 
-### Step 22 — diversification measured
-Completed on the pre-Step-27 book. CS72 and Flush-B had mildly negative daily/P&L correlation and materially higher combined Sharpe than either engine alone.
+### Step 22 — diversification measured — REFRESHED ON CURRENT BOOK
+Corrected-book refresh completed.
 
-**Status after current-book correction:** qualitative conclusion is plausible but exact remove-one/correlation evidence is stale. Refresh on the corrected book is the next priority.
+- Combined: 515 trades, CAGR 93.87%, max DD -12.94%, Sharpe 2.660.
+- CS72 only: CAGR 42.21%, max DD -11.92%, Sharpe 2.047.
+- Flush-B only: CAGR 46.70%, max DD -12.94%, Sharpe 1.932.
+- CS72/Flush-B daily return correlation: -0.065.
+- Daily dollar P&L correlation: -0.117.
+- Both engines move on only 9.68% of active days; when both move, signs are opposite 66.29% of the time.
 
-### Step 23 — capacity and slippage
-Completed on the pre-Step-27 book as far as available venue data allowed.
-- $5K was small on the Binance market-liquidity proxy.
-- $25K required actual venue-depth validation.
-- $100K was not capacity validated.
-- next-bar-open proxy was uninformative.
-- flat extra-slippage stress degraded but did not immediately erase the historical edge.
+**Verdict:** the two-engine diversification thesis is revalidated and stronger on the corrected book. Keep both; no hedge overlay added.
 
-**Status after current-book correction:** venue-capacity conclusion remains a constraint, but exact participation/account figures should be refreshed after Step 22 because the trade mix changed.
+### Step 23 — capacity and slippage — REFRESHED ON CURRENT BOOK
+Corrected-book refresh completed.
+
+Account scale before market impact:
+- $5K: 515 trades, CAGR 93.87%, max DD -12.94%, Sharpe 2.660.
+- $25K: 530 trades, CAGR 103.87%, max DD -15.99%, Sharpe 2.670.
+- $100K: 530 trades, CAGR 105.94%, max DD -16.34%, Sharpe 2.675.
+
+The higher larger-account CAGR is still contract-granularity, not proof of free scalability.
+
+Binance 4h-volume proxy:
+- $5K: no admitted trade exceeds 1% participation; CS p95 0.118%, Flush p95 0.064%.
+- $25K: ~0.68% of CS and ~0.52% of Flush trades exceed 1%; p95 0.697% / 0.390%.
+- $100K: ~22.97% of CS and ~10.99% of Flush trades exceed 1%; p95 2.88% / 1.63%, maxima 7.54% / 9.16%.
+
+Flat extra-slippage stress at $5K:
+- +25 bps round trip: CAGR 79.80%, Sharpe 2.410.
+- +50 bps: CAGR 70.25%, Sharpe 2.187.
+- +100 bps: CAGR 40.04%, Sharpe 1.535.
+
+**Verdict:** no strategy rule change. $5K remains small on the broad-market proxy; $25K requires actual venue-depth logging before blind scaling; $100K remains not capacity-validated. Binance volume is only a proxy for the intended U.S. venues.
 
 ### Step 25 — liquidation safety
 Completed on the pre-Step-27 book. Historical admitted states stayed well away from modeled maintenance liquidation, including an across-the-board 25% maintenance stress. No tighter stop or blanket shrink was adopted. The theoretical five × 80%-equity all-short case is unsafe and must remain prohibited.
 
-**Status after current-book correction:** core guardrail remains valid; exact historical minimum buffers should eventually be refreshed on the corrected trade set.
+**Status after current-book correction:** corrected-book refresh is running. Until it completes, retain the gross-exposure/margin-buffer guardrail and do not use the old exact minimum-buffer percentages as authoritative current-book numbers.
 
 ### Step 26 — live protocol
 Completed earlier in `research/live/LIVE-PROTOCOL.md`: paper-first promotion, expected-vs-realized logging, preregistered kill criteria, and no sizing-up from tiny samples.
@@ -105,10 +124,9 @@ Step 17 was run, but the faded/delisted control set remains too small and hetero
 Binance volume is only a liquidity proxy. The binding execution question above small account sizes remains actual displayed depth, spread, order-book walk and realized paper fills on the intended U.S. venues.
 
 ## Immediate queue after this reconciliation
-1. Refresh Step 22 diversification on the corrected current book.
-2. Refresh Step 23 participation/slippage/capacity on the corrected trade mix.
-3. Refresh Step 25 liquidation-safety snapshots on the corrected trade mix if Steps 22/23 do not change the book.
-4. Revisit Step 20 exact event/account figures only if the refreshed book materially changes timing/entry composition.
-5. Leave Step 24 blocked until its forward-data requirement is actually met.
+1. Finish corrected-book Step 25 liquidation-safety refresh.
+2. Decide whether Step 20 event behavior needs a corrected-book rerun; only do it if the trade-composition change could alter an operational decision.
+3. Leave Step 24 blocked until its forward-data requirement is actually met.
+4. Continue forward monitoring of the recent Flush transition deterioration without turning it into a post-hoc production rule.
 
 Do not re-open settled dead ideas (BTC hedging, vol targeting, drawdown throttle, tight Flush stops, clock filters) without new preregistered evidence.
