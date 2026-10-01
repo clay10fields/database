@@ -61,10 +61,11 @@ Add the idea to `research/README.md` and, if it survives, to `research/book/` (t
 * Shorting a short squeeze, shorting extreme funding, chasing a breakout with OI, buying a laggard, weekend longs, ETF-flow days, the daily crowding basket, the level-break fade, martingale, Grid cell scores: **dead** (see `funding/`, `liquidations/`, `misc/`, `step5-placebos-2026-10-01/`, `crowd-short/FORMULAS.md`).
 * Big accounts alone: nothing. Big accounts vs crowd: long side only, a lead (`big-accounts/`).
 * Spot flow alone: nothing; as a filter: strong (`spot-vs-perp/`).
-* BTC hedging kills every trade tested. Vol-scaled sizing loses to fixed %. Tight stops lose on every mean-reversion long.
+* BTC hedging, seven ways (full, partial, re-hedged, conditional on losing, by regime, by BTC trend, dynamic): every one lowers the edge, most lower the Sharpe; the losers don't reverse into BTC. BTC *is* the trade. Protection = size + time rules + running both trades (`hedging/`). Vol-scaled sizing loses to fixed %. Tight stops lose on every mean-reversion long.
 
 ## 3. The macro picture this is building (keep adding to it)
-Clayten's framing: a 4–5 year BTC cycle, with capital rotating between coin groups by regime. What the tests say so far:
+Clayten's framing: **season (cycle) → regime → coin category → set-up → symptoms before entry → eyes on it the whole trade, ready to adapt when the symptoms stop lining up.**
+Every knowledge file is organised to answer those in that order. What the tests say so far:
 * **The two trades are mirror images of one mechanism**: sell to the crowd when it piles into leverage without spot behind it; buy from the crowd when it's flushed out and spot is buying. Everything that goes *with* forced flow loses.
 * **Regime decides the size, not the sign.** Crowd short: calm and downtrends; stress only with the full filter set. Flush long / liquidation buy: stress and crashes, biggest when the flush ends a hot run; weakest in a month-long bleed with cold funding (2022, May–June 2026). Compressed volatility is the dead zone for all of them.
 * **Coins in demand carry both trades** (up over 6 months / near their 1-year high): the crowd keeps coming back to them. Coins in multi-year decline (DOT, LTC, XTZ, BNB) fail on both. The new-listing hype coins (SUI, PEPE, PENGU, HYPE) fail on the short and work on the long: their crowd has been right so far.
