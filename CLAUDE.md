@@ -1,6 +1,12 @@
 # database — read this first
 
-This repo is the permanent record. Rules, none waived:
+The job, already decided. Do not ask Clayten to explain it.
+
+Find an edge on the coins he can trade, Kraken and Kalshi. Paper only. No orders. This repo, main, no other repo. Regime before the trade: Stress, trend up, trend down, calm. Compression is stand-down. Do not short a bull leg unless that cell already paid. One idea at a time. A close miss stays. A failure is written with the reason, and that reason is the next hypothesis. Do not add to the current book from a backtest.
+
+The book is the crowd short and the flush long in `research/book/CURRENT-BOOK-2026-10-01.md`, with its two caveats. Already settled: do not short a funding spike, a liquidation spike, a break, or catch-up on the 16. The paper spec is the wide washout on the 16 only. ZEC, NEAR, ALGO, WLD, RENDER have no liquidation history in `raw/coinalyze_daily/` yet. Do not rerun that spec on them and call it done.
+
+Rules, none waived:
 
 * `raw/` is append-only. Never rewrite, reorder, or "fix" a raw file. A bad row is documented in
   `raw/*/meta/`, not edited away.
@@ -14,7 +20,7 @@ This repo is the permanent record. Rules, none waived:
 Layout: `raw/` recorded truth · `derived/panel/<interval>/<COIN>.csv` what calculators read ·
 `research/` studies, each dated, with the code that produced them · `collectors/` the recorder
 and the resampler. Sister repo: `clay10fields/crypto-research-machine` (the OKX whole-market
-recorder lives there; its output is mirrored under `raw/okx_recorder/`).
+recorder lives there; its output is mirrored under `raw/okx_recorder/`). Do not write research there.
 
 Branches: `main` is the only live branch. The 15 `chatgpt-*` branches and `claude-review-2026-10-01` were merged
 into `main` on 2026-10-01 (PR #1) and are **superseded** — every file on them is contained in `main`, verified
@@ -22,4 +28,4 @@ file-by-file. Do not branch from them, cherry-pick from them, or treat them as u
 deletion only because ref deletion is blocked from the agent sandbox. The 13 `chatgpt-*.yml` workflows they carried
 were dropped deliberately: each was pinned to its own branch and could never fire again.
 
-Research: start at `research/HANDOFF-2026-10-01.md` (state of play, open problems, what to do next), then `research/FULL-TREATMENT.md` (the method). One hypothesis at a time, every step, its own folder; `research/README.md` is the index.
+Research detail, if needed after the rules above: `research/steward/START-HERE.md`, then `research/README.md`.
