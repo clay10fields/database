@@ -1,0 +1,3 @@
+hypothesis,current_rule,n,edge_pct,clustered_t,documented_comparison_rows,bonferroni_two_sided_critical_t,clears_conservative_bonferroni
+Crowd Short,CS72 final,202,2.379255252717068,4.610730144957449,783,3.998085225685779,True
+Flush-B,Flush-B final,443,2.6699972811880985,3.7061223476877445,326,3.7855415025166295,False

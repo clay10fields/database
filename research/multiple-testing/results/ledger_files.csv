@@ -1,0 +1,30 @@
+hypothesis,file,comparison_rows,columns
+Crowd Short,research/crowd-short/results/bycoin_results.csv,171,n|raw|edge|win|t|med|worst|version|dim|key|test|yrs_pos|yrs
+Crowd Short,research/crowd-short/results/combo_results.csv,36,n|raw|edge|win|t|med|worst|rule|hold|stop|train|test|t_test|per_yr_trades|usd_per_yr_1k|y2022|y2023|y2024|y2025|y2026
+Crowd Short,research/crowd-short/results/deep_results.csv,74,n|raw|edge|win|t|med|worst|section|label|train_edge|test_edge|yrs_pos|hold
+Crowd Short,research/crowd-short/results/deep_results_allcoins.csv,88,n|raw|edge|win|t|med|worst|section|label|train_edge|test_edge|yrs_pos|hold
+Crowd Short,research/crowd-short/results/entry_results.csv,20,n|raw|edge|win|t|med|worst|rule|entry|test|total
+Crowd Short,research/crowd-short/results/final_results.csv,7,trades|final|cagr|maxdd|sharpe|win|avg_pnl|fees|worst_month|pnl_2022|pnl_2023|pnl_2024|pnl_2025|pnl_2026|trades_per_month|start|plan
+Crowd Short,research/crowd-short/results/fundcheck_results.csv,4,trades|final|cagr|maxdd|sharpe|win|avg_pnl|fees|worst_month|pnl_2022|pnl_2023|pnl_2024|pnl_2025|pnl_2026|rule
+Crowd Short,research/crowd-short/results/gates_results.csv,22,version|cut|n|avg|win|t|payoff|kelly
+Crowd Short,research/crowd-short/results/kill2_results.csv,14,trades|final|cagr|maxdd|sharpe|win|avg_pnl|fees|worst_month|pnl_2022|pnl_2023|pnl_2024|pnl_2025|pnl_2026|version|rule
+Crowd Short,research/crowd-short/results/kill_results.csv,26,version|condition|n|avg|win|stopped|trades|final|cagr|maxdd|sharpe|avg_pnl|fees|worst_month|pnl_2022|pnl_2023|pnl_2024|pnl_2025|pnl_2026|rule
+Crowd Short,research/crowd-short/results/lookahead_results.csv,36,shifted|version|trade|n|avg|win|t
+Crowd Short,research/crowd-short/results/newcoins_results.csv,32,version|coin|n|since|gross|win|t|worst|yrs_pos|Kalshi taker|Kalshi maker|Kraken margin
+Crowd Short,research/crowd-short/results/plateau_results.csv,79,n|avg|win|t|train|test|trade|param|value|is_default
+Crowd Short,research/crowd-short/results/port_results.csv,120,trades|final|cagr|maxdd|sharpe|win|avg_pnl|fees|worst_month|pnl_2022|pnl_2023|pnl_2024|pnl_2025|pnl_2026|coins|version|exit|sizing|cap
+Crowd Short,research/crowd-short/results/trade_results.csv,54,n|raw|edge|win|t|med|worst|version|exit|bars_held|test|ret_per_day|sharpe_like
+Flush-B,research/flush-long/results/combo_results.csv,27,n|raw|edge|win|t|med|worst|rule|hold|train|test|t_train|t_test|new8|yrs_pos|per_yr|stress|calm
+Flush-B,research/flush-long/results/deep_results.csv,74,n|raw|edge|win|t|med|worst|section|label|train_edge|test_edge|yrs_pos|hold
+Flush-B,research/flush-long/results/entry_results.csv,11,n|raw|edge|win|t|med|worst|entry|test|total
+Flush-B,research/flush-long/results/final_results.csv,6,trades|final|cagr|maxdd|sharpe|win|fees|worst_month|pnl_2022|pnl_2023|pnl_2024|pnl_2025|pnl_2026|plan|cap|size
+Flush-B,research/flush-long/results/hypotheses_results.csv,13,n|raw|edge|win|t|med|worst|hyp|train|test|yrs_pos|new8|bars|total
+Flush-B,research/flush-long/results/kill_results.csv,10,trades|final|cagr|maxdd|sharpe|win|fees|worst_month|pnl_2022|pnl_2023|pnl_2024|pnl_2025|pnl_2026|rule
+Flush-B,research/flush-long/results/lookahead_results.csv,9,shifted|version|n|avg|win|t
+Flush-B,research/flush-long/results/newcoins_results.csv,32,version|coin|n|since|avg|win|t|worst|yrs_pos|kalshi|margin
+Flush-B,research/flush-long/results/oicut_results.csv,9,rule|n|avg|win|t|train|test|worst|bars|per_day|yrs_pos
+Flush-B,research/flush-long/results/plateau_results.csv,19,n|avg|win|t|train|test|worst|param|value|is_default
+Flush-B,research/flush-long/results/port_results.csv,28,trades|final|cagr|maxdd|sharpe|win|fees|worst_month|pnl_2022|pnl_2023|pnl_2024|pnl_2025|pnl_2026|plan|size|venue
+Flush-B,research/flush-long/results/react_results.csv,19,n|raw|edge|win|t|med|worst|rule|train|test|bars|per_unit|ret_per_day|yrs_pos
+Flush-B,research/flush-long/results/size_results.csv,18,trades|final|cagr|maxdd|sharpe|win|fees|worst_month|pnl_2022|pnl_2023|pnl_2024|pnl_2025|pnl_2026|plan|cap|size|lev
+Flush-B,research/flush-long/results/trade_results.csv,51,n|raw|edge|win|t|med|worst|version|exit|test|train|bars|ret_per_day

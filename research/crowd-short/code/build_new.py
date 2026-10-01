@@ -1,11 +1,14 @@
 """4h panel for the extra coins (Kraken margin / Kalshi), built exactly like crowding-2026-10-01/build.py,
 appended to the 16-coin panel -> /home/claude/panel4h_all.pkl. RENDER = RNDRUSDT history + RENDERUSDT after the rename.
 PEPE = 1000PEPEUSDT (price per 1000 PEPE; returns are the same)."""
+import os
 import sys, glob, pandas as pd
 sys.argv=['x']
 import importlib.util
-spec=importlib.util.spec_from_file_location('B','research/crowding-2026-10-01/build.py'); B=importlib.util.module_from_spec(spec); spec.loader.exec_module(B)
-B.R='raw/binance_vision'
+_RT=os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)),'../../..'))
+# resolve from this file, not the cwd: FULL-TREATMENT says every script runs from its own folder
+spec=importlib.util.spec_from_file_location('B',os.path.join(_RT,'research','crowding-2026-10-01','build.py')); B=importlib.util.module_from_spec(spec); spec.loader.exec_module(B)
+B.R=os.path.join(_RT,'raw','binance_vision')  # absolute: this script runs from its own folder
 NEW={'ZEC':['ZECUSDT'],'NEAR':['NEARUSDT'],'SUI':['SUIUSDT'],'HYPE':['HYPEUSDT'],'UNI':['UNIUSDT'],'WLD':['WLDUSDT'],
      'PEPE':['1000PEPEUSDT'],'PENGU':['PENGUUSDT'],'CRV':['CRVUSDT'],'ALGO':['ALGOUSDT'],'TRX':['TRXUSDT'],
      'RENDER':['RNDRUSDT','RENDERUSDT'],'BNB':['BNBUSDT'],'VVV':['VVVUSDT']}
