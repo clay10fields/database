@@ -12,11 +12,12 @@ PLAY = os.path.join(ROOT, 'research', 'playbook')
 os.chdir(PLAY)
 
 # Reuse the current playbook setup, but stop before its reporting loop.
-src = open('code/sizing.py').read()
+sizing_path = os.path.join(PLAY, 'code', 'sizing.py')
+src = open(sizing_path).read()
 src = src[:src.index('\nSINCE =')]
-ns = {}
+ns = {'__file__': sizing_path, '__name__': 'step20_playbook_loader'}
 with contextlib.redirect_stdout(io.StringIO()):
-    exec(src, ns)
+    exec(compile(src, sizing_path, 'exec'), ns)
 
 cs, fl = ns['cs'].copy(), ns['fl'].copy()
 szCS, szFL, portfolio = ns['szCS'], ns['szFL'], ns['portfolio']
