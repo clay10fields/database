@@ -3,11 +3,14 @@
 Writes raw/marketcap/coingecko_daily.csv append-only.
 
     COINGECKO_API_KEY=... python3 collectors/coingecko_daily.py
-Exits 0 with a skip note if the key is missing so the daily Action can stay green.
+Demo keys only serve the last 365 days (days=max is refused), so we ask for 365; rows already
+recorded are skipped, so each daily run only appends what is new. Every run, including a
+missing key or per-coin HTTP errors, is logged to raw/marketcap/meta/<date>.jsonl.
 """
 from __future__ import annotations
 
 import csv
+import datetime
 import json
 import os
 import sys
@@ -52,8 +55,10 @@ def get(url: str, key: str) -> dict:
 
 def main() -> int:
     key = os.environ.get("COINGECKO_API_KEY", "").strip()
+    errors = []
     if not key:
         print("COINGECKO_API_KEY not set; skip")
+        log_meta(False, 0, ["COINGECKO_API_KEY not set"])
         return 0
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     seen = set()
@@ -67,12 +72,14 @@ def main() -> int:
         url = (
             "https://api.coingecko.com/api/v3/coins/"
             + urllib.parse.quote(cid)
-            + "/market_chart?vs_currency=usd&days=max&interval=daily"
+            + "/market_chart?vs_currency=usd&days=365&interval=daily"
         )
         try:
             data = get(url, key)
         except urllib.error.HTTPError as e:
-            print(f"{coin}: HTTP {e.code}", file=sys.stderr)
+            body = e.read().decode(errors="replace")[:200]
+            print(f"{coin}: HTTP {e.code} {body}", file=sys.stderr)
+            errors.append(f"{coin}: HTTP {e.code} {body}")
             time.sleep(12)
             continue
         prices = {int(t // 1000): p for t, p in data.get("prices", [])}
@@ -92,7 +99,17 @@ def main() -> int:
             w.writerow(["t", "coin", "price", "volume_24h", "market_cap"])
         w.writerows(rows)
     print("appended", len(rows))
+    log_meta(not errors, len(rows), errors)
     return 0
+
+
+def log_meta(ok: bool, rows: int, errors: list) -> None:
+    now = datetime.datetime.now(datetime.timezone.utc)
+    d = os.path.join(os.path.dirname(OUT), "meta")
+    os.makedirs(d, exist_ok=True)
+    with open(os.path.join(d, now.strftime("%Y-%m-%d") + ".jsonl"), "a") as fh:
+        fh.write(json.dumps({"source": "coingecko", "run": now.isoformat(), "ok": ok,
+                             "rows": rows, "errors": errors}) + "\n")
 
 
 if __name__ == "__main__":

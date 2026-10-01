@@ -5,8 +5,9 @@ This repo is the permanent record. Rules, none waived:
 * `raw/` is append-only. Never rewrite, reorder, or "fix" a raw file. A bad row is documented in
   `raw/*/meta/`, not edited away.
 * `derived/` is disposable. It is rebuilt from `raw/` by `collectors/resample.py`. Never hand-edit it.
-* Read-only public endpoints. The only credential is the free read-only `COINALYZE_API_KEY`
-  GitHub secret, read from the environment by the recorder. No exchange keys. Never commit a key.
+* Read-only public endpoints. The only credentials are read-only market-data keys stored as
+  GitHub secrets (`COINALYZE_API_KEY`, `COINGECKO_API_KEY`; see `collectors/SECRETS.md`), read
+  from the environment by the recorders. No exchange keys. Never commit a key.
 * No orders. Not in any mode, not behind any flag. This repo has no trading code and will not.
 * Never write a zero that was not measured. Failed fetches go in meta as failures.
 
