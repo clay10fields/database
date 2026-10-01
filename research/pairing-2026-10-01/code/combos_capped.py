@@ -1,6 +1,7 @@
 """Same combo sweep, 30-coin panel, but cap concurrent Flush positions at 2 (the repo's concurrency fix).
 Isolates whether the ~-40% flat-sim drawdown is the uncapped-flush problem. Research only; no orders.
 """
+import sys; sys.path.insert(0, __import__('os').path.join(__import__('os').path.dirname(__import__('os').path.abspath(__file__)),'../../test-ledger')); from ledger import record
 import numpy as np, pandas as pd, warnings, itertools, os
 warnings.filterwarnings('ignore')
 p=pd.read_pickle('/home/claude/panel4h_all.pkl').sort_values(['coin','t']).reset_index(drop=True)
@@ -48,3 +49,12 @@ pd.set_option('display.width',200)
 print("30-COIN PANEL, FLUSH CAPPED AT 2 CONCURRENT (flat 20%/trade, max 5 open)\n")
 print(R[['combo','k','cagr','maxdd','sharpe']].round(2).to_string(index=False))
 R.to_csv('research/pairing-2026-10-01/results/combos_all30_flushcap2.csv',index=False)
+
+# --- append every result to the test ledger (config travels with every number) ---
+_PANEL=[l for l in open(__file__).read().splitlines() if 'read_pickle' in l][0]
+_pname='panel4h_all (30 coins)' if 'panel4h_all' in _PANEL else 'panel4h (16 coins)'
+for _,_r in R.iterrows():
+    record('pairing','combo account sim',_r.combo,
+           dict(panel=_pname,coins=int(p.coin.nunique()),start=str(pd.to_datetime(p.t.min(),unit='s').date()),
+                end=str(pd.to_datetime(p.t.max(),unit='s').date()),sizing='flat 20%',flush_cap='2',max_open=5,hold_h=72),
+           dict(cagr_pct=float(_r.cagr),maxdd_pct=float(_r.maxdd),sharpe=float(_r.sharpe)),script=__file__)

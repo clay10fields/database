@@ -2,6 +2,7 @@
 No pre-judging: raw P&L (side*fwd - fee), flat 20%/trade, max 5 open, one position per coin at a time.
 72h hold for all (4h panel). Liq-buy is daily data, not here. Research only; no orders.
 """
+import sys; sys.path.insert(0, __import__('os').path.join(__import__('os').path.dirname(__import__('os').path.abspath(__file__)),'../../test-ledger')); from ledger import record
 import numpy as np, pandas as pd, warnings, os, itertools
 warnings.filterwarnings('ignore')
 p=pd.read_pickle('/home/claude/panel4h.pkl').sort_values(['coin','t']).reset_index(drop=True)
@@ -72,3 +73,12 @@ print("ALL 31 COMBINATIONS (flat 20%/trade, max 5 open, raw P&L, sorted by Sharp
 print(R[['combo','k','cagr','maxdd','sharpe','ntrades']].round(2).to_string(index=False))
 os.makedirs('research/pairing-2026-10-01/results',exist_ok=True)
 R.to_csv('research/pairing-2026-10-01/results/combos.csv',index=False)
+
+# --- append every result to the test ledger (config travels with every number) ---
+_PANEL=[l for l in open(__file__).read().splitlines() if 'read_pickle' in l][0]
+_pname='panel4h_all (30 coins)' if 'panel4h_all' in _PANEL else 'panel4h (16 coins)'
+for _,_r in R.iterrows():
+    record('pairing','combo account sim',_r.combo,
+           dict(panel=_pname,coins=int(p.coin.nunique()),start=str(pd.to_datetime(p.t.min(),unit='s').date()),
+                end=str(pd.to_datetime(p.t.max(),unit='s').date()),sizing='flat 20%',flush_cap='none',max_open=5,hold_h=72),
+           dict(cagr_pct=float(_r.cagr),maxdd_pct=float(_r.maxdd),sharpe=float(_r.sharpe)),script=__file__)
