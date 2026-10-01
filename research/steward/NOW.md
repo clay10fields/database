@@ -1,14 +1,16 @@
-# Now — 2026-10-01 19:14 ET
+# Now — 2026-10-01 19:26 ET
 
 Read this before doing anything. The job is already decided. Do not ask Clayten to explain it.
 
 ## Where the work is
 This repo, `clay10fields/database`, branch `main`. Do not open another repo. Do not write a note anywhere else.
 
-## What is running
-`record-daily` run 36937938657 is the retry. It asks for ZEC, NEAR, ALGO, WLD, RENDER first and retries a 429. The run before it, 36937682863, finished on the old script and still has 16 coins. It does not count.
+## What just failed
+`record-daily` run 36937938657 finished failure at 19:19 ET. Coinalyze, CoinGecko, and the Binance archive steps succeeded. The commit step failed, so nothing from that run is on `main`. ZEC, NEAR, ALGO, WLD, RENDER are still not in `raw/coinalyze_daily/liq.csv`. Do not rerun the washout on them and call it done.
 
-Until those five symbols are in `raw/coinalyze_daily/liq.csv`, the washout is not rerun on them and is not called done. Binance archive already has their price, funding, open interest, and long/short ratios. That is not the liquidation tape.
+The run before it, 36937682863, finished on the old script and still has 16 coins. It does not count.
+
+The paper log in `derived/signals/` is a scorecard. No orders. Book E has three open shorts and zero closed trades. The mark at the last bar was about -$12. That is not a result.
 
 ## What a new session does not redo
 The book is crowd short CS72 and flush long. 515 trades, 93.87% a year, −12.94% worst drop on the seven hand-picked flush coins, −26.83% if membership is rule-based. Do not add to `research/book/CURRENT-BOOK-2026-10-01.md` from a backtest.
