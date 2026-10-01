@@ -25,5 +25,11 @@ jobs:
           git config user.name "database-recorder"
           git config user.email "recorder@users.noreply.github.com"
           git add raw/marketcap
-          git diff --cached --quiet || git commit -qm "coingecko: $(date -u +%Y-%m-%d)"
-          git pull -q --rebase && git push -q
+          if git diff --cached --quiet; then
+            echo "no new rows"
+            exit 0
+          fi
+          git commit -m "coingecko: $(date -u +%Y-%m-%d)"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
