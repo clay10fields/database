@@ -14,10 +14,10 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
-from datetime import datetime, timezone
 
 BASE = "https://api.coinalyze.net/v1"
 COINS = "BTC ETH SOL XRP ADA DOGE LTC DOT LINK AAVE AVAX BCH HBAR SHIB XLM XTZ ZEC NEAR ALGO WLD RENDER".split()
+MISSING = "ZEC NEAR ALGO WLD RENDER".split()
 OUT = "raw/coinalyze_daily"
 
 
@@ -44,8 +44,27 @@ def fetch(endpoint, params, key):
     q = dict(params)
     q["api_key"] = key
     url = f"{BASE}/{endpoint}?{urllib.parse.urlencode(q)}"
-    with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "database-recorder"}), timeout=90) as r:
-        return json.loads(r.read().decode())
+    last = None
+    for attempt in range(4):
+        try:
+            with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "database-recorder"}), timeout=90) as r:
+                return json.loads(r.read().decode())
+        except urllib.error.HTTPError as e:
+            last = e
+            if e.code != 429:
+                raise
+            wait = 60 * (attempt + 1)
+            print(f"{endpoint}: 429, waiting {wait}s", file=sys.stderr)
+            time.sleep(wait)
+    raise last
+
+
+def batches(coins):
+    # The five missing names go alone first, so a rate limit on the 16 does not skip them.
+    yield MISSING
+    rest = [c for c in coins if c not in MISSING]
+    for k in range(0, len(rest), 15):
+        yield rest[k:k + 15]
 
 
 def main() -> int:
@@ -64,14 +83,15 @@ def main() -> int:
                 for row in csv.reader(fh):
                     if row and row[0] != "t":
                         seen.add((int(row[0]), row[1]))
-        try:
-            data = []
-            for k in range(0, len(COINS), 16):   # Coinalyze allows at most 20 symbols per request
-                data += fetch(ep, {"symbols": ",".join(symfn(c) for c in COINS[k:k + 16]), "interval": "daily", "from": frm, "to": now}, key)
-        except Exception as e:
-            print(f"{table}: FAILED {e}", file=sys.stderr)
-            time.sleep(30)
-            continue
+        data = []
+        failed = False
+        for group in batches(COINS):
+            try:
+                data += fetch(ep, {"symbols": ",".join(symfn(c) for c in group), "interval": "daily", "from": frm, "to": now}, key)
+            except Exception as e:
+                print(f"{table}: FAILED {group} {e}", file=sys.stderr)
+                failed = True
+            time.sleep(20)
         rows = []
         for item in data:
             sym = item.get("symbol", "")
@@ -87,8 +107,8 @@ def main() -> int:
             if new:
                 w.writerow(["t", "symbol"] + cols)
             w.writerows(rows)
-        print(f"{table}: {len(rows)} appended")
-        time.sleep(45)
+        print(f"{table}: {len(rows)} appended" + (" partial" if failed else ""))
+        time.sleep(30)
     return 0
 
 
