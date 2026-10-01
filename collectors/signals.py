@@ -6,7 +6,7 @@ Evaluated at every 4h close (00, 04, 08, 12, 16, 20 UTC). Everything in a row is
   CROWD_SHORT  base rule from crowding-2026-10-01: ls_pct >= 0.90 and price up 24h -> short 24h (kept for continuity)
   FLUSH_LONG   oi down > 8% in 24h and ls_pct < 0.5 -> long 72h (kept for continuity)
   FLUSH_B      oi down > 8% in 24h and ls_pct < 0.30 -> long 72h, no stop (research/flush-long)
-  CROWD_24H    base AND funding not extreme (fund_pct < 0.70) AND not within 3% of the 20-day high -> short, 24h
+  CROWD_24H    base AND funding not extreme (fund_pct < 0.90; moved from 0.70 by the plateau step 2026-10-01) AND not within 3% of the 20-day high -> short, 24h
   CROWD_72H    CROWD_24H AND top-trader ratio pct > 0.70 -> short, 72h
                (top-trader ratio is only in the Binance Vision daily files, ~1 day late; the newest
                 reading at or before the bar is used, so this one runs on data up to ~30h stale)
@@ -177,7 +177,7 @@ def main() -> int:
                           ret24_pct=last.ret24 * 100, oi24_pct=last.oi24 * 100,
                           btc_pause=bool(pause.reindex([b.index[-1]]).fillna(False).iloc[0])))
         base = (b.ls_pct >= 0.9) & (b.ret24 > 0)
-        c24 = base & (b.fund_pct < 0.7) & ~b.near_hi.astype(bool) & ~pause.reindex(b.index).fillna(False).astype(bool)
+        c24 = base & (b.fund_pct < 0.9) & ~b.near_hi.astype(bool) & ~pause.reindex(b.index).fillna(False).astype(bool)
         sig = {"CROWD_SHORT": base, "FLUSH_LONG": (b.oi24 < -0.08) & (b.ls_pct < 0.5),
                "CROWD_24H": c24, "CROWD_72H": c24 & (b.top_pct > 0.7),
                "FLUSH_B": (b.oi24 < -0.08) & (b.ls_pct < 0.3)}

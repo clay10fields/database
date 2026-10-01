@@ -89,6 +89,13 @@ Add the idea to `research/README.md` and, if it survives, to `research/book/` (t
 
 Run order for the backlog on the two live trades: 16, 18, 26 first (they decide whether to trust anything), then 20, 22, 23, 25, then the rest.
 
+**Done 2026-10-01: steps 16, 18, 26 on both live trades.** Results in each trade's knowledge file and in `research/live/LIVE-PROTOCOL.md`.
+What they changed: (1) no look-ahead anywhere, and the staleness ladder showed the 72h crowd short tolerates a 24–48h-old top-trader
+feed, so it can run live on the daily archive; (2) the plateau step found the funding filter was set too tight — moved from the 70th to
+the 90th percentile, worth +46% → +73% a year on that trade; (3) the live protocol fixes the sample sizes, the kill criteria and the
+mid-trade dashboard before any money is risked. Lesson for the next hypothesis: **run the plateau step early** — it found a real
+improvement that twelve other steps missed, because every other step held the thresholds fixed.
+
 ## 2. What the screens have already settled (don't re-test; cite)
 * Shorting a short squeeze, shorting extreme funding, chasing a breakout with OI, buying a laggard, weekend longs, ETF-flow days, the daily crowding basket, the level-break fade, martingale, Grid cell scores: **dead** (see `funding/`, `liquidations/`, `misc/`, `step5-placebos-2026-10-01/`, `crowd-short/FORMULAS.md`).
 * Big accounts alone: nothing. Big accounts vs crowd: long side only, a lead (`big-accounts/`).

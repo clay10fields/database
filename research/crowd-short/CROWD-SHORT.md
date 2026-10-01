@@ -15,7 +15,7 @@ the crowd is late. Short it.
 | version | conditions | hold | trades | avg per trade | win | t | worst |
 |---|---|---|---|---|---|---|---|
 | Base | crowd ≥ 90th pct of its 90 days, price up over 24h | 24h | 2186 | +0.35% | 55% | 3.7 | −34% (no stop) |
-| **24h** | base + funding not already extreme (< 70th pct) + price not within 3% of 20-day high, 5% stop | 24h | 1289 | +0.48% | 54% | 4.1 | −11.7% |
+| **24h** | base + funding not already extreme (< 90th pct, was 70th) + price not within 3% of 20-day high, 5% stop | 24h | 1289 | +0.48% | 54% | 4.1 | −11.7% |
 | 24h filters, held 72h | same as 24h version, 5% stop | 72h | 868 | +0.86% | 55% | 3.5 | −19% |
 | **72h** | 24h version + big accounts long too (top-trader pct > 0.7), 5% stop | 72h | 266 | +1.50% | 59% | 4.0 | −9.3% |
 
@@ -176,6 +176,53 @@ its 14-day high: −0.10%, 43% win): by then the crowd has been flushed and you'
 24h version: OI built >15% in the prior 14 days +0.95% (63% win); deep in a slide +0.27%. Same shape.
 So: short the crowd at the top of the run, not after the first leg down.
 
+
+## Look-ahead audit and staleness (code/lookahead.py, results/lookahead_results.csv, staleness_results.csv)
+**Step 16. Clean, with one correction to how the test is read.**
+* Timestamp check: of the metrics readings, none maps to a bar that closes before the reading. The panel joins the reading at or before the bar's close; entry is that close. No leak in the build.
+* lag / live / peek on each input (peek = deliberately using the next bar's value):
+  * `ls_pct` peek is much better (+0.62 on the 24h, +0.54 on the 72h). That is what a real driving feature looks like: knowing the future value helps. No leak.
+  * `ret24` peek is much **worse** (−1.15, −1.62). Not a leak: the next bar's 24h return overlaps the trade's own first bar, and for a short that is negatively related to profit. The naive "peek must be better" rule does not apply to a feature whose window overlaps the trade.
+  * `fund_pct`, `near_hi`: barely move under any shift (slow filters).
+* **Staleness ladder** — the practical result:
+  | input stale by | 72h version | 24h version |
+  |---|---|---|
+  | 0h (as traded) | +1.45% | +0.46% |
+  | top-trader ratio 24h stale | +1.26% | n/a |
+  | top-trader ratio 36h stale | +1.33% | n/a |
+  | top-trader ratio 72h stale | +1.06% | n/a |
+  | crowd ratio 24h stale | +1.10% | +0.40% |
+  | crowd ratio 48h stale | +0.35% | +0.33% |
+  | everything 12h stale | +1.07% | −0.02% |
+  * **The 72h version can run live now.** Its top-trader input tolerates being 24–48h old (the live archive feed is ~30h behind), costing about 0.1–0.2% per trade.
+  * **The crowd ratio is the time-critical input** and the price even more so. An hourly recorder is enough; a recorder that stops for half a day is not.
+
+## Parameter plateau (code/plateau.py, results/plateau_results.csv)
+**Step 18.** Every threshold one step either way. Everything sits on a plateau — no spikes with dead neighbours — with one exception that was worth fixing.
+* crowd pct: 0.80 → 0.95 rises smoothly (+0.29 → +0.53 on the 24h; +0.78 → +1.62 on the 72h). 0.90 is mid-plateau.
+* 20-day-high buffer, close stop, hard stop, hold: all flat or smooth around the chosen value. The hard stop makes no difference at all (8–15%).
+* top-trader cut: 0.5 → 0.9 rises, but the **train half goes negative past 0.8** (train +0.10 at 0.8, −0.14 at 0.9). 0.70 is the honest choice; 0.60 is defensible (train +0.57, test +1.45, n 331).
+* **The funding filter was set too tight.** See below.
+
+## Correction: the funding cut moves from the 70th to the 90th percentile (code/fundcheck.py)
+The plateau showed the funding filter was nearly inert between 0.5 and 0.9. Breaking the base rule into funding buckets shows why:
+| funding at entry | n | per trade | win | train / test |
+|---|---|---|---|---|
+| below 50th pct | 164 | +1.29% | 57% | +0.34 / +1.57 |
+| 50–70th | 162 | +1.43% | 61% | +0.60 / +1.71 |
+| 70–80th | 106 | +1.30% | 61% | +0.57 / +1.58 |
+| 80–90th | 163 | +1.53% | 61% | +0.29 / +1.84 |
+| **above 90th** | 259 | **−0.47%** | 46% | −0.57 / −0.45 |
+Only the top decile is poison. Cutting at 0.70 threw away three healthy buckets. On the $5K account (72h version, 50% per trade):
+| funding cut | trades | per year | worst drop | Sharpe | worst month |
+|---|---|---|---|---|---|
+| < 0.70 (old) | 191 | +46% | −21.3% | 1.7 | −10% |
+| < 0.80 | 221 | +62% | −20.4% | 1.9 | −10% |
+| **< 0.90 (new)** | **272** | **+73%** | **−20.6%** | **1.9** | **−8%** |
+| no filter | 299 | +67% | −27.6% | 1.7 | −10% |
+**Adopted: fund_pct < 0.90 on both versions.** Strictly better on the 72h version (more return, less drawdown, higher Sharpe, 42% more trades);
+on the 24h version it is +0.51% vs +0.46% per trade with t 4.9 vs 4.0, same Sharpe, slightly deeper drawdown. The watcher and the build spec now use 0.90.
+
 ## Venue costs compared (checked 2026-10-01)
 | venue | round-trip cost | coins for this trade | notes |
 |---|---|---|---|
@@ -235,7 +282,7 @@ Per trade, 16 coins (SHIB out), same exits, 0.10% fee. ADX(14) and ATR(14) are c
 * Fees can change (Kraken says CME/Bitnomial/NFA fees may update).
 
 ## Current best read (provisional)
-1. Take the 72h version (crowd at its 90-day long extreme, price up over 24h, funding not extreme, price not at its 20-day high, big accounts long).
+1. Take the 72h version (crowd at its 90-day long extreme, price up over 24h, funding below its 90th percentile, price not at its 20-day high, big accounts long).
 2. Short at the 4h close the signal fires on. No waiting.
 3. Size each trade at 25–50% of the account, max 5 open. Don't scale by volatility.
 4. Exit if a 4h candle closes 5% against you; hard stop at 10%; otherwise close at 72h. A 3% target is optional (lower return, 70% win).

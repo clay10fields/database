@@ -159,6 +159,17 @@ Version B, what the week or month before the flush looked like:
   "Funding hot the week before" is the single clearest symptom (+5.1% vs +0.4%).
 * Both symptoms are known before entry, so they can be sizing rules: full size when funding ran hot or price ran up 30% in the prior month; half size when the coin has been falling for a month with cold funding.
 
+
+## Look-ahead audit, staleness, plateau (code/lookahead.py, code/plateau.py, code/oicut.py)
+**Step 16 — clean.** `ls_pct` peek is better (+0.25): a real feature. `oi24` peek is worse (−0.57) for the same arithmetic reason as the short's ret24 — the next bar's 24h OI change overlaps the trade's own window. No leak.
+**Staleness**: this trade is time-critical on OI. 0h +1.80%, OI 24h stale +1.23%, OI 48h stale +0.63%, everything 12h stale +0.96%, everything 72h stale +0.51%.
+The crowd ratio can be stale (+1.31% at 48h) but the OI reading cannot. An hourly recorder is required, not optional.
+**Step 18 — plateau everywhere.** OI drop −0.04 to −0.15 all positive (−0.08 a mild local max, neighbours +1.33 and +1.48);
+crowd cut 0.2–0.5 all positive and smooth (0.25 marginally better than 0.30: +2.04%, t 3.8, more trades); hold 9–30 bars all +1.14% to +1.85%. Nothing here is a knife edge.
+**A dashboard signal that is not a rule.** The mid-trade dashboard (research/live) shows that 24h in, if OI is *still* falling, the trade has only
++0.26% left against a +0.98% base. Tested as a cut rule it **loses**: +1.50% vs +1.84% for the existing time cuts, and fewer dollars per position-day.
+The price-based time cuts (24h if down > 8%, 48h if not positive) already catch those trades. Keep the OI reading as information, not as an exit.
+
 ## Current best read (provisional)
 1. Version B: OI down > 8% in 24h, crowd below its 30th percentile → long at the 4h close, hold 72h.
 2. No price stop. Two time rules only: cut at 24h if down more than 8%; cut at 48h if still not positive. No target.
