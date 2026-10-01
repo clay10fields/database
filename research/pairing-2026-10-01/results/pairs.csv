@@ -1,0 +1,7 @@
+candidate,weight,sharpe,delta,corr_book,n
+MOM20,full,1.348,-0.165,0.067,14708
+MOM20,half,1.581,0.067,0.067,14708
+PerpLedShort,full,0.423,-1.09,-0.08,14753
+PerpLedShort,half,0.919,-0.594,-0.08,14753
+BigLong,full,1.658,0.145,0.267,2476
+BigLong,half,1.675,0.162,0.267,2476
