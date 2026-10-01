@@ -94,6 +94,10 @@ Unlike the crowd short, the flush long works just as well on the new list: versi
   except an established downtrend (ADX > 25 and falling) which is weak.
 * Kelly from the trades: f* = 0.22 (version B). Quarter-Kelly ≈ 5–6% of equity at risk per trade; with ~5% typical losses that's the 15–25% notional used above.
 
+## The coin's own state (see research/crowd-short, 'The coin's own state')
+Biggest on coins within 20% of their 1-year high (+5.36%) and on coins 80%+ below it (+3.06%, win 61%). Weakest on coins down 0–50% over
+a year (+1.26%). Data covers Dec 2021 on; no coin here has been through a full cycle.
+
 ## Current best read (provisional)
 1. Version B: OI down > 8% in 24h, crowd below its 30th percentile → long at the 4h close, hold 72h.
 2. No stop, or at most a 12% stop on a 4h close. No target.

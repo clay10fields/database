@@ -145,6 +145,29 @@ Binance archive pulled 2026-10-01 (collectors/binance_vision_backfill.py). Same 
   Those coins have a crowd that has been right; their history is short, mostly 2023+ bull runs.
 * Per-coin samples are small (17–92 trades). These are leads, not proof.
 
+
+## The coin's own state (code/coinstate.py; also covers the flush long)
+Clayten's point: the data misses the 2020–21 bull, and token economics (supply, demand, inflation, unlocks) may decide which coins these
+work on. Positioning data starts Dec 2021 for every coin, so all of it is one bear (2022), one recovery and bull (2023–25) and 2026.
+The newer coins have 1.3–3.5 years. Nothing here has seen a full cycle.
+Testable proxy for "the token is in demand": the coin's own 6-month and 1-year trend at entry, and distance from its 1-year high.
+| coin state at entry | crowd short 24h | crowd short 72h | flush long B |
+|---|---|---|---|
+| up over the last 6 months | **+0.59%**, win 56%, t 3.6 | **+1.81%**, t 4.0 | +2.77% |
+| down > 30% over 6 months | +0.07%, t 0.4 | −0.03%, t 0.1 | +1.41% |
+| within 20% of its 1-year high | +0.51%, t 3.1 | **+2.15%**, win 62% | **+5.36%** |
+| 50%+ below its 1-year high | +0.17%, t 1.2 | +0.11%, t 0.7 | +1.11% |
+| 80%+ below its 1-year high | +0.26% | **−2.99%**, win 29% (n 28) | +3.06%, win 61% (n 148) |
+| up > 100% over 1 year | +0.64%, t 2.8 | +2.00%, win 60% | +4.35% |
+* **Both trades want a coin that is in demand.** The crowd short needs a crowd that keeps coming back to get squeezed; on a coin in a
+  multi-year decline (DOT, LTC, XTZ fit this) the crowd is thin and the short on a dead-cat bounce fails.
+* So the coin lists above are really a proxy for this. A better rule than naming coins: **crowd short only on coins up over the last 6
+  months**, which also means a coin that hasn't broken out yet qualifies the day it does.
+* The flush long works everywhere but is biggest on coins near their highs (+5.4%) and on coins 80%+ off their highs (+3.1%, capitulation).
+  The middle (down 0–50%) is its weak zone.
+* Tokenomics proper (circulating supply, emission rate, unlock schedule) isn't tested: the market-cap data only goes back 365 days.
+  A coin's inflation/unlock calendar would be the next thing to add if the trend proxy holds live.
+
 ## Venue costs compared (checked 2026-10-01)
 | venue | round-trip cost | coins for this trade | notes |
 |---|---|---|---|
@@ -213,6 +236,7 @@ Per trade, 16 coins (SHIB out), same exits, 0.10% fee. ADX(14) and ATR(14) are c
 7. Venue, given the Kraken perp volumes: BTC on Kraken perps. Kalshi for the coins it lists (ETH SOL XRP ADA DOGE LINK LTC BCH AAVE SHIB ZEC NEAR WLD VVV).
    Kraken margin only where the edge clears ~1% of costs (ZEC, NEAR, WLD, ALGO on the 72h version; RENDER on the 24h version), or inside the free $10K/month.
 8. New coins worth adding: ZEC, NEAR, ALGO, WLD (72h); RENDER (24h). Skip SUI, PEPE, PENGU, HYPE, TRX, BNB, UNI.
+9. Only short coins that are up over the last 6 months (see 'The coin's own state'). Skip a coin in a multi-year decline whatever its name.
 
 Files: see README.md in this folder. Every number here comes from a script in code/ and a table in results/.
 
