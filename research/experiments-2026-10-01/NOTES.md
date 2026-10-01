@@ -155,3 +155,20 @@ quote-volume ratio, own 90d pct (same definitions as `spot-vs-perp/`).
   vs −19.8%. Strict folds picked flush spot sizing for 2024 (won 3.69 vs 3.58) and 2025 (lost 2.36 vs 2.71), none for 2026 →
   **neutral out of sample**. Slots fill with good trades either way.
 * Spot-led rally long: +0.81%/trade but standalone Sharpe 0.37, DD −64%; hurts the book (2.76 → 1.97).
+
+## Phase 11 / 11b — symptom sizing and symptom gating (both panels, funding in) · `code/phase11.py`, `code/phase11b.py`
+Definitions from `flush-long/code/symptoms.py`. Hot run = funding 7d pct ≥0.8 OR prior-month run-up >30% OR BTC down >3% that day;
+cold bleed = funding 7d pct ≤0.2 AND prior month already falling.
+* **Per trade the hot-run split is the strongest seen today:** FlushStd hot **+3.35% (30c) / +3.67% (16c)** vs neither +0.29 /
+  +0.53, cold +0.81 / **−0.59**; second-day flush +0.27 / +0.69. Hot ≈ 46% of flushes and carries almost all the edge.
+* **Not reproduced:** CS72 "first dip after a run with OI at its 30d peak" (old file +2.42%, 74% win) → for CS72_48h with funding
+  +0.41% (n77, 30c) / −0.74% (n45, 16c), worse than ordinary CS trades (+1.02%). Small n, but it does not hold.
+* **Book level, sizing on symptoms trades Sharpe for return:** flush symptom sizing +26pp CAGR but DD −24% → −31%, Sharpe −0.06;
+  all layers stacked is worst. Skip-second-day-flush: tiny plus, picked by every 30c fold, wins 2/3 by hairlines.
+* **Gating (hot only / skip cold) does not beat the stand-down:** new book 2.62 vs 2.63 (30c), 2.64 vs 2.76 (16c); strict folds
+  picked hot-only 4×, lost 3 of 4 (30c-2026 0.22 vs 0.87). Hot-gating and the compression stand-down remove the **same** trades
+  (cold-bleed flushes in quiet tapes); once one is in, the other adds nothing.
+* Hot-gating alone repairs the *current* book: 30c DD −26.5% → −18.1%, Sharpe 2.27 → 2.47 — a second route to the same fix.
+* Config note: for the new book, max 5 slots / no Flush cap beats 8 slots / cap 3 on both panels (2.75 vs 2.63; 2.87 vs 2.76).
+* **Pattern across phases 10–11:** per-trade conditional edges are real and large, but the account is slot- and
+  correlation-bound — which trades get in matters; sizing on conditions mostly trades Sharpe for return.
