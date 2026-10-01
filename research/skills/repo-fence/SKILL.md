@@ -15,7 +15,7 @@ Read and write that repo. Research notes go in `research/`. Raw files in `raw/` 
 
 ## Not allowed
 
-Do not open, clone, or edit `crypto-research-machine`. Do not open, clone, or edit `hype-pressure-kit`. Do not create a side branch for a note. Do not leave a result only in the chat. If it is not on `main`, the next session will not see it.
+Do not open, clone, or edit any other repo. Do not create a side branch for a note. Do not leave a result only in the chat. If it is not on `main`, the next session will not see it.
 
 ## After a write
 
