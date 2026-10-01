@@ -1,11 +1,12 @@
 # research/ — index
 
-**Start with FULL-TREATMENT.md**, then **redo-2026-10-01/REDO.md**, then the three skills in `research/skills/`: `hypothesis-exhaust` (one idea, no ban), `handoff-writer` (legend and data span), `repo-fence` (this repo, main, no other repos). REDO.md is a handoff for the next session. A "dead, do not retest" line is not a ban. Do not add anything in REDO.md to the current book.
+**Start with `steward/README.md`.** That is the job: edge on the coins he can trade, regime first, one idea, write why it failed, this repo only. Then FULL-TREATMENT.md, then redo-2026-10-01/REDO.md, then the three skills in `research/skills/`. A "dead, do not retest" line is not a ban. Do not add anything in REDO.md to the current book.
 
 Each folder is one idea, studied with the same data (16 Binance perps, 4h bars, Dec 2021 to Aug 2026, plus the 14 extra coins from the Kraken margin / Kalshi lists) and the same honest methods (fees and funding in, edge vs a random same-direction trade, t clustered by day, train/test halves, coins the rule was never built on). Every number has a script and a results table next to it.
 
 | folder | idea | verdict (2026-10-01) |
 |---|---|---|
+| **steward/** | the operating directions | Read first. Regime files are listed there. |
 | **skills/** | hypothesis-exhaust, handoff-writer, repo-fence | Standing rules for the next session. Read before a new test or a new note. |
 | **redo-2026-10-01/** | re-walk of ideas marked dead, plus pairs | Handoff with legend. Fade, laggards, weekends, funding short, squeeze short, crowd short, perp-led short: not trades on the versions run. Chase and low-funding long: leads. Long-liq spike when the crowd is already short: +4.32% on 304, t 3.38. Not added to the book. |
 | **crowd-short/** | crowd at its 90-day long extreme + price up → short | **works**: +0.5% (24h) / +1.5% (72h) per trade, $5K → $18.6K Feb 2023–Aug 2026 at −21% worst drop. Full build spec. |
