@@ -1,0 +1,29 @@
+name: record-daily
+on:
+  schedule:
+    - cron: "17 1 * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: record-daily
+  cancel-in-progress: false
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Coinalyze daily history
+        env:
+          COINALYZE_API_KEY: ${{ secrets.COINALYZE_API_KEY }}
+        run: python3 collectors/coinalyze_daily.py
+      - name: commit
+        run: |
+          git config user.name "database-recorder"
+          git config user.email "recorder@users.noreply.github.com"
+          git add raw/coinalyze_daily
+          git diff --cached --quiet || git commit -qm "record-daily: $(date -u +%Y-%m-%d)"
+          git pull -q --rebase && git push -q

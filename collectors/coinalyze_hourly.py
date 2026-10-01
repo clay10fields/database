@@ -1,39 +1,8 @@
 #!/usr/bin/env python3
-"""Record what Coinalyze stops serving: hourly OI, funding, liquidations, long/short ratio,
-and taker buy/sell volume on both perp and spot, for the Kraken-US / Kalshi coin list.
+"""Record what Coinalyze stops serving: hourly OI, funding, predicted funding, liquidations,
+long/short ratio, and taker buy/sell volume on both perp and spot.
 
     COINALYZE_API_KEY=... python3 collectors/coinalyze_hourly.py --out raw/coinalyze_1h
-    python3 collectors/coinalyze_hourly.py --dry-run        # fetch, report, write nothing
-
-WHY. Coinalyze keeps roughly 1,500-2,000 intraday points per series. At 1h that is 60-80 days,
-then it is gone. The 2026-09-30 squeeze study needed 11 months of 4h bars and could only get
-spot taker flow at 4h; "the last hour" could not be tested because hourly spot flow older than
-two months does not exist anywhere free. This recorder makes sure that from today it does.
-
-RULES (from crypto-research-machine/CLAUDE.md, not waived):
-  * Read-only public endpoints. The Coinalyze key is a free read-only data key, supplied via the
-    COINALYZE_API_KEY environment variable (a GitHub Actions secret). It is never written to
-    disk, never logged, never committed. No exchange key is read, requested or accepted.
-  * No orders. Not now, not in any mode, not behind any flag.
-  * Append-only. Each run writes raw/coinalyze_1h/<table>/<YYYY-MM-DD>.csv by APPENDING rows
-    whose timestamp is newer than the last row already on disk. A row, once written, is never
-    rewritten. The overlap window (last 48h) is refetched every run so a missed hour is filled
-    on the next run, but existing rows win.
-  * Never write a zero that was not measured. A failed request goes in meta/<date>.jsonl as a
-    failure; it does not produce an empty or zero row.
-
-TABLES (one CSV per table per UTC day; header on first write):
-  perp_ohlcv   t,symbol,o,h,l,c,v,bv        perp candles with taker-buy volume (bv)
-  spot_ohlcv   t,symbol,o,h,l,c,v,bv        spot candles with taker-buy volume (bv)
-  oi           t,symbol,o,h,l,c             open interest OHLC (coin units)
-  funding      t,symbol,o,h,l,c             funding rate OHLC
-  liq          t,symbol,l,s                 long / short liquidation volume
-  ls_ratio     t,symbol,r,l,s               long/short ratio and the two legs
-Symbols: perp {COIN}USDT_PERP.A (SHIB -> 1000SHIBUSDT_PERP.A), spot {COIN}USD.A, Coinalyze
-aggregates ('.A') so one row is the whole market for that coin, not one exchange.
-
-RATE LIMIT. 40 calls/min, up to 20 symbols per call (each symbol counts as a call). This run
-makes 6 tables x 1 call (16 symbols) = 96 symbol-calls, spread over ~3 minutes. Fine hourly.
 """
 from __future__ import annotations
 
@@ -57,18 +26,15 @@ def perp(c: str) -> str:
 
 
 def spot(c: str) -> str:
-    # Verified 2026-09-30: every coin has a {COIN}USD.A spot aggregate except LINK, which only
-    # exists as LINKUSDT.A / LINKUSDC.A. A missing symbol is silently absent from the response,
-    # not an error, so a wrong name here would quietly lose a coin forever.
     return ("LINKUSDT.A" if c == "LINK" else f"{c}USD.A")
 
 
-# table -> (endpoint, symbol fn, extra params, columns)
 TABLES = {
     "perp_ohlcv": ("ohlcv-history", perp, {"interval": "1hour"}, ["o", "h", "l", "c", "v", "bv"]),
     "spot_ohlcv": ("ohlcv-history", spot, {"interval": "1hour"}, ["o", "h", "l", "c", "v", "bv"]),
     "oi": ("open-interest-history", perp, {"interval": "1hour", "convert_to_usd": "false"}, ["o", "h", "l", "c"]),
     "funding": ("funding-rate-history", perp, {"interval": "1hour"}, ["o", "h", "l", "c"]),
+    "pred_funding": ("predicted-funding-rate-history", perp, {"interval": "1hour"}, ["o", "h", "l", "c"]),
     "liq": ("liquidation-history", perp, {"interval": "1hour", "convert_to_usd": "false"}, ["l", "s"]),
     "ls_ratio": ("long-short-ratio-history", perp, {"interval": "1hour"}, ["r", "l", "s"]),
 }
@@ -97,7 +63,6 @@ def fetch(endpoint: str, params: dict, key: str, tries: int = 3) -> list:
 
 
 def last_ts(path: str) -> int:
-    """Newest timestamp already on disk for this table (today's file and yesterday's)."""
     best = -1
     d = os.path.dirname(path)
     if not os.path.isdir(d):
@@ -111,13 +76,10 @@ def last_ts(path: str) -> int:
 
 
 def append_rows(out: str, table: str, cols: list, rows: list, dry: bool) -> int:
-    """Append rows newer than what is on disk. Rows are grouped by UTC day of their timestamp."""
     if not rows:
         return 0
     rows.sort(key=lambda r: (r[0], r[1]))
     d = os.path.join(out, table)
-    newest = last_ts(os.path.join(d, "x"))
-    # existing (t,symbol) keys in the files we may touch, so a partial earlier write is not duplicated
     seen = set()
     if os.path.isdir(d):
         for f in sorted(os.listdir(d))[-3:]:
@@ -152,7 +114,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default="raw/coinalyze_1h")
     ap.add_argument("--dry-run", action="store_true")
-    ap.add_argument("--hours", type=int, default=48, help="overlap window refetched each run")
+    ap.add_argument("--hours", type=int, default=48)
     a = ap.parse_args()
     key = os.environ.get("COINALYZE_API_KEY", "")
     if not key:
@@ -176,14 +138,13 @@ def main() -> int:
         for item in data:
             sym = item.get("symbol", "")
             for h in item.get("history", []):
-                # last candle may be the open (incomplete) hour; keep only closed hours
                 if int(h["t"]) >= now:
                     continue
                 rows.append([int(h["t"]), sym] + [h.get(c) for c in cols])
         n = append_rows(a.out, table, cols, rows, a.dry_run)
         meta["tables"][table] = {"ok": True, "symbols": len(data), "rows_fetched": len(rows), "rows_appended": n, "secs": round(time.time() - t0, 1)}
         print(f"{table}: {len(data)} symbols, {len(rows)} rows fetched, {n} appended")
-        time.sleep(30)  # 16 symbol-calls per table; stay well under 40/min
+        time.sleep(30)
     if not a.dry_run:
         md = os.path.join(a.out, "meta")
         os.makedirs(md, exist_ok=True)
