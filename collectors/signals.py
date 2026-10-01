@@ -33,7 +33,8 @@ import numpy as np
 import pandas as pd
 
 COINS = ["BTC", "ETH", "SOL", "XRP", "ADA", "DOGE", "AVAX", "LTC",
-         "HBAR", "LINK", "DOT", "BCH", "XLM", "XTZ", "AAVE", "SHIB"]
+         "HBAR", "LINK", "DOT", "BCH", "XLM", "XTZ", "AAVE", "SHIB",
+         "ZEC", "NEAR", "ALGO", "WLD", "RENDER"]
 H4 = 4 * 3600
 WIN = 540            # 90 days of 4h readings
 MINP = 180           # 30 days minimum before a percentile is trusted

@@ -35,7 +35,7 @@ import pandas as pd
 
 RAW = "raw/coinalyze_1h"
 OUT = "derived/panel"
-COINS = "BTC ETH SOL XRP ADA DOGE LTC DOT LINK AAVE AVAX BCH HBAR SHIB XLM XTZ".split()
+COINS = "BTC ETH SOL XRP ADA DOGE LTC DOT LINK AAVE AVAX BCH HBAR SHIB XLM XTZ ZEC NEAR ALGO WLD RENDER".split()
 INTERVALS = {"1h": 1, "4h": 4, "8h": 8, "12h": 12, "1d": 24}
 
 

@@ -17,7 +17,7 @@ import urllib.request
 from datetime import datetime, timezone
 
 BASE = "https://api.coinalyze.net/v1"
-COINS = "BTC ETH SOL XRP ADA DOGE LTC DOT LINK AAVE AVAX BCH HBAR SHIB XLM XTZ".split()
+COINS = "BTC ETH SOL XRP ADA DOGE LTC DOT LINK AAVE AVAX BCH HBAR SHIB XLM XTZ ZEC NEAR ALGO WLD RENDER".split()
 OUT = "raw/coinalyze_daily"
 
 
@@ -65,7 +65,9 @@ def main() -> int:
                     if row and row[0] != "t":
                         seen.add((int(row[0]), row[1]))
         try:
-            data = fetch(ep, {"symbols": ",".join(symfn(c) for c in COINS), "interval": "daily", "from": frm, "to": now}, key)
+            data = []
+            for k in range(0, len(COINS), 16):   # Coinalyze allows at most 20 symbols per request
+                data += fetch(ep, {"symbols": ",".join(symfn(c) for c in COINS[k:k + 16]), "interval": "daily", "from": frm, "to": now}, key)
         except Exception as e:
             print(f"{table}: FAILED {e}", file=sys.stderr)
             time.sleep(30)
@@ -86,7 +88,7 @@ def main() -> int:
                 w.writerow(["t", "symbol"] + cols)
             w.writerows(rows)
         print(f"{table}: {len(rows)} appended")
-        time.sleep(30)
+        time.sleep(45)
     return 0
 
 
