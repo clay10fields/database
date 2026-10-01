@@ -15,3 +15,5 @@ Layout: `raw/` recorded truth · `derived/panel/<interval>/<COIN>.csv` what calc
 `research/` studies, each dated, with the code that produced them · `collectors/` the recorder
 and the resampler. Sister repo: `clay10fields/crypto-research-machine` (the OKX whole-market
 recorder lives there; its output is mirrored under `raw/okx_recorder/`).
+
+Research: `research/FULL-TREATMENT.md` is the method. One hypothesis at a time, every step, its own folder; `research/README.md` is the index.

@@ -1,5 +1,7 @@
 # research/ — index
 
+**Start with FULL-TREATMENT.md**: the checklist every hypothesis goes through, what's already settled, the macro picture, and the queue.
+
 Each folder is one idea, studied with the same data (16 Binance perps, 4h bars, Dec 2021 to Aug 2026, plus the 14 extra coins from the
 Kraken margin / Kalshi lists) and the same honest methods (fees and funding in, edge vs a random same-direction trade, t clustered by day,
 train/test halves, coins the rule was never built on). Every number has a script and a results table next to it.
