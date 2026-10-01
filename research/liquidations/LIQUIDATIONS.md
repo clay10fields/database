@@ -71,6 +71,28 @@ previous cycle. Liquidations ranked against the coin's own trailing 90 days. Ent
 * No pause rule fixes the base version (skipping when BTC is 20% off its high still leaves −36% drawdowns). **The filter is the fix**: wait for the market-wide spike in a high-volatility tape. Version F is positive in every year including 2026, at the cost of ~54 trades a year instead of 245.
 * Stops make the account worse (A with a 12% stop: Sharpe 1.3 → 1.0). Max 8 open makes it worse (−63%). Max 3 is a touch safer, not much.
 
+
+## Symptoms before the move (symptoms.py, results/symptoms_*.csv)
+What the 3–30 days before the spike looked like, and how the 3-day buy went. Base version; version F in brackets.
+| the lead-up | n | per trade | win |
+|---|---|---|---|
+| **funding ran hot the week before** | 597 | **+3.42%** [+6.17%, 69% win] | 58% |
+| funding was cold the week before | 338 | +1.96% | 55% |
+| **price had run up >30% in the month before the drop** | 357 | **+3.64%** [+5.60%, 71% win] | 60% |
+| price was already falling the month before | 412 | **+1.08%** [+3.18%, t 1.0] | 56% |
+| OI had built >15% in the 14 days before (leverage piled in) | 458 | +3.28% | 53% |
+| crowd was still long (daily L/S ≥ 70th pct) | 727 | **+1.41%**, t 1.2 | 55% |
+| crowd was already short (≤ 30th pct) | 445 | +2.86% | 57% |
+| crowd leaving (ratio down >10% in 7 days) | 467 | +2.57% | 55% |
+| 4–5 of the last 5 days down (a long slide) | 562 | +1.56% | 58% |
+| 1–2 of the last 5 days down (a sudden hit) | 609 | +2.89% | 55% |
+| liquidations 5×+ the 30-day average (true cascade) | 481 | +2.48% | 57% |
+* **The bounce is biggest when the spike ends a euphoric run**: hot funding, a 30%+ run-up, leverage piled in, then a sudden hit. That's a crowded
+  bull move getting flushed, and the buyers come back.
+* **The bounce is weakest when the spike is one more leg of a slide**: price already falling for a month, 4–5 red days in a row, and the crowd
+  still long (more left to flush). That is 2022 and May–June 2026.
+* So the symptom to watch before buying: was this a sudden liquidation out of strength, or the latest hit in an ongoing bleed with longs still trapped?
+
 ## Current read
 * Run **version F only**: long liquidations ≥ 95th pct on 5+ coins the same day, with the coin's 20-day vol in its top fifth. Buy the close, hold 3 days, no stop,
   exit after day 2 if not positive. 15% per trade, max 5 open. Expect ~1 trade a week and −20% drawdowns.

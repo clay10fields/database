@@ -142,13 +142,30 @@ Every rule was run on all 855 trades. Baseline hold-72h: +1.80% per unit, win 52
 * **Spot flow is the strongest filter.** Spot buying the flush: +3.28%, worst −19%. Spot selling it: +1.23%. On the account, "only when spot is buying"
   gives +14% a year at −10% drawdown, Sharpe 1.5, worst month −5%: the conservative version. "Skip when spot is selling" keeps most trades: +26%, −19%.
 
+
+## Symptoms before the move (symptoms.py)
+Version B, what the week or month before the flush looked like:
+| the lead-up | n | per trade | win | t |
+|---|---|---|---|---|
+| **funding ran hot the week before** | 165 | **+5.08%** | 59% | 2.7 |
+| funding cold the week before | 267 | **+0.41%** | 48% | 1.0 |
+| **price ran up >30% in the month before** | 165 | **+5.65%** | 54% | 2.9 |
+| price already falling the month before | 314 | +0.74% | 53% | 2.1 |
+| big accounts long now (top_pct ≥ 0.7) | 179 | +5.33% | 61% | 3.1 |
+| big accounts short now | 221 | +1.31% | 52% | 1.6 |
+| crowd was long a week ago (then got flushed) | 132 | +2.80% | 53% | 2.2 |
+| 5–6 of the last 6 bars green (flush on strength) | 77 | +2.72% | 58% | 3.4 |
+* Same as the liquidation study: **a flush that ends a hot, crowded, leveraged run-up bounces hard; a flush inside a month-long slide with cold funding barely bounces.**
+  "Funding hot the week before" is the single clearest symptom (+5.1% vs +0.4%).
+* Both symptoms are known before entry, so they can be sizing rules: full size when funding ran hot or price ran up 30% in the prior month; half size when the coin has been falling for a month with cold funding.
+
 ## Current best read (provisional)
 1. Version B: OI down > 8% in 24h, crowd below its 30th percentile → long at the 4h close, hold 72h.
 2. No price stop. Two time rules only: cut at 24h if down more than 8%; cut at 48h if still not positive. No target.
 3. 15% of equity per trade, max 5 open. Half the size of the crowd short.
 4. Trade every regime; expect the money to come in stress.
 5. Coins: XLM, SOL, XRP, HBAR, AVAX, AAVE, BCH, plus ZEC, SUI, PEPE, ALGO, UNI, TRX from the new list. Skip DOT, LTC, DOGE, BNB.
-7. Size up (double) when BTC is also down more than 3% on the day (market-wide flush, +2.6%, 64% win) or when spot is buying the flush (+3.3%). Skip a second-day flush. Halve it when spot is selling.
+7. Size up (double) when the flush ends a hot run (funding hot the week before, or price up 30% in the month before), when BTC is also down more than 3% on the day (market-wide flush, +2.6%, 64% win) or when spot is buying the flush (+3.3%). Skip a second-day flush. Halve it when spot is selling.
 8. Skip it inside an established downtrend (ADX > 25 and falling). Enter at the signal close; a limit 1% below is fine if you're watching.
 6. Pairs naturally with the crowd short: one is short into euphoria, the other long into panic, and they fire at different times.
 

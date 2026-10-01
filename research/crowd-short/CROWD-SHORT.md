@@ -168,6 +168,14 @@ Testable proxy for "the token is in demand": the coin's own 6-month and 1-year t
 * Tokenomics proper (circulating supply, emission rate, unlock schedule) isn't tested: the market-cap data only goes back 365 days.
   A coin's inflation/unlock calendar would be the next thing to add if the trend proxy holds live.
 
+
+## Symptoms before the move (research/flush-long/code/symptoms.py, crowd-short section)
+72h version: the strongest set-ups are a **first dip after a run** (price within 5% of its 14-day high: +2.02%, 68% win) with **OI at its 30-day peak**
+(+2.42%, 74% win) and the crowd already long a week earlier (+1.63%, t 3.5). The weak set-up is a short taken **deep in a slide** (price 15%+ below
+its 14-day high: −0.10%, 43% win): by then the crowd has been flushed and you're shorting the bounce. Cold funding the week before: +0.37%.
+24h version: OI built >15% in the prior 14 days +0.95% (63% win); deep in a slide +0.27%. Same shape.
+So: short the crowd at the top of the run, not after the first leg down.
+
 ## Venue costs compared (checked 2026-10-01)
 | venue | round-trip cost | coins for this trade | notes |
 |---|---|---|---|
