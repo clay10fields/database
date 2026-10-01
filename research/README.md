@@ -23,6 +23,7 @@ train/test halves, coins the rule was never built on). Every number has a script
 | **book/CURRENT-BOOK-2026-10-01.md** | the current two-engine build spec (CS72 + Flush-B; LIQF out) | **authoritative** — read with its two caveats |
 | **AUDIT-STATUS-2026-10-01.md** | ledger: what every step 16–28 concluded | **start here for status** |
 | **REVIEW-2026-10-01.md** | independent re-run and review of all of the above | findings + what is still unfinished |
+| **VERIFICATION-2026-10-01.md** | all 79 existing scripts re-run and diffed against their committed CSVs | **69 reproduce exactly, 0 produced different numbers**; 5 blocked by egress, 2 path bugs fixed, 3 scripts found silently destroying their own evidence (fixed) |
 | survivorship/ | step 17 — faded/delisted controls (ATOM EOS MATIC FTT LUNA) | **inconclusive**: no survivor-only failure, but n=20 / n=154 and t ≈ 1 |
 | multiple-testing/ | step 19 — search-burden ledger | CS72 clears Bonferroni (t 4.61 vs 4.00); **Flush-B just misses** (3.71 vs 3.79) |
 | events/ | step 20 — FOMC and named shock days | no event-calendar filter; blanket FOMC pause rejected on the portfolio |

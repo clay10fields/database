@@ -6,6 +6,18 @@ The account is a research risk path only: it does NOT claim venue availability/c
 """
 import os, runpy, contextlib, io, warnings
 warnings.filterwarnings('ignore')
+
+# Refuse to proceed on a collapsed fetch -- writing empty results would overwrite the committed evidence.
+# CLAUDE.md: "Never write a zero that was not measured." See unlock_event_study.py for the same guard.
+def _require_events(frame, what, minimum=8):
+    n = 0 if frame is None else len(frame)
+    if n < minimum:
+        print(f'ABORT: only {n} {what} available (need >= {minimum}, file=sys.stderr). Nothing written; results/ untouched.')
+        print('Cause is almost always no access to data.binance.vision from here.', file=sys.stderr)
+        raise SystemExit(2)
+    return frame
+
+import sys
 import numpy as np, pandas as pd
 
 HERE=os.path.dirname(os.path.abspath(__file__))
@@ -35,6 +47,7 @@ for _,e in evq.iterrows():
     ret=-(exit_px/entry-1)-FEE
     tr.append(dict(token=token,date=e.unlock_date.date().isoformat(),year=int(e.year),entry_ts=T-7*86400,exit_ts=exit_ts,r=ret,reason=reason,
                    unlock_pct=float(e.unlock_pct_of_supply),unlock_type=str(e.unlock_type),recipient=str(e.recipient_category),market=market))
+_require_events(tr,'event price windows')
 T=pd.DataFrame(tr).sort_values('entry_ts'); T.to_csv(os.path.join(OUT,'unlock_hard10_trades.csv'),index=False)
 
 # Fixed locked rule by historical half and year.

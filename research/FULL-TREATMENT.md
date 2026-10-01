@@ -58,6 +58,7 @@ Pick 1–2 versions: a high-volume one and a high-quality one.
 Add the idea to `research/README.md` and, if it survives, to `research/book/` (the combined account) and to `collectors/signals.py` (paper watcher; tested rule exact, no orders).
 
 **Step 15 — Verify.** Hand-check 3 random trades against the panel (entry, exit, funding, fee). Re-run every script from a clean shell. Confirm the CSVs match the tables in the file.
+*Do it mechanically, from each script's own folder, then `git status --porcelain` — anything modified is a reproducibility failure.* The 2026-10-01 sweep (`research/VERIFICATION-2026-10-01.md`) did this across all 79 scripts: 69 reproduce exactly and none produced different numbers, but it caught two scripts that only ran from the repo root, three that overwrite a result file they do not own, and three that **silently wrote empty CSVs over committed evidence** when their data source was unreachable. A script must refuse to write rather than write a zero it did not measure.
 
 
 ## 1b. Steps added 2026-10-01 (not yet run on the first two trades; run them, then they're part of the checklist)

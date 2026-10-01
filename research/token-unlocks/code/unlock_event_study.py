@@ -17,6 +17,7 @@ Research only; no orders.
 """
 import os, io, zipfile, warnings, time
 from urllib.parse import quote
+import sys
 import numpy as np
 import pandas as pd
 import requests
@@ -120,7 +121,19 @@ for k,e in evq.iterrows():
         short_pre7_net_pct=100*(-pre7-.001),short_pre7_vs_btc_net_pct=100*(-(pre7-bpre7)-.001),
         acceleration_pct=100*((pre7-bpre7)-(pre14_7-bpre14_7))))
 
-D=pd.DataFrame(rows); D.to_csv(os.path.join(OUT,'unlock_event_windows.csv'),index=False)
+D=pd.DataFrame(rows)
+# CLAUDE.md: "Never write a zero that was not measured." data.binance.vision is unreachable from some
+# environments (agent/CI egress policy), and every price fetch then fails silently. Writing the empty
+# result would overwrite the real evidence with nothing, so refuse instead. MIN_EVENTS is the script's own
+# minimum for a statistic (see tstat() below).
+MIN_EVENTS=8
+_avail=int(D.available.sum()) if len(D) and 'available' in D else 0
+if _avail < MIN_EVENTS:
+    print(f'ABORT: only {_avail} of {len(D)} events have a usable price window (need >= {MIN_EVENTS}).', file=sys.stderr)
+    print('Nothing written -- the committed results in results/ are left untouched.', file=sys.stderr)
+    print('Cause is almost always no access to data.binance.vision from here; run this where the archive is reachable.', file=sys.stderr)
+    raise SystemExit(2)
+D.to_csv(os.path.join(OUT,'unlock_event_windows.csv'),index=False)
 A=D[D.available==True].copy()
 
 # Cluster SE by date because multiple token events on the same day are one market draw.

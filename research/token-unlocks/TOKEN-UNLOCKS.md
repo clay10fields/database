@@ -8,6 +8,19 @@ This file was missing: the code and all eleven result tables were committed on `
 while `research/AUDIT-STATUS-2026-10-01.md` described the whole subtest as "blocked". Both halves of that were wrong —
 the test was run, and it found something. Written up here so the evidence and its limits are in one place.
 
+> **Reproducibility warning, added 2026-10-01 after a verification sweep.** Every number in this file comes from
+> the committed CSVs in `results/`. **I could not re-run the scripts that produced them**, because all three need
+> `data.binance.vision` and that host is unreachable from this environment (egress policy). So these numbers are
+> *reported*, not *verified* — the same standard I would hold anyone else's work to. The committed CSVs were
+> produced where the archive is reachable (GitHub Actions). Before anything here is relied on, re-run
+> `code/unlock_event_study.py`, `code/unlock_path_and_risk.py` and `code/unlock_account.py` somewhere with archive
+> access and confirm the tables below are unchanged.
+>
+> A related defect was found and fixed in the same sweep: all three scripts used to write their output
+> unconditionally, so running them without archive access **silently overwrote the committed evidence with empty
+> files** — a direct breach of `CLAUDE.md`'s "never write a zero that was not measured". They now abort with exit 2
+> and touch nothing when fewer than 8 events have a usable price window.
+
 ## The hypothesis (his words)
 Sell-off into the unlock, boom a week before. Two testable halves: does the pre-unlock week carry the damage, and is
 there anything to trade in front of it.

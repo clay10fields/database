@@ -2,9 +2,12 @@
 Builds faded/delisted historical coins using the same Binance Vision parser as the main 4h panel,
 then appends them to the normal panel ONLY for this audit. Raw archive remains append-only.
 """
+import os
 import importlib.util, glob, pandas as pd
 
-spec=importlib.util.spec_from_file_location('B','research/crowding-2026-10-01/build.py')
+_RT=os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)),'../../..'))
+# resolve from this file, not the cwd: FULL-TREATMENT says every script runs from its own folder
+spec=importlib.util.spec_from_file_location('B',os.path.join(_RT,'research','crowding-2026-10-01','build.py'))
 B=importlib.util.module_from_spec(spec); spec.loader.exec_module(B)
 B.R='raw/binance_vision'
 DEAD={
