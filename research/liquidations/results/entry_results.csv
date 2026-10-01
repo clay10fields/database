@@ -1,0 +1,7 @@
+mode,size,mean
+enter at close,386,0.04915310366988346
+"limit -2% (all, 0 if unfilled)",386,0.053316398310041375
+limit -2% (filled),308,0.06681860307687004
+"limit -4% (all, 0 if unfilled)",386,0.042713531294524924
+limit -4% (filled),203,0.0812188329048602
+wait 1 day,386,0.032627429877234326

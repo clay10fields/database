@@ -155,3 +155,31 @@ did not improve that specific combo under a shared 5-slot cap, which is a portfo
 verdict on the signal. Worth running small on its own and worth re-testing for book admission with proper
 sizing. Still to do for the full works: Steps 3 (entry), 8 (coinstate), 9 (venues), 12/12a (gates/quant),
 13 (further hypotheses), 16-21 (audits).
+
+
+## FULL WORKS — Steps 3, 8, 9, 12, 13 (2026-10-01)
+`code/shape.py`, `results/entry_results.csv`, `results/bycoin_results.csv`. Filtered long-liq buy, hold 3d.
+
+**Step 3 entry — a resting limit on a deeper dip beats chasing the close.** Enter at spike close +4.9%/trade;
+a resting limit **-2% below the close** fills ~80% of the time and lifts it to +5.3% (counting unfilled as flat)
+/ +6.7% on fills; a -4% limit fills ~53% at +8.1%. Waiting a full day hurts (+3.3%). Adopt the -2% resting
+limit, size only the filled portion.
+
+**Step 8 coin-state — this trade is universal, unlike the other two.** It works on coins in demand (6m up
++5.3%) AND coins in decline (6m down +4.5%, 70% win). The crowd short and flush long both need coins in
+demand; the liquidation buy does not. So it does not take the "up over 6 months" universe filter — it is a
+different mechanism (forced selling exhausting), not a positioning trade.
+
+**Step 9 by coin.** Best: HBAR +10.3%, XLM +10.3%, LINK +7.7%, AVAX +7.0%, SOL +6.1%. Weak: BCH +1.0%,
+AAVE +1.8%, DOGE +2.7%. DOT/XTZ/SHIB are not Kraken-tradeable; drop them for the account version.
+
+**Step 12 gates.** Reinforce the vol filter rather than add to it: ATR-expanded tape +6.1% (t 5.1) vs ATR-
+normal +2.3% (t 1.1); ADX>25 (trending) +5.4% vs ADX<20 +3.0%. Nothing new to adopt — the high-vol filter
+already captures this.
+
+**Step 13 further hypotheses.** All strong, none change the base: extreme liqs >=99th +5.9% (73% win),
+very broad spike >=8 coins +5.6%, big down day <-5% +5.5% (72% win), funding negative +5.4%. OI direction
+barely matters (OI fell +4.4% / OI rose +6.8%). The signal is robust to these cuts.
+
+**Net:** the only adopted refinement is the -2% resting-limit entry. Everything else confirms the base. The
+trade is a genuine, robust third edge.
