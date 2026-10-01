@@ -1,7 +1,14 @@
 name: record-hourly
 on:
   schedule:
-    - cron: "7 * * * *"
+    # GitHub delivers scheduled events to this account very sparsely — across all three cron
+    # workflows only one scheduled run has ever fired. GitHub's hosted scheduler is best-effort and
+    # drops runs under load; it cannot be forced. So fire four times an hour at offset minutes (away
+    # from the congested top of the hour) to raise the odds that at least one lands each hour. This is
+    # safe and cheap: the collectors dedup against existing rows and each run pulls 48h of history, so
+    # extra runs append nothing new and a single landed run backfills whatever earlier slots missed.
+    # Billable minutes measured at 0, so the extra frequency costs nothing.
+    - cron: "3,18,33,48 * * * *"
   workflow_dispatch:
 permissions:
   contents: write
