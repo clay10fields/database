@@ -21,7 +21,7 @@ History before the recorder started is seeded from raw/binance_vision (metrics: 
 klines_4h: highs, monthly to last month; fundingRate: monthly) and derived/panel/4h_backfill (closes for last month).
 
 spot_pct = spot taker-buy flow (2*sbv/sv-1, 24h mean) ranked against the coin's own history; a size rule, not a gate
-(research/spot-vs-perp): crowd short full size when spot_pct <= 0.6, flush long full size when >= 0.5. Live-only (no archive seed).
+(research/spot-vs-perp): crowd short full size when spot_pct <= 0.6, flush long full size when >= 0.5. Seeded from the Binance spot archive before the recorder started.
 
 Outputs (derived/signals/): ledger.csv, state.csv, new.md (same as before).
 """
@@ -99,6 +99,22 @@ def seed_bars(coin: str, start: int) -> pd.DataFrame:
     return d.loc[: start - 1]
 
 
+def seed_spot(coin: str, start: int) -> pd.Series:
+    """Archive spot taker-buy flow per 4h bar (2*taker_buy_quote/quote_vol - 1) before `start`."""
+    out = []
+    for s in vsym(coin):
+        for k in _zips(f"{VB}/spot_klines_4h/{s}/*.zip", 4):
+            if str(k.iloc[0, 0]).startswith("open"):
+                k = k.iloc[1:]
+            k = k.iloc[:, [0, 7, 10]].astype(float)
+            t = np.where(k.iloc[:, 0] > 1e14, k.iloc[:, 0] // 1_000_000, k.iloc[:, 0] // 1000).astype(int) + H4
+            out.append(pd.Series((2 * k.iloc[:, 2] / k.iloc[:, 1] - 1).values, index=t))
+    if not out:
+        return pd.Series(dtype=float)
+    x = pd.concat(out)
+    return x[~x.index.duplicated()].sort_index().loc[: start - 1]
+
+
 def bars(coin: str) -> pd.DataFrame | None:
     p = f"derived/panel/1h/{coin}.csv"
     if not os.path.exists(p):
@@ -131,8 +147,9 @@ def bars(coin: str) -> pd.DataFrame | None:
 
     def ago(col, sec):
         return pd.Series(live[col].reindex(idx - sec).values, index=idx)
-    snet = (2 * live.sbv / live.sv - 1).rolling(6, min_periods=3).mean()
-    live["spot_pct"] = snet.rolling(WIN, min_periods=MINP // 6).rank(pct=True)   # own rank; needs ~5 days of live spot data before it means much
+    sn = pd.concat([seed_spot(coin, start), (2 * live.sbv / live.sv - 1)])
+    sn = sn[~sn.index.duplicated(keep="last")].sort_index().rolling(6, min_periods=3).mean()
+    live["spot_pct"] = sn.rolling(WIN, min_periods=MINP).rank(pct=True).reindex(live.index)
     live["ret24"] = live.c / ago("c", 86400) - 1
     live["oi24"] = live.oi / ago("oi", 86400) - 1
     live["near_hi"] = live.c >= 0.97 * live.hi20
