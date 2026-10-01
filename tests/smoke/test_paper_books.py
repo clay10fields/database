@@ -40,15 +40,15 @@ def check(label: str, got, want):
     print(f"  {'ok  ' if got == want else 'FAIL'} {label}: {got!r}")
 
 
-def row(coin, rule, entry_t, entry, ret_pct, regime, volpct, ls_pct=0.10, oi24=-20.0, status="closed"):
+def row(coin, rule, entry_t, entry, ret_pct, regime, volpct, ls_pct=0.10, oi24=-20.0, status="closed", prev24=False):
     hold = 18 * 4 * 3600
-    return dict(coin=coin, rule=rule, side="long" if rule.startswith("FLUSH") else "short",
+    return dict(coin=coin, rule=rule, side="long" if (rule.startswith("FLUSH") or rule == "LIQ_BUY") else "short",
                 entry_t=entry_t, entry_utc=pd.Timestamp(entry_t, unit="s"), entry=entry,
                 exit_utc=pd.Timestamp(entry_t + hold, unit="s"), exit=entry * (1 + ret_pct / 100),
                 how="hold 72h", status=status, ret_pct=ret_pct, ls_pct=ls_pct, top_pct=0.80,
                 fund_pct=0.50, spot_pct=0.50, ret24_pct=1.0, oi24_pct=oi24, ret6m_pct=10.0,
                 positioning_days=400.0, regime=regime, btc_vol_pct=volpct,
-                flush_curated=coin in {"XLM", "SOL", "XRP", "HBAR", "AVAX", "AAVE", "BCH"})
+                flush_curated=coin in {"XLM", "SOL", "XRP", "HBAR", "AVAX", "AAVE", "BCH"}, flush_prev24=prev24)
 
 
 def build_ledger() -> pd.DataFrame:
@@ -78,6 +78,15 @@ def build_ledger() -> pd.DataFrame:
     # Bar 5 — a price so high that $5k x 15% cannot buy one whole 0.01 BTC contract.
     T5 = T3 + 40 * DAY
     rows.append(row("BTC", "FLUSH_D", T5, 600_000_000.0, 1.0, "Stress", 0.80))
+    # Bar 7 — book E's own rules, placed between bar 5 and bar 6 (everything earlier has closed; all of it
+    # closes before bar 6, and bar 6b stays the latest entry_t). Stress / vol 0.80 so the stand-down does not bite.
+    T7 = T5 + 5 * DAY
+    rows.append(row("LINK", "CROWD_48H", T7, 12.0, 1.0, "Stress", 0.80, ls_pct=0.95))   # E admits
+    rows.append(row("LTC", "CROWD_24H", T7, 50.0, 1.0, "Stress", 0.80, ls_pct=0.95))    # established coin -> E admits
+    rows.append(row("ZEC", "CROWD_24H", T7, 100.0, 1.0, "Stress", 0.80, ls_pct=0.95))   # not established -> E rejects
+    rows.append(row("SOL", "LIQ_BUY", T7, 100.0, 4.0, "Stress", 0.80))                   # E admits
+    rows.append(row("XLM", "FLUSH_D", T7, 0.10, 2.0, "Stress", 0.80))                    # E admits
+    rows.append(row("HBAR", "FLUSH_D", T7, 0.10, 2.0, "Stress", 0.80, prev24=True))      # second-day -> E rejects
     # Bar 6 + 6b — CS-vs-Flush slot contention, the one rule Step 27 adopted as causal (CS before Flush).
     # P fills four of five slots with CS72 shorts (Stress/0.90 so no cap interferes, all tradeable coins);
     # one bar later a CS72 and a FLUSH_D both want the last slot. Correct priority admits the CS and rejects
@@ -115,7 +124,7 @@ def main() -> int:
 
         books = pd.read_csv(os.path.join(out, "books.csv")).set_index("book")
         tr = pd.read_csv(os.path.join(out, "book_trades.csv"))
-        check("all four books reported", sorted(books.index), sorted(pb.BOOKS))
+        check("all five books reported", sorted(books.index), sorted(pb.BOOKS))
 
         T0 = int(led.entry_t.min())
         fl = tr[(tr.rule.isin(["FLUSH_B", "FLUSH_D"])) & (tr.entry_t == T0)]
@@ -160,7 +169,25 @@ def main() -> int:
             check(f"{book}: ZEC rejected for no contract size",
                   zec.why.iloc[0] if len(zec) else None, "no contract size (not tradeable here)")
 
-        print("\nbooks diverge (the point of running all four):")
+        print("\nbook E rules bite (each filtered signal is logged with its reason):")
+        e = tr[tr.book == "E_experiments_final"]
+        e0 = e[(e.entry_t == T0) & (e.rule == "FLUSH_D")]
+        check("E: bar-1 compressed flushes all stood down (vol 0.20 < 0.50)",
+              int((~e0.admitted & e0.why.str.startswith("Flush stood down")).sum()), 3)
+        e2 = e[(e.entry_t == T2) & (e.rule == "FLUSH_D")]
+        check("E: bar-2 flushes admitted (vol 0.80)", int(e2.admitted.sum()), 3)
+        T7 = int(led[led.rule == "LIQ_BUY"].entry_t.iloc[0])
+        e7 = e[e.entry_t == T7].set_index(["coin", "rule"])
+        check("E: CROWD_48H admitted", bool(e7.loc[("LINK", "CROWD_48H"), "admitted"]), True)
+        check("E: CROWD_24H on established coin admitted", bool(e7.loc[("LTC", "CROWD_24H"), "admitted"]), True)
+        check("E: CROWD_24H on new coin rejected", e7.loc[("ZEC", "CROWD_24H"), "why"], "CROWD_24H runs on established coins only")
+        check("E: LIQ_BUY admitted", bool(e7.loc[("SOL", "LIQ_BUY"), "admitted"]), True)
+        check("E: normal flush admitted", bool(e7.loc[("XLM", "FLUSH_D"), "admitted"]), True)
+        check("E: second-day flush rejected", e7.loc[("HBAR", "FLUSH_D"), "why"], "second-day flush skipped")
+        check("E ignores CROWD_72H (not its rule)", int((e.rule == "CROWD_72H").sum()), 0)
+        check("A-D never see E-only rules", int(tr[(tr.book != "E_experiments_final") & tr.rule.isin(["CROWD_48H", "CROWD_24H", "LIQ_BUY"])].shape[0]), 0)
+
+        print("\nbooks diverge (the point of running all of them):")
         check("A and D admitted different counts",
               books.loc["A_curated_nocap", "admitted"] != books.loc["D_dynamic_volcap", "admitted"], True)
         check("every book placed at least one trade", bool((books.admitted > 0).all()), True)

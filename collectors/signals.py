@@ -17,11 +17,19 @@ Evaluated at every 4h close (00, 04, 08, 12, 16, 20 UTC). Everything in a row is
   CROWD_24H    base AND funding not extreme (fund_pct < 0.90; moved from 0.70 by the plateau step 2026-10-01) AND not within 3% of the 20-day high -> short, 24h
   CROWD_72H    CROWD_24H AND top-trader pct >0.70 AND >=180d positioning history
                AND positive 6-month price return -> short, 72h
+  CROWD_48H    the CROWD_72H signal, same stops and BTC pause, closed at 48h. Feeds paper book E
+               (research/experiments-2026-10-01: the 48h hold was chosen in 54 of 60 strict walk-forward picks).
+  LIQ_BUY      filtered daily liquidation buy (research/liquidations/LIQUIDATIONS.md): coin's long liquidations
+               >= 95th pct of its 90 days, >= 5 coins spiking that day, coin 20-day vol in its own top fifth ->
+               long at the day's close (00:00 UTC), hold 3 days, no stop. From raw/coinalyze_daily (16 coins).
+               Only days completed after the live recorder started are logged. Feeds paper book E.
                (top-trader ratio is only in the Binance Vision daily files, ~1 day late; the newest
                 reading at or before the bar is used, so this one runs on data up to ~30h stale)
 Exits for CROWD_24H / CROWD_72H, first hit: a 4h close >= entry x 1.05; any 1h high >= entry x 1.10;
 the hold. No new CROWD_24H/72H entries while BTC is up > 15% over the last 30 days.
 One position per coin per rule. Results net of 0.10% fee, funding not included.
+`flush_prev24` on every row: True when the raw Flush condition (oi down >8% / crowd pct <0.30) was also true at the
+4h close 24h earlier -- a second-day flush. Book E skips those (logged as a rejection, not dropped).
 
 Inputs: derived/panel/1h/<COIN>.csv (Coinalyze, Binance USDT perp): row t carries the ls reading at t and
 close/OI/high/funding for the hour t..t+1h. A 4h bar closing at T takes close/OI/ls from row T-1h,
@@ -59,8 +67,8 @@ FEE = 0.001
 MIN_HISTORY_DAYS = 180
 FLUSH_B_COINS = {"XLM", "SOL", "XRP", "HBAR", "AVAX", "AAVE", "BCH"}
 RULES = {"CROWD_SHORT": (-1, 6), "FLUSH_LONG": (1, 18), "CROWD_24H": (-1, 6), "CROWD_72H": (-1, 18),
-         "FLUSH_B": (1, 18), "FLUSH_D": (1, 18), "MOM20": (1, 18)}
-STOPPED = {"CROWD_24H", "CROWD_72H"}       # rules that use the close stop / hard stop / BTC pause
+         "CROWD_48H": (-1, 12), "FLUSH_B": (1, 18), "FLUSH_D": (1, 18), "MOM20": (1, 18)}
+STOPPED = {"CROWD_24H", "CROWD_72H", "CROWD_48H"}       # rules that use the close stop / hard stop / BTC pause
 FLUSH_TIMED = {"FLUSH_B", "FLUSH_D"}       # rules using the 24h/48h/72h time cuts instead of price stops
 OUT = "derived/signals"
 VB = "raw/binance_vision"
@@ -238,6 +246,54 @@ def btc_state(btc: pd.DataFrame | None) -> tuple[pd.Series, pd.Series]:
     return pd.Series(reg, index=c.index), vol_pct
 
 
+def liq_buy_rows(start: int, now: int, btc_regime: pd.Series, btc_volpct: pd.Series) -> list[dict]:
+    """Filtered daily liquidation buy (research/liquidations/LIQUIDATIONS.md, rule F; same code path as
+    research/experiments-2026-10-01/code/engine.py add_liq_buy). Percentiles use the full daily history; rows are
+    emitted only for days that closed after `start` (the live recorder start) and at or before `now`."""
+    R = "raw/coinalyze_daily"
+    if not (os.path.exists(f"{R}/liq.csv") and os.path.exists(f"{R}/perp_ohlcv.csv")):
+        return []
+    liq = pd.read_csv(f"{R}/liq.csv"); px = pd.read_csv(f"{R}/perp_ohlcv.csv")
+    cn = lambda s: s.replace("1000SHIB", "SHIB").split("USDT")[0]
+    for x in (liq, px):
+        x["coin"] = x.symbol.map(cn)
+    d = px[["t", "coin", "c"]].merge(liq[["t", "coin", "l"]].rename(columns={"l": "liq_l"}), on=["t", "coin"], how="left")
+    d = d.drop_duplicates(["coin", "t"]).sort_values(["coin", "t"]).reset_index(drop=True)
+    d = d[d.t + 86400 <= now].reset_index(drop=True)          # completed days only
+    g = d.groupby("coin", group_keys=False)
+    d["ll_pct"] = g.liq_l.apply(lambda s: s.rolling(90, min_periods=45).rank(pct=True))
+    d["ret1"] = g.c.apply(lambda s: s / s.shift(1) - 1)
+    d["vol20"] = g.ret1.apply(lambda s: s.rolling(20).std())
+    d["volpct"] = g.vol20.apply(lambda s: s.rolling(180, min_periods=90).rank(pct=True))
+    d["nspike"] = d.assign(sp=d.ll_pct >= 0.95).groupby("t").sp.transform("sum")
+    d["sig"] = (d.ll_pct >= 0.95) & (d.nspike >= 5) & (d.volpct >= 0.80)
+    out = []
+    for coin, x in d.groupby("coin"):
+        x = x.reset_index(drop=True); free_from = -1
+        for i in range(len(x)):
+            if not bool(x.sig[i]):
+                continue
+            ent = int(x.t[i]) + 86400
+            if ent < start or ent < free_from:
+                continue
+            exit_t = ent + 3 * 86400
+            j = i + 3
+            done = j < len(x) and int(x.t[j]) + 86400 <= now
+            px_out = float(x.c[j]) if done else np.nan
+            r = (px_out / float(x.c[i]) - 1) - FEE if done else np.nan
+            out.append(dict(coin=coin, rule="LIQ_BUY", side="long", entry_t=ent, entry_utc=pd.Timestamp(ent, unit="s"),
+                            entry=float(x.c[i]), exit_utc=pd.Timestamp(exit_t, unit="s"), exit=px_out,
+                            how="hold 3d" if done else "open", status="closed" if done else "open",
+                            ret_pct=r * 100 if done else np.nan, ls_pct=np.nan, top_pct=np.nan, fund_pct=np.nan,
+                            spot_pct=np.nan, ret24_pct=float(x.ret1[i]) * 100, oi24_pct=np.nan, ret6m_pct=np.nan,
+                            positioning_days=np.nan,
+                            regime=(btc_regime.get(ent, "") if len(btc_regime) else ""),
+                            btc_vol_pct=(btc_volpct.get(ent, np.nan) if len(btc_volpct) else np.nan),
+                            flush_curated=False, flush_prev24=False))
+            free_from = exit_t
+    return out
+
+
 def main() -> int:
     os.makedirs(OUT, exist_ok=True)
     old = set()
@@ -270,9 +326,12 @@ def main() -> int:
         c24 = base & (b.fund_pct < 0.9) & ~b.near_hi.astype(bool) & ~pause.reindex(b.index).fillna(False).astype(bool)
         sig = {"CROWD_SHORT": base, "FLUSH_LONG": (b.oi24 < -0.08) & (b.ls_pct < 0.5),
                "CROWD_24H": c24, "CROWD_72H": c24 & (b.top_pct > 0.7) & cs_eligible,
+               "CROWD_48H": c24 & (b.top_pct > 0.7) & cs_eligible,
                "FLUSH_B": (b.oi24 < -0.08) & (b.ls_pct < 0.3) & fl_eligible,
                "FLUSH_D": (b.oi24 < -0.08) & (b.ls_pct < 0.3) & mature,
                "MOM20": b.near_hi.astype(bool) & mature}
+        raw_flush = ((b.oi24 < -0.08) & (b.ls_pct < 0.3)).fillna(False)
+        prev24 = pd.Series(raw_flush.reindex(b.index.values - 86400).fillna(False).values, index=b.index).astype(bool)
         T = b.index.values
         c = b.c.values
         h = b.h.values
@@ -319,12 +378,14 @@ def main() -> int:
                                  ret6m_pct=b.ret6m.iloc[i] * 100, positioning_days=b.positioning_days.iloc[i],
                                  regime=(btc_regime.get(int(T[i]), "") if len(btc_regime) else ""),
                                  btc_vol_pct=(btc_volpct.get(int(T[i]), np.nan) if len(btc_volpct) else np.nan),
-                                 flush_curated=bool(coin in FLUSH_B_COINS)))
+                                 flush_curated=bool(coin in FLUSH_B_COINS), flush_prev24=bool(prev24.iloc[i])))
                 nxt = np.searchsorted(T, int(T[j]) if j is not None else exit_t)
                 i = max(i + 1, int(nxt))
     cols = ["coin", "rule", "side", "entry_t", "entry_utc", "entry", "exit_utc", "exit", "how", "status",
             "ret_pct", "ls_pct", "top_pct", "fund_pct", "spot_pct", "ret24_pct", "oi24_pct", "ret6m_pct",
-            "positioning_days", "regime", "btc_vol_pct", "flush_curated"]
+            "positioning_days", "regime", "btc_vol_pct", "flush_curated", "flush_prev24"]
+    live_start = int(btc.index.min()) if btc is not None and len(btc) else now
+    rows += liq_buy_rows(live_start, now, btc_regime, btc_volpct)
     led = pd.DataFrame(rows, columns=cols).sort_values(["entry_t", "coin"])
     led.round({"entry": 8, "exit": 8, "ret_pct": 4, "ls_pct": 4, "top_pct": 4, "fund_pct": 4, "spot_pct": 4,
                "ret24_pct": 3, "oi24_pct": 3, "ret6m_pct": 3, "positioning_days": 1,
@@ -342,7 +403,7 @@ def main() -> int:
                          f"({r.entry_utc:%Y-%m-%d %H:%M} UTC), exit by {r.exit_utc:%Y-%m-%d %H:%M} UTC. "
                          f"crowd pct {r.ls_pct:.2f}, big accts pct {r.top_pct:.2f}, funding pct {r.fund_pct:.2f}, spot pct {r.spot_pct:.2f}, "
                          f"price 24h {r.ret24_pct:+.1f}%")
-        for rule in RULES:
+        for rule in list(RULES) + ["LIQ_BUY"]:
             k = closed[closed.rule == rule]
             if len(k):
                 lines.append(f"\nLive record {rule}: {len(k)} closed, avg {k.ret_pct.mean():+.2f}%, "

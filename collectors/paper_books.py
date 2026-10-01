@@ -13,6 +13,16 @@ real instead of a backtest choice made in 2026.
                         research/universe-refresh/FLUSH-REGIME-CAP-2026-10-01.md  (post-hoc; superseded by D)
   D  dynamic_volcap     CS72 + FLUSH_D, max 1 Flush while BTC 20-bar vol percentile < 0.40, else 2.
                         research/universe-refresh/FLUSH-VOL-CAP-2026-10-01.md     (mechanism version, on a plateau)
+  E  experiments_final  the book the strict nested walk-forward picked (research/experiments-2026-10-01/NOTES.md,
+                        FINAL READ; declared 2026-10-01 before any forward data):
+                          CROWD_48H (the CS72 signal closed at 48h)
+                          + CROWD_24H on the 16 established coins only
+                          + FLUSH_D, stood down while BTC 20-bar vol pct < 0.50, second-day flushes skipped
+                          + LIQ_BUY (filtered daily liquidation buy, 3-day hold)
+                        flat 15% of equity x season multiplier (shorts Stress/Trend up 1.3, Trend down 1.0, Calm 0.8;
+                        longs Stress/Trend up 1.3, Calm 1.0, Trend down 0.8), max 5 open, no Flush cap, shorts take
+                        slot priority over longs. Group tilt NOT included (it helped only the 30-coin universe).
+                        Every filtered signal is logged as a rejection with its reason, never dropped.
 
 Shared across all four, from CURRENT-BOOK-2026-10-01.md: $5,000 start, max 5 open positions, CS72 takes slot
 priority over Flush, never opposite sides of the same coin, one position per coin per book, whole contracts at
@@ -82,6 +92,9 @@ CONTRACT, SPREAD = _from_book_py()
 FEE_PER_CONTRACT = 0.30
 
 REGIME_CS = {"Stress": 1.3, "Trend up": 1.3, "Trend down": 1.0, "Calm": 0.8}
+CORE16 = {"BTC", "ETH", "SOL", "XRP", "ADA", "DOGE", "AVAX", "LTC", "HBAR", "LINK", "DOT", "BCH", "XLM", "XTZ",
+          "AAVE", "SHIB"}
+E_STANDDOWN_VOL = 0.50
 REGIME_FL = {"Stress": 1.3, "Trend up": 1.3, "Trend down": 0.8, "Calm": 1.0}
 
 BOOKS = {
@@ -90,7 +103,44 @@ BOOKS = {
     "C_dynamic_calm1": dict(flush_rule="FLUSH_D", cap=("calm", 1, 2), doc="rule-based, max 1 Flush in Calm else 2"),
     "D_dynamic_volcap": dict(flush_rule="FLUSH_D", cap=("vol", 0.40, 1, 2),
                              doc="rule-based, max 1 Flush when BTC vol pct < 0.40 else 2"),
+    "E_experiments_final": dict(kind="E", flush_rule="FLUSH_D", cap=None,
+                                doc="CS 48h + CS24 established + Flush stand-down (vol<0.50) + liq buy, season-sized"),
 }
+
+
+def _truthy(x) -> bool:
+    """True/False from a CSV cell: numpy/python bools, 'True'/'False' strings; NaN/None (older ledgers) -> False."""
+    if isinstance(x, (bool, np.bool_)):
+        return bool(x)
+    if isinstance(x, str):
+        return x.strip().lower() == "true"
+    return False
+
+
+def select_e(led: pd.DataFrame) -> pd.DataFrame:
+    """Book E's candidate signals, each with its planned size and, where a book-E rule filters it out, the
+    reason -- so the rejection is logged rather than the signal vanishing."""
+    t = led[led.rule.isin({"CROWD_48H", "CROWD_24H", "FLUSH_D", "LIQ_BUY"}) & ~led.coin.isin(EXCLUDE)].copy()
+    t["is_long"] = t.rule.isin({"FLUSH_D", "LIQ_BUY"})
+    t["is_fl"] = t.rule == "FLUSH_D"
+    why = []
+    for r in t.itertuples():
+        w = ""
+        if r.rule == "CROWD_24H" and r.coin not in CORE16:
+            w = "CROWD_24H runs on established coins only"
+        elif r.rule == "FLUSH_D":
+            v = r.btc_vol_pct
+            prev = getattr(r, "flush_prev24", False)
+            if v is None or not np.isfinite(v):
+                w = "Flush stood down: BTC vol pct unknown"
+            elif v < E_STANDDOWN_VOL:
+                w = f"Flush stood down: BTC vol pct < {E_STANDDOWN_VOL:.2f} (quiet tape)"
+            elif _truthy(prev):
+                w = "second-day flush skipped"
+        why.append(w)
+    t["pre_reject"] = why
+    t["sz"] = [0.15 * (REGIME_FL if lg else REGIME_CS).get(rg, 1.0) for lg, rg in zip(t.is_long, t.regime)]
+    return t
 
 
 def size_cs(row) -> float:
@@ -128,17 +178,23 @@ def flush_cap(spec, row) -> int:
 
 def run_book(led: pd.DataFrame, name: str, cfg: dict):
     """Replay one book. Returns (summary dict, per-signal rows)."""
-    want = {"CROWD_72H", cfg["flush_rule"]}
-    # Keep every watched signal (minus the hard venue exclusions) so a coin with no contract size is
-    # logged as a rejection rather than vanishing. signals.py emits FLUSH_D for coins like ZEC/NEAR/
-    # ALGO/WLD/RENDER once they mature past 180d, but book.py only defines contract sizes for 16 coins,
-    # so those are not tradeable here (same as the backtest) — the book records why instead of dropping
-    # them silently.
-    t = led[led.rule.isin(want) & ~led.coin.isin(EXCLUDE)].copy()
-    t["is_fl"] = t.rule == cfg["flush_rule"]
-    t["sz"] = [size_fl(r) if r["is_fl"] else size_cs(r) for _, r in t.iterrows()]
-    # Causal admission order: CS before Flush, then larger planned size first.
-    t = t.sort_values(["entry_t", "is_fl", "sz", "coin"], ascending=[True, True, False, True])
+    if cfg.get("kind") == "E":
+        t = select_e(led)
+        # shorts before longs (CS before Flush, as Step 27), then larger planned size first
+        t = t.sort_values(["entry_t", "is_long", "sz", "coin"], ascending=[True, True, False, True])
+    else:
+        want = {"CROWD_72H", cfg["flush_rule"]}
+        # Keep every watched signal (minus the hard venue exclusions) so a coin with no contract size is
+        # logged as a rejection rather than vanishing. signals.py emits FLUSH_D for coins like ZEC/NEAR/
+        # ALGO/WLD/RENDER once they mature past 180d, but book.py only defines contract sizes for 16 coins,
+        # so those are not tradeable here (same as the backtest) — the book records why instead of dropping
+        # them silently.
+        t = led[led.rule.isin(want) & ~led.coin.isin(EXCLUDE)].copy()
+        t["is_fl"] = t.rule == cfg["flush_rule"]
+        t["pre_reject"] = ""
+        t["sz"] = [size_fl(r) if r["is_fl"] else size_cs(r) for _, r in t.iterrows()]
+        # Causal admission order: CS before Flush, then larger planned size first.
+        t = t.sort_values(["entry_t", "is_fl", "sz", "coin"], ascending=[True, True, False, True])
 
     eq = START
     open_: list[dict] = []
@@ -157,6 +213,8 @@ def run_book(led: pd.DataFrame, name: str, cfg: dict):
             rec = dict(book=name, coin=r.coin, rule=r.rule, entry_t=now,
                        entry_utc=r.entry_utc, status=r.status, ret_pct=r.ret_pct,
                        regime=r.get("regime"), btc_vol_pct=r.get("btc_vol_pct"), size_frac=round(r.sz, 4))
+            if r.pre_reject:
+                trades.append(dict(rec, admitted=False, why=r.pre_reject)); continue
             if r.coin not in CONTRACT:
                 trades.append(dict(rec, admitted=False, why="no contract size (not tradeable here)")); continue
             if len(open_) >= MAX_OPEN:
@@ -196,8 +254,8 @@ def run_book(led: pd.DataFrame, name: str, cfg: dict):
                    closed=len(closed), open_now=len(open_),
                    avg_ret_pct=round(float(np.mean(rets)), 3) if rets else np.nan,
                    win_pct=round(100 * float(np.mean([r > 0 for r in rets])), 1) if rets else np.nan,
-                   cs_admitted=sum(1 for x in adm if x["rule"] == "CROWD_72H"),
-                   fl_admitted=sum(1 for x in adm if x["rule"] != "CROWD_72H"))
+                   cs_admitted=sum(1 for x in adm if str(x["rule"]).startswith("CROWD")),
+                   fl_admitted=sum(1 for x in adm if not str(x["rule"]).startswith("CROWD")))
     return summary, trades
 
 
@@ -207,7 +265,7 @@ def main() -> int:
         print(f"{path} not found — run collectors/signals.py first.")
         return 1
     led = pd.read_csv(path)
-    for col in ("regime", "btc_vol_pct", "flush_curated"):
+    for col in ("regime", "btc_vol_pct", "flush_curated", "flush_prev24"):
         if col not in led:
             led[col] = np.nan
     if "FLUSH_D" not in set(led.rule):
@@ -223,8 +281,9 @@ def main() -> int:
     pd.DataFrame(all_trades).to_csv(f"{OUT}/book_trades.csv", index=False)
 
     lines = ["# Paper books — no orders placed\n",
-             f"Four candidate books on the same signal stream. $5,000 start, max {MAX_OPEN} open, "
-             "CS72 priority over Flush. They differ only in which Flush signals are admitted.\n"]
+             f"Five candidate books on the same signal stream. $5,000 start, max {MAX_OPEN} open, "
+             "short priority over long. A-D differ only in which Flush signals are admitted; E is the book the "
+             "2026-10-01 strict walk-forward picked (research/experiments-2026-10-01/NOTES.md).\n"]
     for _, r in books.iterrows():
         lines.append(f"- **{r.book}** ({r.rule_set}): ${r.equity:,.2f} ({r.return_pct:+.2f}%), "
                      f"worst drawdown {r.max_dd_pct:.2f}%, {r.admitted} admitted / {r.rejected} rejected, "

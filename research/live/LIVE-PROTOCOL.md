@@ -68,9 +68,17 @@ nothing else, and the live record decides instead of a backtest choice:
 | B_dynamic_cap2 | rule-based | 2 | 2.705 / −13.92% | predeclared fallback |
 | C_dynamic_calm1 | rule-based | 1 in Calm, else 2 | 2.784 / −11.80% | post-hoc; superseded by D |
 | **D_dynamic_volcap** | rule-based | 1 when BTC vol pct < 0.40, else 2 | 2.775 / −12.19% | mechanism version, on a plateau, declared in advance |
+| **E_experiments_final** | rule-based, Flush stood down while BTC vol pct < 0.50, second-day flushes skipped | none (max 5 open) | strict walk-forward: unseen-year Sharpe ~2.9 vs ~2.45 for A (see note) | the book the 2026-10-01 nested walk-forward picked; declared before any forward data |
 
 Outputs: `derived/signals/books.csv`, `book_trades.csv` (every admitted *and rejected* signal with the reason),
 `books.md`. Runs hourly after `signals.py`. It places no orders and holds no credentials.
+
+**Book E (added 2026-10-01, declared before any forward data)** is not a Flush-admission variant — it is a different book:
+`CROWD_48H` (the CS72 signal closed at 48h) + `CROWD_24H` on the 16 established coins only + `FLUSH_D` stood down while BTC
+20-bar vol pct < 0.50 with second-day flushes skipped + `LIQ_BUY` (filtered daily liquidation buy, 3-day hold); flat 15% of
+equity × season multiplier; max 5 open; shorts before longs. Group tilt deliberately left out (it only helped the 30-coin
+universe). Evidence: `research/experiments-2026-10-01/NOTES.md` FINAL READ — out of sample it beat A on 2024 and 2025 and
+lost/tied on 2026 YTD. Its sample-size and kill criteria are the same as every other book's.
 
 The comparison that matters is **A against D**: A's −12.94% drawdown depends on seven coins chosen after seeing
 their results, D's does not. If D's live record holds, it is the book. Do not size up from a small sample in any of
