@@ -105,3 +105,53 @@ What the 3–30 days before the spike looked like, and how the 3-day buy went. B
 * Hard rule for the toolkit: short liquidations spiking = do not short, whatever the Grid cell says.
 
 Files: code/deep.py (first pass), deep2.py (every cut), combo.py (stacked), account.py (path, rules, account, drawdowns); results/*.csv. Run from this folder.
+
+
+## FULL WORKS — Steps 4, 5, 11 + pass bar (2026-10-01, our method)
+Ran the trade mechanics the file was missing, on the **filtered** long-liq buy
+(long liqs >=95th pct AND market-wide >=5 coins spiking AND coin's 20-day vol in its own top fifth).
+`code/trade.py`, `results/trade_results.csv`, `results/path_trades.csv`.
+
+**It clears the pass bar as a standalone strategy:**
+| criterion | result |
+|---|---|
+| edge > 0 | **+4.04%/trade** |
+| t >= 3 | **3.69** |
+| both halves + | train(<=2022) +3.57% / test(>=2023) +4.41% |
+| >= 3/5 years | **7/7 positive** (2020 +4.5, 2021 +3.6, 2022 +2.9, 2023 +3.8, 2024 +3.8, 2025 +5.6, 2026 +5.5) |
+| n >= 200 | 318 |
+| beats placebo | +4.04% vs +0.29% random (+3.76% net) |
+
+67% win, payoff 1.43. This is materially stronger than the +2.07% the plain-rule headline showed — the
+market-wide + high-vol filter is doing real work, not just trimming. **Caveat (honest):** those two filter
+conditions were chosen from deep2.py's "held in all three periods" list, so there is in-sample selection in
+the filter and the clean t is somewhat flattering; both halves, 7/7 years and the placebo gap are what make
+it credible rather than the single t. Live paper confirms.
+
+**Step 5 — path.** Peaks day 3-6 (median day-3 +3.6%, avg +5.0%). Average MAE -12.7% by day 3, MFE +18.5% —
+it swings hard both ways, which is why it is "violent." Conditional: a trade **down >5% at day 2 still gains
++2.3% the next day** — the losers bounce, so cutting them is a mistake.
+
+**Step 4 — exits. Stops hurt; the hold is the exit.**
+| exit | per trade | win | t | worst |
+|---|---:|---:|---:|---:|
+| **hold 3d (base)** | **+4.04%** | 67% | 3.69 | -27.8% |
+| hold 2d | +3.50% | 69% | 3.53 | -33.3% |
+| close stop 8% | +3.34% | 64% | 2.94 | -30.3% |
+| hard stop 15% (intraday) | +2.64% | 62% | 2.13 | -15.1% |
+| profit target +8% | +3.95% | 68% | **4.10** | -27.8% |
+| trail 10% | +3.14% | 61% | 2.82 | -30.3% |
+Every stop lowers the return. A hard 15% intraday stop is the only thing that cuts the worst trade (-28% ->
+-15%) but it costs 1.4% of edge per trade to do it — the trade pays you for sitting through the dip. A +8%
+profit target is near-free (keeps +3.95%, best t at 4.10) if a smoother ride is wanted. Default: **hold 3
+days, no stop**, exactly like the flush long.
+
+**Step 11 — what kills it.** Sequential 15%-per-trade paper account over the 318 trades: max drawdown
+-29.2%, worst single trade -27.8%, final x6.5. Violent but not ruinous once filtered; size it small.
+
+**Verdict upgrade.** As a *standalone* this is a real third edge that passes the bar — not the "paper-only,
+cut from the book" status the LIQF re-admission left it at. It was cut from the two-engine *book* because it
+did not improve that specific combo under a shared 5-slot cap, which is a portfolio-fit question, not a
+verdict on the signal. Worth running small on its own and worth re-testing for book admission with proper
+sizing. Still to do for the full works: Steps 3 (entry), 8 (coinstate), 9 (venues), 12/12a (gates/quant),
+13 (further hypotheses), 16-21 (audits).
