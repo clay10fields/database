@@ -1,0 +1,9 @@
+set,limit,fill_pct,n,edge,t,chase_edge,chase_t
+MOM20 signal days,-0bp,99.5,2012,1.21,2.81,1.19,2.76
+MOM20 signal days,-25bp,95.9,1941,1.15,2.64,1.14,2.68
+MOM20 signal days,-50bp,92.8,1877,1.22,2.76,1.24,2.92
+MOM20 signal days,-100bp,85.5,1730,1.25,2.71,1.21,2.91
+MOM20 signal days,-200bp,72.1,1459,1.52,2.99,1.36,3.26
+MOM20 signal days,-300bp,58.5,1183,1.42,2.66,1.18,2.97
+MOM20 signal days,-400bp,46.4,938,1.78,2.89,1.18,2.96
+MOM20 signal days,-500bp,36.3,734,2.37,3.31,1.17,2.87

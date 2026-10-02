@@ -146,3 +146,85 @@ as a rule turns out to be the whole product.
 
 `CLAUDE.md` forbids adding to the book from a backtest. This subtracts rather than adds: it says what the
 existing book costs to run. No orders, no keys.
+
+---
+
+# Maker fills — the answer, and it is no
+
+Status: **maker entry is worth the fee saving and nothing more. It does not restore MOM20.** +1.21% at t 2.81
+against taker's +1.11% at t 2.54. Still short of t 3. The fee problem stands and SqueezeFail remains the only
+rule that clears it.
+
+Code `code/maker.py`, `code/maker2.py`, `code/maker3.py`. Results `results/maker_*.csv`.
+
+## The first attempt was wrong, and the way it was wrong matters
+
+`maker.py` placed the limit **at** the signal close and reported a **99.5% fill rate**. That is an artifact.
+The daily close is the close of the last 4h bar, so the next bar opens at exactly that price and its low is
+almost always a tick below — the order "fills" on a touch. In a real book a touch at your price does not fill
+you unless you are at the front of the queue, and at the top of a breakout you are not. Redone with a strict
+rule: price must trade **through** the limit.
+
+## Resting below the close: it looks like it helps, and it does not
+
+18 Kraken-tradeable coins, 2,023 MOM20 signals, 2020-01 → 2026-08, limit left for 24h, exit at the close 3
+days after the signal, Kraken tier 4 (maker 0.20% + taker exit 0.35% = 0.55% round trip).
+
+| limit | fill | n | net edge | t | **chase edge** | **chase t** |
+|---|---:|---:|---:|---:|---:|---:|
+| taker at the close | 100% | 2023 | +1.11% | 2.54 | — | — |
+| close −0bp | 99.5% | 2012 | +1.21% | 2.81 | +1.19% | 2.76 |
+| close −50bp | 92.8% | 1877 | +1.22% | 2.76 | +1.24% | 2.92 |
+| close −100bp | 85.5% | 1730 | +1.25% | 2.71 | +1.21% | 2.91 |
+| close −200bp | 72.1% | 1459 | +1.52% | 2.99 | +1.36% | **3.26** |
+| close −300bp | 58.5% | 1183 | +1.42% | 2.66 | +1.18% | 2.97 |
+| close −400bp | 46.4% | 938 | +1.78% | 2.89 | +1.18% | 2.96 |
+| close −500bp | 36.3% | 734 | **+2.37%** | **3.31** | +1.17% | 2.87 |
+
+Resting at −500bp returns +2.37% at t 3.31 on 36% of signals. Taken at face value that clears the bar and
+fixes everything. It is not real, for two reasons that the test was built to catch.
+
+**1. It is a general dip-buying effect, not a MOM20 effect.** The identical entry on the **36,720 days with no
+breakout**:
+
+| limit | signal edge | **placebo edge** | **difference** |
+|---|---:|---:|---:|
+| −0bp | +1.21% | −0.68% | **+1.89pp** |
+| −50bp | +1.22% | −0.61% | +1.83pp |
+| −100bp | +1.25% | −0.57% | +1.82pp |
+| −200bp | +1.52% | −0.46% | +1.98pp |
+| −300bp | +1.42% | −0.31% | +1.73pp |
+| −400bp | +1.78% | −0.07% | +1.85pp |
+| −500bp | +2.37% | +0.23% | +2.14pp |
+
+**The difference is flat at ~1.85pp at every offset.** The breakout is worth the same amount wherever the
+limit rests. Everything the sweep appeared to add is a pullback effect that pays on any day of the week, and
+most of what resting deep "earns" is just buying a dip.
+
+**2. It comes from dropping trades, not from filling better.** The chase columns above hold trade count
+constant — rest, and take at the next close if unfilled. Chase edge is **flat at +1.17% to +1.36% across every
+offset**. The deep-offset gains disappear the moment you are not allowed to simply skip the trades that ran
+away.
+
+## What maker is actually worth
+
+**+0.10pp.** From +1.11% (taker, 0.70%) to +1.21% (maker at the close, 0.55%), which is two thirds of the
+0.15pp fee difference. Clustered t goes 2.54 → 2.81. Real, worth doing, and **not enough**: MOM20 does not get
+back to t 3 by any fill policy tested. The ranking in the fee table above stands unchanged.
+
+## A separate lead that fell out of the placebo
+
+The placebo is not noise — it is a monotone gradient across all eight cells on 36,720 observations: a 3-day
+hold bought at the close is −0.68% net, and the deeper the intraday dip required before entry, the better it
+gets, reaching +0.23% at a 5% dip. **Mean reversion on deep intraday dips, independent of any breakout.** The
+level is still too thin to trade after cost, and the monotonicity is the interesting part rather than any one
+cell. It is nothing to do with MOM20 and it has not been given a regime split, a coin split or a search-burden
+accounting. Preregister before believing it.
+
+## Honest note on the panel
+
+This section uses the Binance 4h archive aggregated to daily, where MOM20's gross edge over the 18 Kraken
+coins is +1.81% against +1.59% on the coinalyze panel in the fee table above. The difference is the **window**
+— the archive stops 2026-08-27 — not the source: `survivorship4.py` showed the two feeds agree to −0.01pp on
+identical coins and days. Taker-at-close on this panel is +1.11% / t 2.54; on the coinalyze panel it is
++0.89% / t 1.89. Both are below the bar and the conclusion does not turn on which is used.

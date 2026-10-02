@@ -1,0 +1,5 @@
+policy,n,fill_pct,net_edge,t,missed_n,missed_gross,cost_pct,note
+TAKER NOW (what the book assumes),2023,100.0,1.11,2.54,0,,0.7,"fills always, worst price"
+"MAKER 4h, skip if unfilled",2012,99.5,1.23,2.8,11,7.96,0.55,limit at the signal close
+"MAKER 24h, skip if unfilled",2018,99.8,1.25,2.85,5,5.88,0.55,limit at the signal close
+MAKER 24h + CHASE the misses,2023,100.0,1.24,2.82,0,,0.55,"maker when it fills, taker next close when it does not"

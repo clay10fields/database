@@ -1,0 +1,9 @@
+set,limit,fill_pct,n,edge,t,chase_edge,chase_t
+PLACEBO: every non-signal day,-0bp,99.6,36581,-0.68,-4.73,-0.68,-4.72
+PLACEBO: every non-signal day,-25bp,95.4,35030,-0.65,-4.48,-0.62,-4.38
+PLACEBO: every non-signal day,-50bp,90.3,33143,-0.61,-4.13,-0.58,-4.15
+PLACEBO: every non-signal day,-100bp,79.5,29175,-0.57,-3.61,-0.55,-3.94
+PLACEBO: every non-signal day,-200bp,60.3,22133,-0.46,-2.53,-0.57,-4.22
+PLACEBO: every non-signal day,-300bp,45.2,16596,-0.31,-1.48,-0.59,-4.31
+PLACEBO: every non-signal day,-400bp,33.7,12373,-0.07,-0.28,-0.62,-4.54
+PLACEBO: every non-signal day,-500bp,25.0,9184,0.23,0.8,-0.64,-4.65

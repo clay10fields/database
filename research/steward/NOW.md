@@ -94,3 +94,28 @@ anything else.
 
 Shell egress to `api.kraken.com` is denied by org egress policy (403 on CONNECT). Books were read one pair at
 a time through the fetch tool. Do not build a depth recorder here expecting the shell to reach Kraken.
+
+## Maker fills — tested, and the answer is no (2026-10-01)
+
+The question the execution note left as highest-value is answered. **Maker entry is worth +0.10pp and does not
+restore MOM20.** Second half of `research/daily-gate-2026-10-01/EXECUTION.md`.
+
+* Taker at the signal close, 0.70%: **+1.11%, t 2.54.** Maker resting at the close, 0.55%: **+1.21%, t 2.81.**
+  Better, still short of t 3. No fill policy tested gets MOM20 back over the bar.
+* **Do not believe the deep-offset numbers.** Resting at close−500bp shows +2.37% at t 3.31 on 36% of signals,
+  and it is an illusion twice over. The identical entry on the 36,720 NON-signal days shows the same gradient,
+  so signal-minus-placebo is **flat at ~1.85pp at every offset from 0 to 500bp** — the breakout is worth the
+  same wherever the limit sits, and the rest is general dip-buying. And when trade count is held constant by
+  chasing the misses, the edge is **flat at +1.17% to +1.36%** across all offsets. The gains come from
+  dropping trades, not from filling better.
+* **First attempt was wrong in an instructive way:** a limit placed AT the daily close fills 99.5% of the time
+  because the next 4h bar opens at that exact price and dips a tick. That is a touch, not a fill. Any future
+  fill test in this repo must require price to trade THROUGH the limit.
+* **New lead from the placebo, not a MOM20 finding:** a 3-day hold entered on a deep intraday dip improves
+  monotonically across all 8 offsets on 36,720 observations, from −0.68% net at no-dip to +0.23% at a 5% dip.
+  Mean reversion on deep dips. Too thin to trade after cost as it stands, no regime or coin split, no search
+  accounting. Preregister before believing it.
+
+Standing after tonight: **SqueezeFail is the only rule clearing t 3 at real cost** (3.69 at 0.70%, 2.71 at
+1.60%), and **Stress is the only regime that pays after costs** (+20.8% median at 0.70%). MOM20 is a LEAD
+again, not a promoted rule.
