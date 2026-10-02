@@ -1,0 +1,2 @@
+comparison rows 147
+family-wise critical t 3.583

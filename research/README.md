@@ -19,6 +19,7 @@ Each folder is one idea, studied with the same data (16 Binance perps, 4h bars, 
 | hedging/ | BTC hedge, seven ways | all lower the edge; the hedge that works is running both trades |
 | playbook/ | size and exit by regime, environment and token category | **regime × signal-strength sizing adopted** (Sharpe 2.97); category sizing rejected |
 | **experiments-2026-10-01/** | 13 phases, ~13,000 account sims | candidate book E. Read NOTES.md FINAL READ. Not a replacement for the current book until paper says so. |
+| **daily-gate-2026-10-01/** | the 2026-10-01 redo walk's daily rules re-measured by this repo's standard (coin-year edge, clustered t, BTC-beta residual) on 21 coins, 2019-2026 — the only full-cycle data here | **the whole OI-drop family is bull drift** (edge t 0.10-0.85 against raw t 3.2-4.7); **one new rule survives everything: short-liquidations at their own 95th on a day that closes DOWN -> long 3 days, edge +4.06%, t 4.35, 7/7 years**, and it beats version F on Sharpe and drawdown. LEAD, not a book add: 10% of days carry 98% of the edge (`DAILY-GATE.md`) |
 | **quant-toolkit/** | the CRM math run on every candidate | book E work. Do not treat as a kill list. |
 | **hot-flush/** | Flush-B when the crowd was hot | **works** (+3.4%/+3.2%, t 3.5/4.6) but redundant with FlushStd |
 | **test-ledger/** | append-only record of every test result | the config travels with every number |

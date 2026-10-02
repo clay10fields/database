@@ -1,0 +1,9 @@
+label,n,size_pct,max_open,end,cagr_pct,maxdd_pct,sharpe
+squeeze-fail buy 10% x3,306,10.0,3,11509.0,13.7,-6.2,1.48
+squeeze-fail buy 10% x5,356,10.0,5,11959.0,14.3,-8.7,1.49
+squeeze-fail buy 15% x3,306,15.0,3,14764.0,18.1,-7.6,1.44
+squeeze-fail buy 15% x5,356,15.0,5,15438.0,18.9,-10.8,1.45
+squeeze-fail buy 25% x3,306,25.0,3,21273.0,24.9,-9.4,1.38
+squeeze-fail buy 25% x5,356,25.0,5,22396.0,25.9,-13.4,1.39
+"squeeze-fail buy 15% x5, +25bps slippage",356,15.0,5,14770.0,18.1,-11.4,1.39
+"squeeze-fail buy 15% x5, +50bps slippage",356,15.0,5,14103.0,17.3,-12.0,1.33
