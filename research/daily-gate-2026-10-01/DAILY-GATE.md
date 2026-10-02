@@ -156,20 +156,39 @@ stop.**
 **Do not cut a day-one loser** — the same conclusion the long-liq buy, the flush long and the hot flush all
 reached independently.
 
-**Account** ($5,000, 18 Kraken-tradeable coins, sequential, one position per coin, 0.10% round trip):
+**Account** ($5,000, 18 Kraken-tradeable coins, max 5 open, one position per coin, 0.10% round trip,
+**every open position marked at each day's close**):
 
-| | n | CAGR | max drawdown | Sharpe |
-|---|---:|---:|---:|---:|
-| 10% per trade, max 5 | 356 | 14.3% | −8.7% | 1.49 |
-| **15% per trade, max 5** | **356** | **18.9%** | **−10.8%** | **1.45** |
-| 25% per trade, max 5 | 356 | 25.9% | −13.4% | 1.39 |
-| 15%, +50 bps extra slippage | 356 | 17.3% | −12.0% | 1.33 |
-| **the repo's version F alone, 15%** | 267 | 15.3% | **−17.2%** | **1.02** |
-| both sleeves, shared 5 slots | 515 | 21.9% | −11.0% | 1.48 |
+| | n | CAGR | max drawdown | Sharpe | worst month |
+|---|---:|---:|---:|---:|---:|
+| 10% per trade | 356 | 20.7% | −15.3% | 1.39 | −6.5% |
+| **15% per trade** | **356** | **31.9%** | **−22.4%** | **1.40** | **−9.7%** |
+| 25% per trade | 356 | 53.9% | −32.4% | 1.46 | −15.3% |
+| 15%, +25 bps extra slippage | 356 | 29.4% | −23.2% | 1.31 | −10.1% |
+| 15%, +50 bps extra slippage | 356 | 27.0% | −24.0% | 1.22 | −10.4% |
+| **the repo's version F alone, 15%** | 267 | 19.9% | −23.7% | **0.93** | −10.1% |
+| both sleeves, shared 5 slots, 15% | 515 | 41.1% | −23.1% | 1.42 | −10.5% |
 
-**It beats the repo's existing liquidation buy on Sharpe and on drawdown**, and the two together beat either
-alone. Daily-return correlation between them is +0.52 and they share 36% of their coin-days, so this is a
-better version of that engine rather than a second engine.
+$5,000 becomes $35,223 over the seven years at 15%. By year: 2020 +28.5%, 2021 +109.6%, **2022 −8.0%**,
+2023 +32.7%, 2024 +25.6%, 2025 +50.8%, 2026 +13.1% — one losing year, the bear.
+
+**Correction to an earlier version of this file.** It reported 18.9% CAGR at a −10.8% drawdown. That curve
+was built from settled exits in exit order and did not mark open positions, which understated both the
+return and the risk. The marked curve above (`code/account_mtm.py`) is the one to use: **−22.4%, not −10.8%.**
+Daily correlation with version F is +0.52 and they share 36% of their coin-days, so this is a better version
+of that engine rather than a second engine.
+
+**Drawdown episodes deeper than 8%** — four in 6.3 years, and the two that hurt are both 2022:
+
+| start | bottom | recovered | depth | days to recover | BTC 30d at the bottom | regime |
+|---|---|---|---:|---:|---:|---|
+| 2020-11-25 | 2020-11-26 | 2021-01-04 | −11.2% | 39 | +25.9% | TrendUp |
+| 2021-05-21 | 2021-05-23 | 2021-05-26 | −12.1% | 3 | −32.2% | Stress |
+| **2022-01-19** | **2022-05-12 (LUNA)** | 2022-11-01 | **−22.4%** | **173** | −27.6% | TrendDown |
+| **2022-11-08 (FTX)** | 2022-11-09 | 2023-06-23 | −19.6% | **226** | −16.8% | Calm |
+
+What kills it is a sustained bear leg, and recovery takes six to eight months. Same killer as every other
+long in this repo.
 
 ## The honest limit: 10% of the days carry 98% of the edge
 
@@ -196,6 +215,110 @@ other gates say about that:
   E ≥ 20, so it would **not** have earned live eligibility. Only CS72 held 48h has, in this whole repo.
 * family-wise 5% threshold for this study's 147 comparisons: t 3.58. The edge t 4.35 **clears** it; the
   BTC-residual t 3.38 does **not**.
+
+## The treatment steps that were still missing (16, 7, 6, 11, 21, 23, 27, 28)
+
+`code/treatment.py`, `code/account_mtm.py`. Results in `results/step*.csv`.
+
+### Step 16 — look-ahead audit. Clean.
+
+The test that could have ended this. Each input is made stale and the edge must fall:
+
+| input timing | n | edge | t |
+|---|---:|---:|---:|
+| **as traded (both inputs from the signal day)** | **501** | **+4.06%** | **4.35** |
+| liquidation print lagged 1 day | 1187 | +0.88% | 1.93 |
+| day direction lagged 1 day | 881 | +1.48% | 2.11 |
+| both lagged 1 day | 500 | +1.18% | 1.48 |
+| both lagged 2 days | 500 | +0.35% | 0.54 |
+| liquidation print from **tomorrow** (deliberate leak) | 882 | +6.62% | 7.29 |
+| day direction from **tomorrow** (deliberate leak) | 1188 | −3.55% | −8.50 |
+
+The edge decays smoothly to nothing with staleness, and the deliberate leak looks nothing like the
+as-traded number — so the implementation is not reaching forward. Both inputs are complete at the UTC
+close, and the "next day's open" entry (+3.65%, t 4.35) is the version that needs no instant fill.
+
+### Step 7 — symptoms before the signal. All 14 are positive; only one is a size rule.
+
+| the lead-up | n | edge | t | win | years + |
+|---|---:|---:|---:|---:|---|
+| **short-liqs 5× their 30-day average (a true cascade)** | 172 | **+5.27%** | **4.14** | 70% | **7/7** |
+| OI already down >15% from its 30-day peak | 234 | +4.87% | 3.82 | 66% | 7/7 |
+| crowd leaving (pct down >0.2 over 7 days) | 152 | +4.81% | 3.43 | 61% | 7/7 |
+| more than 15% below the 14-day high | 282 | +4.60% | 3.10 | 67% | 7/7 |
+| price ran up >30% in the prior month | 132 | +4.36% | 3.44 | 58% | 7/7 |
+| funding ran hot the week before | 138 | +4.35% | 3.07 | 56% | 5/7 |
+| funding was **cold** the week before | 190 | +3.99% | 2.66 | 63% | 7/7 |
+| price was already **falling** the prior month | 194 | +3.82% | 2.31 | 64% | 6/7 |
+| crowd was already short a week ago | 169 | +2.59% | 2.47 | 56% | 6/7 |
+
+**This is the difference from the long-liquidation buy.** That trade needs the euphoric set-up — hot
+funding and a 30% run-up — and dies in a cold bleed (`LIQUIDATIONS.md`: +3.42% hot vs +1.96% cold;
+`ALL-STRATEGIES-FULL-CYCLE.md`: flush+hot +2.87% vs flush+cold −0.13%). SqueezeFail pays in **both**: hot
++4.35% and cold +3.99%, run-up +4.36% and already-falling +3.82%. Nothing in the lead-up is a gate. The
+only real size rule is the **magnitude of the cascade**: short-liqs at 5× their 30-day average gives
++5.27% at t 4.14 with 70% wins in all seven years.
+
+### Step 6 — react mid-trade. Sit still.
+
+Judged per unit of exposure, not per trade:
+
+| rule | n | edge | t | avg days held | **edge per exposure-day** |
+|---|---:|---:|---:|---:|---:|
+| hold 3 days (base) | 501 | +4.06% | 4.35 | 3.00 | **1.352** |
+| hold 5 days | 500 | +4.24% | 4.77 | 5.00 | 0.847 |
+| cut at day 2 if red | 501 | +3.71% | 4.15 | 2.64 | **1.404** |
+| cut at day 2 if down >5% | 501 | +3.87% | 4.20 | 2.86 | 1.352 |
+| cut at day 1 if red | 501 | +2.93% | 3.20 | 2.23 | 1.314 |
+| double up at day 1 if green | 501 | +4.88% | 3.04 | 4.23 | 1.155 |
+
+"Cut at day 2 if red" earns fractionally more per exposure-day (1.404 vs 1.352) and clearly less in total.
+Nothing beats sitting for three days, which is the same answer the flush long, the liquidation buy and the
+hot flush all reached.
+
+### Step 21 — clock. Nothing qualifies.
+
+Wednesday +6.24% (t 3.44), Thursday +6.99%, Sunday +9.01% (n 48), Saturday +0.03% (n 66), Monday +2.27%
+(t 0.82). Seven tests, 48 to 112 trades each, best t 3.44 against a family-wise bar of 3.58 for seven
+tests alone. **Noise. No weekday filter.**
+
+### Step 23 — capacity. Not the constraint.
+
+These are the highest-volume days a coin has. Position as a share of that day's dollar volume:
+
+| account | median participation | 95th pct | share of trades over 1% |
+|---|---:|---:|---:|
+| $5,000 | 0.0001% | 0.003% | 0.0% |
+| $100,000 | 0.003% | 0.058% | 0.4% |
+| $1,000,000 | 0.026% | 0.582% | 1.8% |
+
+On Binance aggregate volume this scales to seven figures. The binding constraint is Kraken and Kalshi
+displayed depth, which this repo still has not measured (`capacity/CAPACITY.md`, `venue-leakage/`).
+
+### Step 27 — universe by rule, not by name.
+
+| universe rule | n | edge | t | the 5 newer coins | years + |
+|---|---:|---:|---:|---:|---|
+| all 21 coins | 501 | +4.06% | 4.35 | +3.25% | 7/7 |
+| **≥180 days of liquidation history** | 474 | +3.85% | 3.98 | +3.40% | 7/7 |
+| ≥365 days of liquidation history | 431 | +3.47% | 3.59 | +3.65% | 6/7 |
+| ≥180 days AND dollar volume ≥$10M that day | 469 | +3.89% | 3.98 | +3.46% | 7/7 |
+| **≥180 days, excluding AAVE** | 455 | **+4.08%** | **4.14** | +3.40% | 7/7 |
+
+A predeclared rule works — **≥180 days of liquidation history, drop AAVE** — with no hand-picked list.
+This is the thing `CURRENT-BOOK-2026-10-01.md` says Flush-B still lacks.
+
+### Step 28 — regime transitions. No throttle.
+
+Within 5 days of a BTC regime change: +4.93% (t 2.95). After: +3.56% (t 3.19). Both fine; no rule.
+
+### Where the treatment now stands
+
+| | steps |
+|---|---|
+| done | 1, 3, 4, 5, 6, 7, 10, 11, 14, 16, 18, 19, 21, 22, 23, 27, 28 — **17 of 28** |
+| partial | 8 (6-month trend only), 12a (DSR, e-process, shuffle null), 13, 15 (three trades hand-checked; no clean-shell re-run) |
+| **blocked** | 9 and 24 (venue depth and venue funding — Kraken/Kalshi history starts 2026-09-29), 17 (survivorship: `liq.csv` holds only the 21 current coins, no LUNA/FTT/MATIC), 25 (liquidation safety at size), 26 (live protocol for this sleeve) |
 
 ## Verdict against the pass bar
 

@@ -1,0 +1,8 @@
+rule,n,edge,t,avg_days,edge_per_day
+hold 3 days (base),501,4.06,4.35,3.0,1.352
+hold 5 days,500,4.24,4.77,5.0,0.847
+cut at day 1 if red,501,2.93,3.2,2.23,1.314
+cut at day 1 if down >5%,501,3.45,3.6,2.8,1.233
+cut at day 2 if red,501,3.71,4.15,2.64,1.404
+cut at day 2 if down >5%,501,3.87,4.2,2.86,1.352
+double up at day 1 if green (per exposure-day),501,4.88,3.04,4.23,1.155

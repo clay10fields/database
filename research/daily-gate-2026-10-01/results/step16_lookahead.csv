@@ -1,0 +1,8 @@
+input timing,n,edge,t
+as traded (both inputs from the signal day),501,4.057349690852649,4.348914051810249
+liq print lagged 1 day (yesterday's print),1187,0.882304566571499,1.9284765364327636
+day direction lagged 1 day,881,1.4800497034866518,2.112820141935418
+both inputs lagged 1 day,500,1.177740764684734,1.4778488682631619
+both inputs lagged 2 days,500,0.348237248445088,0.5387656634829533
+liq print from TOMORROW (deliberate leak),882,6.624378525749218,7.291508684635332
+day direction from TOMORROW (deliberate leak),1188,-3.546046955898232,-8.503925603576796
