@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""Join the daily Coinalyze tables into one row per coin per day.
+"""Join the daily tables into one row per coin per day.
 
 Writes derived/daily_grid.csv. Same columns every run. The legend is
 research/redo-2026-10-01/48-DATA-GRID.md.
+
+CoinGecko columns are dollar price, 24h volume, and market cap. They are joined on the date, not the exact timestamp, because CoinGecko's daily bar is not the same second as Coinalyze.
 
     python3 collectors/daily_grid.py
 """
@@ -14,11 +16,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 RAW = Path("raw/coinalyze_daily")
+GECKO = Path("raw/marketcap/coingecko_daily.csv")
 OUT = Path("derived/daily_grid.csv")
 FIELDS = [
     "date", "coin", "open", "high", "low", "close", "volume", "buy_volume",
     "net_flow", "oi", "oi_change", "funding", "predicted_funding",
     "long_liq", "short_liq", "crowd_ratio", "spot_close", "has_liq",
+    "gecko_price", "gecko_volume_24h", "market_cap",
 ]
 
 
@@ -53,6 +57,17 @@ def by_coin(table: dict) -> dict:
     return out
 
 
+def load_gecko() -> dict:
+    out = defaultdict(dict)
+    if not GECKO.exists():
+        return out
+    with GECKO.open(newline="") as fh:
+        for row in csv.DictReader(fh):
+            day = datetime.fromtimestamp(int(row["t"]), timezone.utc).date().isoformat()
+            out[row["coin"]][day] = row
+    return out
+
+
 def main() -> int:
     px = load("perp_ohlcv.csv")
     oi = load("oi.csv")
@@ -61,6 +76,7 @@ def main() -> int:
     ls = load("ls_ratio.csv")
     spot = by_coin(load("spot_ohlcv.csv"))
     pred = by_coin(load("pred_funding.csv"))
+    gecko = load_gecko()
     OUT.parent.mkdir(parents=True, exist_ok=True)
     n = 0
     with OUT.open("w", newline="") as fh:
@@ -71,6 +87,7 @@ def main() -> int:
             prev_oi = None
             for t in sorted(px[sym]):
                 row = px[sym][t]
+                day = datetime.fromtimestamp(t, timezone.utc).date().isoformat()
                 vol = num(row, "v")
                 bv = num(row, "bv")
                 net = ""
@@ -83,8 +100,9 @@ def main() -> int:
                 if oi_v != "":
                     prev_oi = oi_v
                 liq_row = liq.get(sym, {}).get(t)
+                g = gecko.get(coin, {}).get(day)
                 w.writerow({
-                    "date": datetime.fromtimestamp(t, timezone.utc).date().isoformat(),
+                    "date": day,
                     "coin": coin,
                     "open": num(row, "o"),
                     "high": num(row, "h"),
@@ -102,6 +120,9 @@ def main() -> int:
                     "crowd_ratio": num(ls.get(sym, {}).get(t), "r"),
                     "spot_close": num(spot.get(coin, {}).get(t), "c"),
                     "has_liq": 1 if liq_row else 0,
+                    "gecko_price": num(g, "price"),
+                    "gecko_volume_24h": num(g, "volume_24h"),
+                    "market_cap": num(g, "market_cap"),
                 })
                 n += 1
     print(f"daily_grid: {n} rows -> {OUT}")
