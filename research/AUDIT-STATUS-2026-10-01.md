@@ -163,8 +163,8 @@ sample starts paying evidence within two months. Do not hand-pick unlock dates a
 ### Survivorship depth
 Measured 2026-10-01, and the limit is now a number rather than a worry: nine control coins against 1.92pp of between-coin dispersion in MOM20's per-coin edge cannot resolve a one-point gap (minimum detectable -1.08pp at p 0.05; observed -1.00pp). No more control symbols exist in `raw/binance_vision/` - the unused tickers are recent listings or duplicate denominations - so this is structural until a wider archive is recorded. See `research/daily-gate-2026-10-01/SURVIVORSHIP.md`.
 
-### Actual U.S. venue capacity
-Binance volume is only a liquidity proxy. The binding execution question above small account sizes remains actual displayed depth, spread, order-book walk and realized paper fills on the intended U.S. venues.
+### Actual U.S. venue capacity - MEASURED 2026-10-01
+Answered, and the answer is not the one this entry expected. Displayed depth on Kraken is 30-140x a $750 position on the thinnest names, and even a $2M account is 0.89% of a median day on HBAR, so capacity does not bind below seven figures. The binding cost is the FEE SCHEDULE, which every backtest in this repo understates by 7x to 16x: all of them charge a 0.10% round trip, Kraken's tier 1 is 0.40% maker / 0.80% taker (1.60% round trip) and trading volume buys the account down to tier 4, 0.70% round trip. At 0.70% MOM20's clustered t falls from 3.16 to 1.89 and the book's median two months falls from +7.1% to +3.3% against BTC buy-and-hold's +4.9%. SqueezeFail is the only rule still clearing t 3 (3.69). See `research/daily-gate-2026-10-01/EXECUTION.md`. Step 23 is closed; step 24 only matters for perps he does not trade; step 25 is moot for unlevered spot. The open question is now whether these entries fill as MAKER orders - that is a selection problem measurable from the 4h bars, and it is the highest-value item in the repo.
 
 ## Immediate queue after reconciliation
 1. Keep the corrected two-engine specification frozen while the paper watcher accumulates live evidence.

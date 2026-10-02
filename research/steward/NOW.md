@@ -63,3 +63,34 @@ overlap almost entirely in calendar time. Preregister before believing it.
 `.astype('int64') // 10**9` silently destroys them. It made the first survivorship run report open interest
 on 0% of days and return n = 0 for two rules — a zero that was never measured. Any script here doing
 `// 10**9` on a parsed timestamp has the same bug waiting.
+
+## Execution, 2026-10-01 — read this before quoting any performance number in this repo
+
+**Every backtest here charges a 0.10% round trip. Kraken charges 0.70% at the tier this account lands in and
+1.60% at tier 1.** Measured against Kraken's live "Spot Crypto" fee table and its live order books.
+Write-up: `research/daily-gate-2026-10-01/EXECUTION.md`.
+
+* **Depth is a non-issue.** $750 positions fill in the first one or two levels on the thinnest name; even a
+  $2M account is 0.89% of a median day on HBAR. Step 23 answered. Capacity does not bind below seven figures.
+* **Fees are the whole problem.** Tier 1 is 0.40% maker / 0.80% taker. Trading volume buys the tier down —
+  ~25 entries a month at $750 both sides is ~$37,500 of 30-day volume, so **tier 4, 0.70% round trip, is the
+  number to plan against**; 1.60% is the first month before volume accrues.
+* **At 0.70%, MOM20 stops being a rule**: +0.89% a trade, clustered t **1.89**, down from 3.16. At 1.60% it is
+  −0.01%. The crowd short goes to +0.55% then −0.35%.
+* **SqueezeFail is the only rule that survives**: 4.08% gross, t **3.69** at 0.70% and 2.71 at 1.60%.
+* **The book's median two months goes +7.1% → +3.3%, against BTC buy-and-hold's +4.9%.** It stops making money
+  in falling windows (median −0.5%, profitable in 15 of 33) while still beating BTC in 31 of 33. "Loses less
+  than BTC" is the honest claim, not "makes money while BTC falls."
+* **Stress is the only regime that pays after costs**: +20.8% median at 0.70%, +9.5% at 1.60%, against BTC's
+  +11.4%. Calm is 66 of 83 windows and earns +2.5% against BTC's +3.9%.
+
+**`MOM20-FULL.md`'s "200 trades a year beats SqueezeFail's four days" argument is inverted and is struck
+through there.** Frequency is a liability at real cost.
+
+**The highest-value open question in the repo is now maker fills**, not a new rule. Tier-4 maker is 0.40%
+round trip, which puts MOM20 back at +1.19% — but a resting order at a 20-day-high break may not fill, and
+the ones that do fill are selected for having gone the wrong way. Measurable from the 4h bars. Do that before
+anything else.
+
+Shell egress to `api.kraken.com` is denied by org egress policy (403 on CONNECT). Books were read one pair at
+a time through the fetch tool. Do not build a depth recorder here expecting the shell to reach Kraken.

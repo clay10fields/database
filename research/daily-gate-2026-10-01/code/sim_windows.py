@@ -22,7 +22,7 @@ HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 import panel as P
 from gate import RES
 sys.path.insert(0, os.path.join(HERE, '../../test-ledger')); from ledger import record
-FEE = 0.001; START = 5000.0; SIZE = 0.15; SLOTS = 5; HOLD = 3
+FEE = float(os.environ.get('RT_COST','0.001')); START = 5000.0; SIZE = 0.15; SLOTS = 5; HOLD = 3
 KRAKEN_OUT = {'DOT', 'XTZ', 'SHIB'}
 p = P.build(); p = p[~p.coin.isin(KRAKEN_OUT)].copy()
 p['hot'] = (p.fund_pct >= 0.80) | (p.ret30 > 0.30) | (p.btc_ret1 < -0.03)
@@ -92,8 +92,7 @@ for s0 in starts:
                      stress_days=int((rg == 'Stress').sum()), down_days=int((rg == 'TrendDown').sum())))
 W = pd.DataFrame(rows)
 pd.set_option('display.width', 300); pd.set_option('display.max_rows', 200)
-print(f'=== {len(W)} overlapping two-month windows, 2019-10 to 2026-10 ===')
-print(W.to_string(index=False))
+print(f'=== {len(W)} two-month windows at a {FEE*100:.2f}% round trip ===')
 print(f'\n  book net:      median {W.net_pct.median():+.1f}%   mean {W.net_pct.mean():+.1f}%   '
       f'worst {W.net_pct.min():+.1f}%   best {W.net_pct.max():+.1f}%')
 print(f'  BTC hold:      median {W.btc_pct.median():+.1f}%   mean {W.btc_pct.mean():+.1f}%   '

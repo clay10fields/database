@@ -15,8 +15,16 @@ Base edge +1.52% over 3 days at clustered t **3.29**, positive in **8 of 8 years
 against a family-wise bar of **3.48** for this study's 99 comparisons. Two things clear the bar outright:
 entering at the next day's open instead of the close (t 4.01) and the OI-building symptom (t 3.84).
 
-Why it matters more than SqueezeFail for a working account: MOM20 fires about **200 non-overlapping trades a
-year** across the universe. SqueezeFail pays on roughly four days a year.
+~~Why it matters more than SqueezeFail for a working account: MOM20 fires about **200 non-overlapping trades a
+year** across the universe. SqueezeFail pays on roughly four days a year.~~
+
+> **This argument is inverted, and `EXECUTION.md` is why.** It assumed the repo's 0.10% round trip. Kraken's
+> real cost is **0.70%** at the tier this account lands in and **1.60%** at tier 1. MOM20's gross edge is
+> 1.59% a trade, so a 0.70% toll takes it to +0.89% and its clustered t from 3.16 to **1.89** — below the LEAD
+> threshold it was promoted out of. At tier 1 it is **−0.01%**: nothing. SqueezeFail's gross edge is 4.08%,
+> which still leaves t **3.69** at 0.70% and 2.71 at 1.60%. **Frequency is a liability once you pay real fees,
+> not an asset.** Four fat trades a year beat two hundred thin ones. Read every number in this file as quoted
+> at 0.10% and therefore 60bp a trade optimistic.
 
 `research/momentum-20d/MOMENTUM-20D.md` filed this as a LEAD at t 2.02 on the 4h panel and wrote: *"Revisit
 only with more data, or if a pre-declared regime hypothesis is set before testing — not chosen from this
