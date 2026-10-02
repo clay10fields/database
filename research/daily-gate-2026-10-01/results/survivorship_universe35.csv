@@ -1,0 +1,11 @@
+universe,coins,n,raw,edge,t,win,yrs_pos,yrs
+"ALL 35 listed coins, 3d",35,2268,2.29,1.37,3.29,51.3,8,8
+"survivors only (21, hindsight), 3d",21,1554,2.42,1.52,3.29,51.2,8,8
+"recent listings only (5), 3d",5,125,4.8,3.53,2.13,54.4,4,4
+"dead/delisted only (5), 3d",5,237,1.63,0.54,0.58,51.5,7,7
+"off the Kraken 16 (4), 3d",4,352,1.28,0.51,0.98,50.6,5,7
+"ALL 35 listed coins, 7d",35,1692,4.34,2.3,2.77,49.5,6,8
+"survivors only (21, hindsight), 7d",21,1179,4.51,2.53,2.88,48.6,6,8
+"recent listings only (5), 7d",5,89,9.49,6.65,1.73,59.6,4,4
+"dead/delisted only (5), 7d",5,168,3.59,0.99,0.55,50.0,4,7
+"off the Kraken 16 (4), 7d",4,256,2.27,0.59,0.57,50.0,4,7

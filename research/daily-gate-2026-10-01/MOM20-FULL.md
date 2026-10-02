@@ -1,6 +1,16 @@
 # MOM20 full treatment on the full cycle — 21 coins, 2019-09 to 2026-10 (2026-10-01)
 
 Status: **the strongest tradeable rule found tonight, and it still just misses its own search-burden bar.**
+
+> **Correction to an earlier version of this file (same session).** The base edge below, +1.52%, is measured
+> on the 21 coins Kraken lists **today** — a survivor panel by construction, and for a breakout rule that is
+> the textbook artifact. Step 17 has since been run properly against LUNA, FTT, MATIC, EOS and ATOM. On the
+> 35-coin universe that actually existed, with no hindsight, MOM20 3d is **+1.37% at clustered t 3.29,
+> positive in 8 of 8 years**. The rule survives; the headline was inflated by **0.15pp**. Every per-coin,
+> per-year and per-variant number in this file is the 21-coin figure unless it says otherwise — read them as
+> roughly 0.15pp generous. A separate lead came out of the same work: MOM20 pays **+3.53% (t 2.13)** on
+> recently listed coins, more than double the survivor figure. See `SURVIVORSHIP.md`.
+
 Base edge +1.52% over 3 days at clustered t **3.29**, positive in **8 of 8 years**, BTC-residual t 4.51 —
 against a family-wise bar of **3.48** for this study's 99 comparisons. Two things clear the bar outright:
 entering at the next day's open instead of the close (t 4.01) and the OI-building symptom (t 3.84).
@@ -260,6 +270,14 @@ year, a −23% drawdown, and one episode that takes a year to recover.
 
 ## What is not run
 
-Steps 9 (venue depth per coin), 12a (deflated Sharpe and the e-process for this rule), 17 (survivorship —
-`liq.csv` holds only the 21 current coins), 23 (capacity at size, though the break days are high-volume),
-24 (venue funding), 25 (liquidation safety), 26 (a live protocol section of its own).
+Steps 9 (venue depth per coin), 12a (deflated Sharpe and the e-process for this rule), 23 (capacity at size,
+though the break days are high-volume), 24 (venue funding), 25 (liquidation safety), 26 (a live protocol
+section of its own).
+
+**Step 17 is now run** — `SURVIVORSHIP.md`. It was listed here as blocked because `liq.csv` holds only the 21
+current coins, which is true and irrelevant: MOM20 needs price, not liquidations, and `raw/binance_vision/`
+has had the five control coins all along. The result: non-survivors earn +0.54% against the survivors'
++1.52%, a −1.00pp gap that is not a period effect, not a winners-vs-losers effect and not a data-source
+artifact, but at p 0.065 on nine control coins it is a LEAD rather than a finding. The number that changes is
+the base: **+1.37% t 3.29 on the no-hindsight 35.** Against the 3.48 family-wise bar this file already fails,
+so the conclusion is unchanged and the headline is corrected above.

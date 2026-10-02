@@ -34,6 +34,17 @@ is worth anything by itself.
 
 ## The scoreboard
 
+> **Survivorship correction (same session).** Every number in this file is measured on the 21 coins Kraken
+> lists **today**, which is a survivor panel. Step 17 has since been run against LUNA, FTT, MATIC, EOS and
+> ATOM (`SURVIVORSHIP.md`). On the 30-coin universe that actually existed, with no hindsight:
+> **MOM20 3d +1.37% t 3.29** on all 35 archive symbols (not +1.52%) and **flush long 3d +1.23% t 2.65** on
+> the 30 where its inputs exist (not +1.34% / 2.58).
+> Both still clear. Non-survivors earn a third to a half of the survivor edge, a −1.00pp gap on MOM20 that
+> is real in direction but p 0.065 on nine control coins — a LEAD, not a finding. The liquidation rules
+> cannot be checked this way: the archive has no liquidation history for the dead symbols. So read the
+> SqueezeFail lines below as untested for survivorship, and the two momentum/flush lines as ~0.1–0.3pp
+> generous.
+
 | family | rule | n | raw | **edge** | **t** | residual | res t | win | years + |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---|
 | liquidations | **SqueezeFail — short-liq ≥95th & day down, 3d** | 501 | +4.43 | **+4.06** | **4.35** | +2.67 | 3.38 | 62% | **7/7** |

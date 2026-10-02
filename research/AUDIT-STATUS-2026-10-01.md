@@ -60,8 +60,8 @@ The watcher compiles and runs. A non-vacuous synthetic regression forces and val
 ### Step 16 — look-ahead audit
 Completed earlier. No look-ahead failure found. CS72 tolerated the delayed top-trader feed sufficiently for paper operation using the daily archive convention.
 
-### Step 17 — survivorship
-Completed as an audit, not proof. Faded/delisted controls did not show a clean survivor-only failure, but the control sample was heterogeneous and underpowered. Keep as a caveat; do not claim survivorship is fully solved.
+### Step 17 — survivorship — RUN PROPERLY 2026-10-01
+Superseded by `research/daily-gate-2026-10-01/SURVIVORSHIP.md`. The controls this file wanted (LUNA, FTT, MATIC, EOS, ATOM) were in `raw/binance_vision/` the whole time; "data-blocked" was wrong for any price-only rule. Result: non-survivors earn +0.54% against the survivors' +1.52% on MOM20 3d, a -1.00pp gap that survives a matched-window control (not a period effect), a per-coin direction test (not winners-vs-losers; Spearman +0.04) and a dual-source control (not a measurement artifact; -0.01pp). But a coin-level permutation puts it at p 0.065, and the smallest gap nine control coins could have called at p 0.05 is -1.08pp against a real gap of -1.00pp. So this file's "heterogeneous and underpowered" is now quantified rather than asserted, and the verdict is LEAD. The number that changed: MOM20's base is +1.37% t 3.29 on the widest no-hindsight universe (all 35 archive symbols), not +1.52%; the flush long is +1.23% t 2.65, not +1.34%. Both still clear. Liquidation rules remain untestable this way - no liquidation history for the dead symbols. There are no more control symbols: the archive's six unused tickers are five 2023-2026 listings, which cannot be survivorship controls, plus RNDR and 1000SHIB which duplicate RENDER and SHIB. The power limit is structural. A separate lead fell out: MOM20 pays +3.53% (t 2.13, 4/4 years, n 125) on recent listings, more than double the survivor figure - underpowered and time-clustered, so preregister before believing it.
 
 ### Step 19 — multiple-testing ledger
 Completed. CS72 cleared an intentionally harsh Bonferroni threshold. Flush-B narrowly missed that conservative threshold while retaining independent year/coin/OOS support. No rule change; describe Flush-B as more search-burden-sensitive than CS72.
@@ -161,7 +161,7 @@ assembled after the fact. Start logging announced unlock dates forward now; at ~
 sample starts paying evidence within two months. Do not hand-pick unlock dates after observing price moves.
 
 ### Survivorship depth
-Step 17 was run, but the faded/delisted control set remains too small and heterogeneous for a strong survivor-bias clearance claim.
+Measured 2026-10-01, and the limit is now a number rather than a worry: nine control coins against 1.92pp of between-coin dispersion in MOM20's per-coin edge cannot resolve a one-point gap (minimum detectable -1.08pp at p 0.05; observed -1.00pp). No more control symbols exist in `raw/binance_vision/` - the unused tickers are recent listings or duplicate denominations - so this is structural until a wider archive is recorded. See `research/daily-gate-2026-10-01/SURVIVORSHIP.md`.
 
 ### Actual U.S. venue capacity
 Binance volume is only a liquidity proxy. The binding execution question above small account sizes remains actual displayed depth, spread, order-book walk and realized paper fills on the intended U.S. venues.
@@ -170,6 +170,6 @@ Binance volume is only a liquidity proxy. The binding execution question above s
 1. Keep the corrected two-engine specification frozen while the paper watcher accumulates live evidence.
 2. Leave Step 24 blocked until its forward venue-history requirement is met.
 3. Continue prospective monitoring of the recent Flush transition deterioration without turning the post-hoc observation into a production rule.
-4. Keep token unlocks and deeper survivorship work explicitly data-blocked rather than guessing.
+4. Keep token unlocks explicitly data-blocked rather than guessing. Survivorship is NO LONGER data-blocked for price-only rules - it is power-blocked at nine control coins, and no further controls exist in the current archive.
 
 Do not re-open settled dead ideas (BTC hedging, vol targeting, drawdown throttle, tight Flush stops, clock filters) without new preregistered evidence.

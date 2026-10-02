@@ -1,0 +1,17 @@
+universe,filt,n,raw,edge,t,win,yrs_pos,yrs
+all 30 coins,no filter,2143,2.14,1.24,3.02,51.1,8,8
+all 30 coins,6-month trend up,1179,2.08,0.95,1.84,50.9,6,7
+all 30 coins,2-month trend up,1613,2.67,1.67,3.34,51.5,7,7
+all 30 coins,both trends up,1017,2.6,1.43,2.36,51.8,7,7
+survivors (21),no filter,1554,2.42,1.52,3.29,51.2,8,8
+survivors (21),6-month trend up,835,2.56,1.44,2.36,51.7,7,7
+survivors (21),2-month trend up,1153,3.13,2.14,3.75,51.7,7,7
+survivors (21),both trends up,715,3.27,2.13,2.93,52.7,7,7
+dead + off-16 (9),no filter,589,1.42,0.52,0.97,50.9,6,7
+dead + off-16 (9),6-month trend up,344,0.92,-0.22,-0.32,48.8,3,7
+dead + off-16 (9),2-month trend up,460,1.52,0.49,0.75,51.1,5,7
+dead + off-16 (9),both trends up,302,1.01,-0.22,-0.29,49.7,2,7
+the 5 decayers only (ATOM EOS CRV UNI FTT),no filter,297,0.85,0.3,0.45,47.5,5,7
+the 5 decayers only (ATOM EOS CRV UNI FTT),6-month trend up,139,-0.26,-1.14,-1.05,41.0,2,7
+the 5 decayers only (ATOM EOS CRV UNI FTT),2-month trend up,213,1.1,0.39,0.46,46.9,4,7
+the 5 decayers only (ATOM EOS CRV UNI FTT),both trends up,110,-0.11,-1.1,-0.85,40.0,2,7
