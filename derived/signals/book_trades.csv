@@ -1,7 +1,13 @@
 book,coin,rule,entry_t,entry_utc,status,ret_pct,regime,btc_vol_pct,size_frac,admitted,why,contracts,notional,cost,pnl
-E_experiments_final,WLD,CROWD_24H,1790769600,2026-09-30 12:00:00,closed,3.8639,Stress,0.996,0.195,False,CROWD_24H runs on established coins only,,,,
-E_experiments_final,RENDER,CROWD_24H,1790784000,2026-09-30 16:00:00,closed,2.1587,Stress,0.984,0.195,False,CROWD_24H runs on established coins only,,,,
-E_experiments_final,XLM,CROWD_24H,1790798400,2026-09-30 20:00:00,closed,3.0871,Stress,1.0,0.195,False,position below one whole contract,,,,
-E_experiments_final,HBAR,CROWD_24H,1790812800,2026-10-01 00:00:00,closed,1.9433,Stress,1.0,0.195,True,,1.0,523.65,0.94,9.23
-E_experiments_final,AAVE,CROWD_24H,1790827200,2026-10-01 04:00:00,open,,Stress,0.992,0.195,True,,1.0,829.05,1.2,
-E_experiments_final,AVAX,CROWD_24H,1790884800,2026-10-01 20:00:00,open,,Stress,0.936,0.195,True,,1.0,549.85,0.94,
+E_experiments_final,WLD,CROWD_24H,1790769600,2026-09-30 12:00:00,closed,3.8639,Calm,0.496,0.12,False,CROWD_24H runs on established coins only,,,,
+E_experiments_final,RENDER,CROWD_24H,1790784000,2026-09-30 16:00:00,closed,2.1587,Calm,0.492,0.12,False,CROWD_24H runs on established coins only,,,,
+E_experiments_final,XLM,CROWD_24H,1790798400,2026-09-30 20:00:00,closed,3.0871,Calm,0.516,0.12,False,position below one whole contract,,,,
+E_experiments_final,HBAR,CROWD_24H,1790812800,2026-10-01 00:00:00,closed,1.9433,Calm,0.496,0.12,True,,1.0,523.65,0.94,9.23
+E_experiments_final,AAVE,CROWD_24H,1790827200,2026-10-01 04:00:00,open,,Calm,0.496,0.12,False,position below one whole contract,,,,
+E_experiments_final,AVAX,CROWD_24H,1790884800,2026-10-01 20:00:00,open,,Calm,0.364,0.12,True,,1.0,549.85,0.94,
+F_hot_gate,WLD,CROWD_24H,1790769600,2026-09-30 12:00:00,closed,3.8639,Calm,0.496,0.12,False,CROWD_24H runs on established coins only,,,,
+F_hot_gate,RENDER,CROWD_24H,1790784000,2026-09-30 16:00:00,closed,2.1587,Calm,0.492,0.12,False,CROWD_24H runs on established coins only,,,,
+F_hot_gate,XLM,CROWD_24H,1790798400,2026-09-30 20:00:00,closed,3.0871,Calm,0.516,0.12,False,position below one whole contract,,,,
+F_hot_gate,HBAR,CROWD_24H,1790812800,2026-10-01 00:00:00,closed,1.9433,Calm,0.496,0.12,True,,1.0,523.65,0.94,9.23
+F_hot_gate,AAVE,CROWD_24H,1790827200,2026-10-01 04:00:00,open,,Calm,0.496,0.12,False,position below one whole contract,,,,
+F_hot_gate,AVAX,CROWD_24H,1790884800,2026-10-01 20:00:00,open,,Calm,0.364,0.12,True,,1.0,549.85,0.94,
