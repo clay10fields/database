@@ -5,8 +5,9 @@ fires and lets the slot cap decide. Nobody had asked whether *picking* among sam
 anything. It does — the picked coin beats the day's average by 1.4 to 2.5 percentage points a trade — but
 after charging the 110 comparisons it took to find that, only the negative result clears.
 
-This matters more often than any new rule: a choice exists on 229 to 517 days depending on the signal, not
-four days a year. Code `code/sniper.py`, `code/sniper_paired.py`. Daily archive, 21 coins, 2019-09 to
+This matters more often than any new rule: a choice exists on 229 to 517 days depending on the signal. (An
+earlier version of this line contrasted that with SqueezeFail "four days a year"; that figure was wrong —
+SqueezeFail is 426 trades on 231 distinct days over 6.5 years, about 65 trades a year.) Code `code/sniper.py`, `code/sniper_paired.py`. Daily archive, 21 coins, 2019-09 to
 2026-10. Edge against the coin-year baseline. Research only; no orders. No book change.
 
 ## How it was tested

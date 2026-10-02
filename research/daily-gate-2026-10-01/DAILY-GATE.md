@@ -338,7 +338,10 @@ Within 5 days of a BTC regime change: +4.93% (t 2.95). After: +3.56% (t 3.19). B
 **LEAD, and the strongest one this repo has found on data that spans a full cycle.** It passes every
 criterion in the written pass bar and clears its own search burden on edge. It fails the two gates that
 punish an event-driven sample, and that failure is the true description of the trade: it is a cascade-buying
-rule whose money is made on about four days a year.
+rule whose money is concentrated in a handful of cascades: 26 of its 263 days carry 98% of the edge. The
+count itself is **426 non-overlapping trades on 231 distinct days over 6.5 years — about 65 trades a year**.
+An earlier version of this line said "about four days a year", which was wrong: four is roughly the number of
+days that carry the money in a year, not the number of days the rule fires.
 
 Do not put it in the book from this file. The right next move is the one the repo already uses for exactly
 this situation: **paper-watch it**, sized small, beside the existing liquidation buy, and let the forward

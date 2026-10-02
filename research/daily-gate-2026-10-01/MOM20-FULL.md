@@ -23,7 +23,10 @@ year** across the universe. SqueezeFail pays on roughly four days a year.~~
 > 1.59% a trade, so a 0.70% toll takes it to +0.89% and its clustered t from 3.16 to **1.89** — below the LEAD
 > threshold it was promoted out of. At tier 1 it is **−0.01%**: nothing. SqueezeFail's gross edge is 4.08%,
 > which still leaves t **3.69** at 0.70% and 2.71 at 1.60%. **Frequency is a liability once you pay real fees,
-> not an asset.** Four fat trades a year beat two hundred thin ones. Read every number in this file as quoted
+> not an asset.** And the struck-through line's "four days a year" is itself wrong: SqueezeFail is **426 trades
+> on 231 distinct days over 6.5 years, about 65 a year** — four is roughly how many days carry the money, not
+> how often it fires. So it is not even the rare-versus-frequent trade-off the original line implied: 65 fat
+> trades beat 200 thin ones. Read every number in this file as quoted
 > at 0.10% and therefore 60bp a trade optimistic.
 
 `research/momentum-20d/MOMENTUM-20D.md` filed this as a LEAD at t 2.02 on the 4h panel and wrote: *"Revisit

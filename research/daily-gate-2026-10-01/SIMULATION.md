@@ -105,3 +105,47 @@ not more backtesting**:
 
 `CLAUDE.md` forbids adding to the book from a backtest. This measures the existing book; it does not change
 it. No orders, no keys, no trading code.
+
+## Addendum — the same window in dollars, at each real cost
+
+Percentages hide the thing that decides whether any of this is worth running. On the $5,000 account, 2026-08-01
+→ 2026-10-01:
+
+| round trip | end balance | net | MOM20 | Flush | Crowd short | SqueezeFail |
+|---|---:|---:|---:|---:|---:|---:|
+| 0.10% (as every backtest charges) | $6,104 | +$1,104 | +$1,212 | +$110 | −$136 | −$141 |
+| **0.70% (real, tier 4)** | **~$5,767** | **+$767** | +$1,040 | +$95 | −$199 | −$170 |
+| 1.60% (real, tier 1) | ~$5,372 | +$372 | +$795 | +$75 | −$286 | −$212 |
+| **BTC buy-and-hold** | **$6,665** | **+$1,665** | — | — | — | — |
+
+Results are written per cost (`results/sim2mo_*_{10,70,160}bp.csv`) because an earlier version wrote one
+filename and a later run silently overwrote an earlier cost's output.
+
+And the rule that survives, annualised on the same account — SqueezeFail alone, 65 trades a year at 15% of
+equity:
+
+| | gross | fees to Kraken | net | real after 3% inflation |
+|---|---:|---:|---:|---:|
+| tier 4 (0.70%) | +39.8% / $1,989 | **−6.8% / $341 — 17% of gross** | +33.0% / $1,648 | +30.0% / $1,498 |
+| tier 1 (1.60%) | +39.8% / $1,989 | **−15.6% / $780 — 39% of gross** | +24.2% / $1,209 | +21.2% / $1,059 |
+
+**At tier 1 the exchange takes two of every five dollars the edge produces.** Inflation takes $150. The fee is
+the extraction that matters, which is the whole point of `EXECUTION.md`.
+
+What that rate pays per week, since the percentage is the misleading part:
+
+| account | per year at 33% | per week |
+|---|---:|---:|
+| $5,000 | $1,660 | **$32** |
+| $25,000 | $8,300 | $160 |
+| $50,000 | $16,600 | $319 |
+| $100,000 | $33,200 | $638 |
+| $150,000 | $49,800 | $958 |
+
+$500/week needs ~$78,000 in the account; $1,000/week needs ~$157,000. From $5,000 on compounding alone that is
+**9.6 years**; adding $500/month, 4.4 years; adding $1,000/month, 3.2 years. **Deposits move it far harder
+than returns do.** And capacity does not bind anywhere in that range — `EXECUTION.md` measured a $2M account
+at 0.89% of a median day on the thinnest book — so the strategy scales untouched while the dollars do not.
+
+Every figure here is in-sample, one rule, never validated forward, against a −24.9% worst drawdown at real
+cost. Not advice, and not a forecast.

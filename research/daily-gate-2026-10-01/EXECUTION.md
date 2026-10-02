@@ -5,8 +5,7 @@ charges a 0.10% round trip. Kraken charges 0.70% at the tier this account would 
 at tier 1. At 0.70% the book's median two months goes from +7.1% to +3.3% — below BTC buy-and-hold's +4.9% —
 and MOM20 stops clearing its own t-bar.**
 
-The one rule that survives real costs with its significance intact is **SqueezeFail**, the rule that fires
-four days a year. **Real fees invert the ranking**, and `MOM20-FULL.md`'s argument that MOM20 "matters more
+The one rule that survives real costs with its significance intact is **SqueezeFail**, which fires **65 non-overlapping trades a year across about 36 distinct days** (426 trades on 231 days over 6.5 years) — an earlier version of this file said "four days a year", which was wrong and is corrected here and in `research/steward/NOW.md`. **Real fees invert the ranking**, and `MOM20-FULL.md`'s argument that MOM20 "matters more
 than SqueezeFail for a working account" because it fires 200 times a year is exactly backwards: at real cost,
 frequency is the liability and edge-per-trade is the asset.
 

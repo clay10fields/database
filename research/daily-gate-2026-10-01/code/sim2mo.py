@@ -27,7 +27,7 @@ HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 import panel as P
 from gate import RES
 sys.path.insert(0, os.path.join(HERE, '../../test-ledger')); from ledger import record
-FEE = 0.001; START = 5000.0; SIZE = 0.15; SLOTS = 5; HOLD = 3
+FEE = float(os.environ.get('RT_COST','0.001')); START = float(os.environ.get('ACCT','5000')); SIZE = 0.15; SLOTS = 5; HOLD = 3
 KRAKEN_OUT = {'DOT', 'XTZ', 'SHIB'}          # not spot-tradeable for him
 LO, HI = '2026-08-01', '2026-10-01'
 p = P.build()
@@ -116,5 +116,6 @@ record('daily-gate', 'two-month portfolio simulation (in-sample)', f'{LO}..{HI}'
        dict(n=len(C), net_pct=round((cv.iloc[-1] / START - 1) * 100, 1), maxdd_pct=round(dd.min() * 100, 1),
             win_pct=round((C.ret_pct > 0).mean() * 100, 1) if len(C) else None,
             btc_buyhold_pct=round((btc.iloc[-1] / btc.iloc[0] - 1) * 100, 1)), script=__file__)
-cv.to_csv(os.path.join(RES, 'sim2mo_curve.csv'))
-C.to_csv(os.path.join(RES, 'sim2mo_trades.csv'), index=False)
+tag = f'{int(round(FEE*10000))}bp'   # never let one cost's run overwrite another's
+cv.to_csv(os.path.join(RES, f'sim2mo_curve_{tag}.csv'))
+C.to_csv(os.path.join(RES, f'sim2mo_trades_{tag}.csv'), index=False)
