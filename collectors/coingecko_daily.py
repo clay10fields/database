@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Daily market cap / price / volume for the 16 coins from CoinGecko demo API.
+"""Daily market cap / price / volume from CoinGecko demo API.
 Writes raw/marketcap/coingecko_daily.csv append-only.
 
     COINGECKO_API_KEY=... python3 collectors/coingecko_daily.py
@@ -37,6 +37,11 @@ IDS = {
     "SHIB": "shiba-inu",
     "XLM": "stellar",
     "XTZ": "tezos",
+    "ZEC": "zcash",
+    "NEAR": "near",
+    "ALGO": "algorand",
+    "WLD": "worldcoin-wld",
+    "RENDER": "render-token",
 }
 
 
