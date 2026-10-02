@@ -41,5 +41,31 @@ jobs:
           fi
           git commit -m "record-daily: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
           git fetch origin main
-          git rebase origin/main
+          if ! git rebase origin/main; then
+            git diff --name-only --diff-filter=U | while read -r f; do
+              git show :2:"$f" > /tmp/ours.csv || true
+              git show :3:"$f" > /tmp/theirs.csv || true
+              python3 - "$f" << 'PY'
+          import sys
+          path = sys.argv[1]
+          rows = []
+          seen = set()
+          for name in ("/tmp/ours.csv", "/tmp/theirs.csv"):
+              try:
+                  lines = open(name).read().splitlines()
+              except FileNotFoundError:
+                  continue
+              for i, line in enumerate(lines):
+                  if i == 0 and not rows:
+                      rows.append(line)
+                      continue
+                  if line and line not in seen:
+                      seen.add(line)
+                      rows.append(line)
+          open(path, "w").write("\n".join(rows) + "\n")
+          PY
+              git add "$f"
+            done
+            GIT_EDITOR=true git rebase --continue
+          fi
           git push origin HEAD:main
