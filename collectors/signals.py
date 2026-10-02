@@ -11,6 +11,11 @@ Evaluated at every 4h close (00, 04, 08, 12, 16, 20 UTC). Everything in a row is
                history, no name list. Feeds the rule-based paper books in collectors/paper_books.py
                (research/universe-refresh/FLUSH-MEMBERSHIP, -REGIME-CAP and -VOL-CAP). Logging only;
                the concurrency caps live in the book layer, not here.
+  MOM20_BREAK  LEAD, logging-only, DAILY: close above the prior 20-day high -> long at the NEXT day's open,
+               hold 3 days, no stop. This is the rule as tested in research/daily-gate-2026-10-01/MOM20-FULL.md
+               (edge +1.52%, clustered t 3.29, positive in 8 of 8 years on 21 coins, 2019-2026). It is logged
+               beside MOM20 rather than replacing it, because the two disagree on the trigger (break vs near),
+               the clock (daily vs 4h) and the entry (next open vs the close) -- so let both build a record.
   MOM20        LEAD, logging-only: close within 3% of the 20-day high -> long 72h, no stop. The rescued
                level-break idea (premise sweep: breaks continue, fading loses), t 2.02 in backtest -- below
                the promotion bar, so it is WATCHED here to accrue a live record, not traded. research/momentum-20d.
@@ -68,6 +73,8 @@ MIN_HISTORY_DAYS = 180
 FLUSH_B_COINS = {"XLM", "SOL", "XRP", "HBAR", "AVAX", "AAVE", "BCH"}
 RULES = {"CROWD_SHORT": (-1, 6), "FLUSH_LONG": (1, 18), "CROWD_24H": (-1, 6), "CROWD_72H": (-1, 18),
          "CROWD_48H": (-1, 12), "FLUSH_B": (1, 18), "FLUSH_D": (1, 18), "MOM20": (1, 18)}
+# Daily rules (LIQ_BUY, MOM20_BREAK) are not in RULES: they are emitted by their own functions from
+# raw/coinalyze_daily, not by the 4h per-coin loop, and they carry their own side/hold.
 STOPPED = {"CROWD_24H", "CROWD_72H", "CROWD_48H"}       # rules that use the close stop / hard stop / BTC pause
 FLUSH_TIMED = {"FLUSH_B", "FLUSH_D"}       # rules using the 24h/48h/72h time cuts instead of price stops
 OUT = "derived/signals"
@@ -321,6 +328,69 @@ def liq_buy_rows(start: int, now: int, btc_regime: pd.Series, btc_volpct: pd.Ser
     return out
 
 
+def mom20_break_rows(start: int, now: int, btc_regime: pd.Series, btc_volpct: pd.Series) -> list[dict]:
+    """The MOM20 rule as it was actually TESTED, which is not the rule this file was watching.
+
+    `MOM20` above logs a 4h close within 3% of the 20-day high, held 72h. The full treatment on eight years of
+    daily bars (research/daily-gate-2026-10-01/MOM20-FULL.md) found that the BREAK is the signal and "near but
+    not through" is about half the edge (+0.76% vs +1.52%), that the right clock is daily, that entry at the
+    NEXT DAY'S OPEN beats the close (+2.17% vs +1.52%, t 4.01), and that the hold is 3 days with no stop.
+    So the watched rule and the tested rule disagreed on the trigger, the clock and the entry.
+
+    This logs the tested one as `MOM20_BREAK` rather than changing `MOM20`: the old rule keeps its own forward
+    record, and the two can be compared later instead of one quietly replacing the other. Both are
+    logging-only leads and neither is in any book.
+
+      daily close above the prior 20-day high -> enter the NEXT day's open, hold 3 days, no stop.
+
+    `ret7_pct` carries the coin's 7-day move so the slot tie-break in collectors/paper_books.py can rank
+    same-day breaks (research/daily-gate-2026-10-01/SNIPER.md). Percentile-free rule, so no warm-up beyond the
+    20-day window; rows are emitted only for entries at or after `start` and days completed at or before `now`.
+    """
+    R = "raw/coinalyze_daily"
+    if not os.path.exists(f"{R}/perp_ohlcv.csv"):
+        return []
+    px = pd.read_csv(f"{R}/perp_ohlcv.csv")
+    px["coin"] = px.symbol.map(lambda z: z.replace("1000SHIB", "SHIB").split("USDT")[0])
+    d = px[["t", "coin", "o", "h", "c"]].drop_duplicates(["coin", "t"]).sort_values(["coin", "t"]).reset_index(drop=True)
+    d = d[d.t + 86400 <= now].reset_index(drop=True)                 # completed days only
+    g = d.groupby("coin", group_keys=False)
+    d["hi20"] = g.h.apply(lambda z: z.rolling(20, min_periods=15).max().shift(1))
+    d["ret1"] = g.c.apply(lambda z: z / z.shift(1) - 1)
+    d["ret7"] = g.c.apply(lambda z: z / z.shift(7) - 1)
+    d["sig"] = d.c > d.hi20
+    out = []
+    for coin, x in d.groupby("coin"):
+        x = x.reset_index(drop=True); free_from = -1
+        for i in range(len(x)):
+            if not bool(x.sig[i]) or i + 1 >= len(x):
+                continue
+            ent = int(x.t[i + 1])                                    # the next day's bar; fill at its open
+            if ent < start or ent < free_from:
+                continue
+            entry_px = float(x.o[i + 1])
+            if not np.isfinite(entry_px) or entry_px <= 0:
+                continue
+            exit_t = ent + 3 * 86400
+            j = i + 4                                                # 3 days after the entry day
+            done = j < len(x) and int(x.t[j]) + 86400 <= now
+            px_out = float(x.c[j]) if done else np.nan
+            r = (px_out / entry_px - 1) - FEE if done else np.nan
+            out.append(dict(coin=coin, rule="MOM20_BREAK", side="long", entry_t=ent,
+                            entry_utc=pd.Timestamp(ent, unit="s"), entry=entry_px,
+                            exit_utc=pd.Timestamp(exit_t, unit="s"), exit=px_out,
+                            how="hold 3d" if done else "open", status="closed" if done else "open",
+                            ret_pct=r * 100 if done else np.nan, ls_pct=np.nan, top_pct=np.nan, fund_pct=np.nan,
+                            spot_pct=np.nan, ret24_pct=float(x.ret1[i]) * 100, oi24_pct=np.nan, ret6m_pct=np.nan,
+                            positioning_days=np.nan,
+                            regime=(btc_regime.get(ent, "") if len(btc_regime) else ""),
+                            btc_vol_pct=(btc_volpct.get(ent, np.nan) if len(btc_volpct) else np.nan),
+                            flush_curated=False, flush_prev24=False,
+                            ret7_pct=float(x.ret7[i]) * 100 if np.isfinite(x.ret7[i]) else np.nan))
+            free_from = exit_t
+    return out
+
+
 def main() -> int:
     os.makedirs(OUT, exist_ok=True)
     old = set()
@@ -417,6 +487,7 @@ def main() -> int:
             "ret7_pct", "fund7_pct", "runup30_pct", "btc_ret24_pct", "dist_hi20_pct"]
     live_start = int(btc.index.min()) if btc is not None and len(btc) else now
     rows += liq_buy_rows(live_start, now, btc_regime, btc_volpct)
+    rows += mom20_break_rows(live_start, now, btc_regime, btc_volpct)
     led = pd.DataFrame(rows, columns=cols).sort_values(["entry_t", "coin"])
     led.round({"entry": 8, "exit": 8, "ret_pct": 4, "ls_pct": 4, "top_pct": 4, "fund_pct": 4, "spot_pct": 4,
                "ret24_pct": 3, "oi24_pct": 3, "ret6m_pct": 3, "positioning_days": 1,
@@ -435,7 +506,7 @@ def main() -> int:
                          f"({r.entry_utc:%Y-%m-%d %H:%M} UTC), exit by {r.exit_utc:%Y-%m-%d %H:%M} UTC. "
                          f"crowd pct {r.ls_pct:.2f}, big accts pct {r.top_pct:.2f}, funding pct {r.fund_pct:.2f}, spot pct {r.spot_pct:.2f}, "
                          f"price 24h {r.ret24_pct:+.1f}%")
-        for rule in list(RULES) + ["LIQ_BUY"]:
+        for rule in list(RULES) + ["LIQ_BUY", "MOM20_BREAK"]:
             k = closed[closed.rule == rule]
             if len(k):
                 lines.append(f"\nLive record {rule}: {len(k)} closed, avg {k.ret_pct.mean():+.2f}%, "

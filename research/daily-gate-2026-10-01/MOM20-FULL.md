@@ -210,7 +210,14 @@ is the thing to plan for.
 ## Universe and clock
 
 **Universe — the full 21 coins is best, and tightening hurts.** ≥180 days of history: +1.29% (t 2.80).
-≥365 days: +0.96% (t 2.10). ≥180 days excluding AAVE: +1.41% (t 2.97). Base all-21: +1.52% (t 3.29). The five
+≥365 days: +0.96% (t 2.10). ≥180 days excluding AAVE: +1.41% (t 2.97). Base all-21: +1.52% (t 3.29).
+
+**Correction to an earlier version of this file**, which said to drop AAVE in the build spec. That was carried
+over from SqueezeFail, where AAVE really is the one bad coin (−1.5%, and −3.2% on the either-side rule). On
+MOM20 at a 3-day hold AAVE is **+0.4%** — mildly positive, not a problem. And dropping it only helps inside
+the ≥180-day gate (+1.41% vs +1.29%); the ungated 21-coin set beats both at +1.52%. **Take every coin.**
+Dropping a name that tests positive is the hand-picked-universe mistake `CURRENT-BOOK-2026-10-01.md` flags on
+Flush-B, and there is no reason to repeat it here. The five
 newer coins carry MOM20 rather than dilute it (+3.95% on them in `ALL-STRATEGIES-FULL-CYCLE.md`), which is the
 opposite of the crowd short. **No maturity gate.**
 
@@ -245,7 +252,8 @@ and it is not a secret — which is the reason to expect the edge to be thinner 
 
 Daily close. Long when the close is above the prior 20-day high. **Enter at the next day's open** (better
 than the close, and the easier fill). **Hold 3 days, no stop, no target.** Do not cut a day-one loser. 15%
-of equity, max 5 open, one position per coin, all 21 coins with no maturity gate, drop AAVE. **When several
+of equity, max 5 open, one position per coin, **all 21 coins, no maturity gate and no name dropped** — see
+the correction below. **When several
 coins break the same day, take the one with the biggest up day.** Size up when the coin's 20-day vol is in
 its top fifth, when 7-day OI is building, or when five or more coins break together. Expect ~200 trades a
 year, a −23% drawdown, and one episode that takes a year to recover.
