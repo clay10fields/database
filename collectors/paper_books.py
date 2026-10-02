@@ -23,6 +23,25 @@ real instead of a backtest choice made in 2026.
                         longs Stress/Trend up 1.3, Calm 1.0, Trend down 0.8), max 5 open, no Flush cap, shorts take
                         slot priority over longs. Group tilt NOT included (it helped only the 30-coin universe).
                         Every filtered signal is logged as a rejection with its reason, never dropped.
+  F  hot_gate          book E with ONE change: the Flush leg is admitted when the run into it was HOT instead
+                        of when BTC vol is not compressed. Hot = 7-day funding in its own top fifth OR the
+                        prior month up >30% OR BTC down >3% that day (research/hot-flush/HOT-FLUSH.md).
+                        Declared 2026-10-01 before any forward data, with its kill line, in
+                        research/daily-gate-2026-10-01/FLUSH-FILTER.md: over a full cycle the hot gate doubles
+                        the flush edge and halves the drawdown, and on 2020-21 -- which neither filter was
+                        designed on -- the compression stand-down is worth zero while hot is +4.19%. But book
+                        E's unseen-year average still prefers the stand-down, entirely on 2026. A backtest
+                        cannot settle that; F against E can. KILL: if the next 30 closed F flush trades trail
+                        E's over the same window, the 2026 reversal is real and the hot gate is retired.
+
+Slot tie-break (added 2026-10-01, research/daily-gate-2026-10-01/SNIPER.md). When several coins fire the same
+bar and compete for the last slots, the order used to be rule priority then larger planned size. It is now
+rule priority, then the PICK: among longs the coin with the strongest 7-day move first, among shorts the coin
+furthest below its 20-day high first, then planned size as before. This adds no rule and changes no signal --
+only which of the already-firing coins gets a slot, and the book is slot-bound. Measured uplift of the picked
+coin over the day average: +1.43pp on the liquidation buy (positive in all 7 years), +2.23pp on MOM20,
++0.70pp on the crowd short. All are leads (t 2.4-3.5 against a 110-comparison bar of 3.51), which is exactly
+why they belong in the forward record rather than in the book.
 
 Shared across all four, from CURRENT-BOOK-2026-10-01.md: $5,000 start, max 5 open positions, CS72 takes slot
 priority over Flush, never opposite sides of the same coin, one position per coin per book, whole contracts at
@@ -105,7 +124,32 @@ BOOKS = {
                              doc="rule-based, max 1 Flush when BTC vol pct < 0.40 else 2"),
     "E_experiments_final": dict(kind="E", flush_rule="FLUSH_D", cap=None,
                                 doc="CS 48h + CS24 established + Flush stand-down (vol<0.50) + liq buy, season-sized"),
+    "F_hot_gate": dict(kind="E", flush_gate="hot", flush_rule="FLUSH_D", cap=None,
+                       doc="book E with the Flush leg gated on a HOT run instead of the vol stand-down"),
 }
+
+# Book F's hot gate, from research/hot-flush. Any one leg is enough.
+HOT_FUND_PCT = 0.80
+HOT_RUNUP_PCT = 30.0
+HOT_BTC24_PCT = -3.0
+
+
+def is_hot(r) -> tuple[bool, str]:
+    """Was the run into this flush hot? Returns (hot, why-not). A leg with no data cannot fire, and a row
+    where every leg is missing is stood down rather than assumed hot."""
+    legs, known = [], False
+    for val, ok, name in ((getattr(r, "fund7_pct", np.nan), lambda v: v >= HOT_FUND_PCT, "funding top fifth"),
+                          (getattr(r, "runup30_pct", np.nan), lambda v: v > HOT_RUNUP_PCT, "prior month +30%"),
+                          (getattr(r, "btc_ret24_pct", np.nan), lambda v: v < HOT_BTC24_PCT, "BTC down 3%")):
+        if val is not None and np.isfinite(val):
+            known = True
+            if ok(val):
+                legs.append(name)
+    if legs:
+        return True, ""
+    if not known:
+        return False, "Flush stood down: no hot-run inputs on this row"
+    return False, "Flush stood down: the run into it was not hot"
 
 
 def _truthy(x) -> bool:
@@ -117,9 +161,11 @@ def _truthy(x) -> bool:
     return False
 
 
-def select_e(led: pd.DataFrame) -> pd.DataFrame:
-    """Book E's candidate signals, each with its planned size and, where a book-E rule filters it out, the
-    reason -- so the rejection is logged rather than the signal vanishing."""
+def select_e(led: pd.DataFrame, flush_gate: str = "standdown") -> pd.DataFrame:
+    """Book E/F candidate signals, each with its planned size and, where a rule filters it out, the reason --
+    so the rejection is logged rather than the signal vanishing. `flush_gate` picks which filter guards the
+    Flush leg: "standdown" is book E (skip while BTC vol pct < 0.50), "hot" is book F (take only a hot run).
+    Everything else about the two books is identical."""
     t = led[led.rule.isin({"CROWD_48H", "CROWD_24H", "FLUSH_D", "LIQ_BUY"}) & ~led.coin.isin(EXCLUDE)].copy()
     t["is_long"] = t.rule.isin({"FLUSH_D", "LIQ_BUY"})
     t["is_fl"] = t.rule == "FLUSH_D"
@@ -129,18 +175,41 @@ def select_e(led: pd.DataFrame) -> pd.DataFrame:
         if r.rule == "CROWD_24H" and r.coin not in CORE16:
             w = "CROWD_24H runs on established coins only"
         elif r.rule == "FLUSH_D":
-            v = r.btc_vol_pct
             prev = getattr(r, "flush_prev24", False)
-            if v is None or not np.isfinite(v):
-                w = "Flush stood down: BTC vol pct unknown"
-            elif v < E_STANDDOWN_VOL:
-                w = f"Flush stood down: BTC vol pct < {E_STANDDOWN_VOL:.2f} (quiet tape)"
-            elif _truthy(prev):
-                w = "second-day flush skipped"
+            if flush_gate == "hot":
+                hot, not_hot_why = is_hot(r)
+                if not hot:
+                    w = not_hot_why
+                elif _truthy(prev):
+                    w = "second-day flush skipped"
+            else:
+                v = r.btc_vol_pct
+                if v is None or not np.isfinite(v):
+                    w = "Flush stood down: BTC vol pct unknown"
+                elif v < E_STANDDOWN_VOL:
+                    w = f"Flush stood down: BTC vol pct < {E_STANDDOWN_VOL:.2f} (quiet tape)"
+                elif _truthy(prev):
+                    w = "second-day flush skipped"
         why.append(w)
     t["pre_reject"] = why
     t["sz"] = [0.15 * (REGIME_FL if lg else REGIME_CS).get(rg, 1.0) for lg, rg in zip(t.is_long, t.regime)]
     return t
+
+
+def tie_break(t: pd.DataFrame) -> pd.DataFrame:
+    """Order competing same-bar signals: rule priority first (shorts before longs, as Step 27), then the PICK
+    from SNIPER.md -- strongest 7-day move among longs, furthest below the 20-day high among shorts -- then
+    planned size as before. A row missing its pick column sorts last within its group rather than first, so a
+    blank column can never jump the queue."""
+    t = t.copy()
+    long_ = t.is_long if "is_long" in t else t.is_fl
+    r7 = pd.to_numeric(t.get("ret7_pct"), errors="coerce") if "ret7_pct" in t else pd.Series(np.nan, index=t.index)
+    dh = pd.to_numeric(t.get("dist_hi20_pct"), errors="coerce") if "dist_hi20_pct" in t else pd.Series(np.nan, index=t.index)
+    # one sort key, descending: longs rank on the 7-day move, shorts on how far BELOW the 20-day high they are
+    pick = np.where(long_, r7, -dh)
+    t["_pick"] = pd.Series(pick, index=t.index).fillna(-np.inf)
+    return t.sort_values(["entry_t", long_.name if long_.name else "is_fl", "_pick", "sz", "coin"],
+                         ascending=[True, True, False, False, True])
 
 
 def size_cs(row) -> float:
@@ -179,9 +248,8 @@ def flush_cap(spec, row) -> int:
 def run_book(led: pd.DataFrame, name: str, cfg: dict):
     """Replay one book. Returns (summary dict, per-signal rows)."""
     if cfg.get("kind") == "E":
-        t = select_e(led)
-        # shorts before longs (CS before Flush, as Step 27), then larger planned size first
-        t = t.sort_values(["entry_t", "is_long", "sz", "coin"], ascending=[True, True, False, True])
+        t = select_e(led, cfg.get("flush_gate", "standdown"))
+        t = tie_break(t)
     else:
         want = {"CROWD_72H", cfg["flush_rule"]}
         # Keep every watched signal (minus the hard venue exclusions) so a coin with no contract size is
@@ -193,8 +261,8 @@ def run_book(led: pd.DataFrame, name: str, cfg: dict):
         t["is_fl"] = t.rule == cfg["flush_rule"]
         t["pre_reject"] = ""
         t["sz"] = [size_fl(r) if r["is_fl"] else size_cs(r) for _, r in t.iterrows()]
-        # Causal admission order: CS before Flush, then larger planned size first.
-        t = t.sort_values(["entry_t", "is_fl", "sz", "coin"], ascending=[True, True, False, True])
+        # Causal admission order: CS before Flush, then the SNIPER.md pick, then larger planned size.
+        t = tie_break(t)
 
     eq = START
     open_: list[dict] = []
@@ -281,16 +349,20 @@ def main() -> int:
     pd.DataFrame(all_trades).to_csv(f"{OUT}/book_trades.csv", index=False)
 
     lines = ["# Paper books — no orders placed\n",
-             f"Five candidate books on the same signal stream. $5,000 start, max {MAX_OPEN} open, "
-             "short priority over long. A-D differ only in which Flush signals are admitted; E is the book the "
-             "2026-10-01 strict walk-forward picked (research/experiments-2026-10-01/NOTES.md).\n"]
+             f"Six candidate books on the same signal stream. $5,000 start, max {MAX_OPEN} open, "
+             "short priority over long, then the SNIPER.md slot tie-break. A-D differ only in which Flush "
+             "signals are admitted; E is the book the 2026-10-01 strict walk-forward picked; F is E with the "
+             "Flush leg gated on a hot run instead of the volatility stand-down.\n"]
     for _, r in books.iterrows():
         lines.append(f"- **{r.book}** ({r.rule_set}): ${r.equity:,.2f} ({r.return_pct:+.2f}%), "
                      f"worst drawdown {r.max_dd_pct:.2f}%, {r.admitted} admitted / {r.rejected} rejected, "
                      f"{r.closed} closed"
                      + (f", avg {r.avg_ret_pct:+.2f}% win {r.win_pct:.0f}%" if pd.notna(r.avg_ret_pct) else ""))
     lines.append("\nThe live record decides between them; nothing here changes a rule. "
-                 "See research/universe-refresh/FLUSH-VOL-CAP-2026-10-01.md for why D is the leading candidate.")
+                 "A vs D settles the Flush universe (research/universe-refresh/FLUSH-VOL-CAP-2026-10-01.md); "
+                 "E vs F settles which Flush filter is real "
+                 "(research/daily-gate-2026-10-01/FLUSH-FILTER.md). F is retired if its next 30 closed "
+                 "flush trades trail E's over the same window.")
     with open(f"{OUT}/books.md", "w") as fh:
         fh.write("\n".join(lines) + "\n")
 

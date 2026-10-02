@@ -40,7 +40,10 @@ def check(label: str, got, want):
     print(f"  {'ok  ' if got == want else 'FAIL'} {label}: {got!r}")
 
 
-def row(coin, rule, entry_t, entry, ret_pct, regime, volpct, ls_pct=0.10, oi24=-20.0, status="closed", prev24=False):
+def row(coin, rule, entry_t, entry, ret_pct, regime, volpct, ls_pct=0.10, oi24=-20.0, status="closed", prev24=False,
+        fund7_pct=0.10, runup30_pct=0.0, btc_ret24_pct=0.0, ret7_pct=0.0, dist_hi20_pct=-10.0):
+    """One ledger row. The hot-gate columns default to NOT hot (low 7-day funding, no run-up, BTC flat) so a
+    test that wants book F to admit a flush has to say so explicitly."""
     hold = 18 * 4 * 3600
     return dict(coin=coin, rule=rule, side="long" if (rule.startswith("FLUSH") or rule == "LIQ_BUY") else "short",
                 entry_t=entry_t, entry_utc=pd.Timestamp(entry_t, unit="s"), entry=entry,
@@ -48,7 +51,9 @@ def row(coin, rule, entry_t, entry, ret_pct, regime, volpct, ls_pct=0.10, oi24=-
                 how="hold 72h", status=status, ret_pct=ret_pct, ls_pct=ls_pct, top_pct=0.80,
                 fund_pct=0.50, spot_pct=0.50, ret24_pct=1.0, oi24_pct=oi24, ret6m_pct=10.0,
                 positioning_days=400.0, regime=regime, btc_vol_pct=volpct,
-                flush_curated=coin in {"XLM", "SOL", "XRP", "HBAR", "AVAX", "AAVE", "BCH"}, flush_prev24=prev24)
+                flush_curated=coin in {"XLM", "SOL", "XRP", "HBAR", "AVAX", "AAVE", "BCH"}, flush_prev24=prev24,
+                fund7_pct=fund7_pct, runup30_pct=runup30_pct, btc_ret24_pct=btc_ret24_pct,
+                ret7_pct=ret7_pct, dist_hi20_pct=dist_hi20_pct)
 
 
 def build_ledger() -> pd.DataFrame:
@@ -85,13 +90,28 @@ def build_ledger() -> pd.DataFrame:
     rows.append(row("LTC", "CROWD_24H", T7, 50.0, 1.0, "Stress", 0.80, ls_pct=0.95))    # established coin -> E admits
     rows.append(row("ZEC", "CROWD_24H", T7, 100.0, 1.0, "Stress", 0.80, ls_pct=0.95))   # not established -> E rejects
     rows.append(row("SOL", "LIQ_BUY", T7, 100.0, 4.0, "Stress", 0.80))                   # E admits
-    rows.append(row("XLM", "FLUSH_D", T7, 0.10, 2.0, "Stress", 0.80))                    # E admits
-    rows.append(row("HBAR", "FLUSH_D", T7, 0.10, 2.0, "Stress", 0.80, prev24=True))      # second-day -> E rejects
+    rows.append(row("XLM", "FLUSH_D", T7, 0.10, 2.0, "Stress", 0.80, fund7_pct=0.90))    # hot -> E and F admit
+    rows.append(row("HBAR", "FLUSH_D", T7, 0.10, 2.0, "Stress", 0.80, prev24=True, fund7_pct=0.90))  # second-day -> both reject
     # Bar 6 + 6b — CS-vs-Flush slot contention, the one rule Step 27 adopted as causal (CS before Flush).
     # P fills four of five slots with CS72 shorts (Stress/0.90 so no cap interferes, all tradeable coins);
     # one bar later a CS72 and a FLUSH_D both want the last slot. Correct priority admits the CS and rejects
     # the Flush as account-full; flipped priority does the reverse. Everything from earlier bars has closed
     # by T6 (holds are 72h), so reusing coin names is safe.
+    # Bar 8 — the E/F divergence. A HOT flush in a compressed tape (E stands down, F admits), a COLD flush in
+    # a live tape (E admits, F stands down), and a flush with no hot inputs at all (F must stand down rather
+    # than assume hot). Placed last so nothing else is open.
+    T8 = T5 + 60 * DAY
+    rows.append(row("XRP", "FLUSH_D", T8, 1.0, 2.0, "Calm", 0.20, fund7_pct=0.95))       # hot, compressed
+    rows.append(row("AVAX", "FLUSH_D", T8, 10.0, 2.0, "Stress", 0.80, fund7_pct=0.10))   # cold, live tape
+    rows.append(row("BCH", "FLUSH_D", T8, 300.0, 2.0, "Stress", 0.80,
+                    fund7_pct=float("nan"), runup30_pct=float("nan"), btc_ret24_pct=float("nan")))
+    # Bar 9 — the slot tie-break. Six hot flushes on one bar, five slots. Ranked by 7-day move, LINK (+40%)
+    # must get in and DOGE (-5%) must be the one left out. Without the tie-break the order is by planned size,
+    # which is identical across these rows, so coin name would decide and DOGE would win on alphabetical order.
+    T9 = T8 + 20 * DAY
+    for coin, px, r7 in (("LINK", 12.0, 40.0), ("SOL", 100.0, 30.0), ("XLM", 0.10, 20.0),
+                         ("XRP", 1.0, 10.0), ("AVAX", 10.0, 5.0), ("DOGE", 0.10, -5.0)):
+        rows.append(row(coin, "FLUSH_D", T9, px, 2.0, "Stress", 0.80, fund7_pct=0.95, ret7_pct=r7))
     T6 = T5 + 10 * DAY
     for coin, px in (("LTC", 50.0), ("HBAR", 0.10), ("AAVE", 100.0), ("SOL", 150.0)):
         rows.append(row(coin, "CROWD_72H", T6, px, 1.0, "Stress", 0.90, ls_pct=0.95))
@@ -149,7 +169,10 @@ def main() -> int:
         check("saw a Flush cap rejection", any(w.startswith("Flush cap") for w in why), True)
 
         print("\nCS-before-Flush slot priority (Step 27 causal rule), last slot contested:")
-        T6b = int(sorted(led.entry_t.unique())[-1])  # the contention bar is the latest entry_t
+        # Locate the contention bar by its CONTENT, not its position: the one bar carrying both a CROWD_72H
+        # and a FLUSH_D. Positional lookup broke the moment bars were appended after it.
+        _both = (led.groupby("entry_t").rule.agg(lambda r: {"CROWD_72H", "FLUSH_D"} <= set(r)))
+        T6b = int(_both[_both].index[-1])
         for book in ("B_dynamic_cap2", "C_dynamic_calm1", "D_dynamic_volcap"):
             bar = tr[(tr.book == book) & (tr.entry_t == T6b)]
             cs = bar[bar.rule == "CROWD_72H"]
@@ -177,6 +200,12 @@ def main() -> int:
         e2 = e[(e.entry_t == T2) & (e.rule == "FLUSH_D")]
         check("E: bar-2 flushes admitted (vol 0.80)", int(e2.admitted.sum()), 3)
         T7 = int(led[led.rule == "LIQ_BUY"].entry_t.iloc[0])
+        # Same discipline for bars 8 and 9: find them by content. Bar 8 is the only bar with a FLUSH_D whose
+        # hot inputs are blank; bar 9 is the only bar with six FLUSH_D rows.
+        _f = led[led.rule == "FLUSH_D"]
+        T8 = int(_f[_f.fund7_pct.isna()].entry_t.iloc[0])
+        _n = _f.groupby("entry_t").size()
+        T9 = int(_n[_n == 6].index[0])
         e7 = e[e.entry_t == T7].set_index(["coin", "rule"])
         check("E: CROWD_48H admitted", bool(e7.loc[("LINK", "CROWD_48H"), "admitted"]), True)
         check("E: CROWD_24H on established coin admitted", bool(e7.loc[("LTC", "CROWD_24H"), "admitted"]), True)
@@ -185,7 +214,37 @@ def main() -> int:
         check("E: normal flush admitted", bool(e7.loc[("XLM", "FLUSH_D"), "admitted"]), True)
         check("E: second-day flush rejected", e7.loc[("HBAR", "FLUSH_D"), "why"], "second-day flush skipped")
         check("E ignores CROWD_72H (not its rule)", int((e.rule == "CROWD_72H").sum()), 0)
-        check("A-D never see E-only rules", int(tr[(tr.book != "E_experiments_final") & tr.rule.isin(["CROWD_48H", "CROWD_24H", "LIQ_BUY"])].shape[0]), 0)
+        check("A-D never see E/F-only rules",
+              int(tr[~tr.book.isin(["E_experiments_final", "F_hot_gate"]) & tr.rule.isin(["CROWD_48H", "CROWD_24H", "LIQ_BUY"])].shape[0]), 0)
+
+        # ---- book F: same rule set as E, different Flush gate. The divergence is the whole point of F.
+        print("\nbook F's hot gate bites where E's stand-down does not:")
+        fb = tr[tr.book == "F_hot_gate"]
+        check("F sees the same E-only rules", sorted(set(fb.rule) & {"CROWD_48H", "CROWD_24H", "LIQ_BUY"}),
+              ["CROWD_24H", "CROWD_48H", "LIQ_BUY"])
+        f8 = fb[fb.entry_t == T8].set_index(["coin", "rule"])
+        e8 = e[e.entry_t == T8].set_index(["coin", "rule"])
+        # HOT flush in a compressed tape: E stands it down, F takes it
+        check("E stands down the hot flush (compressed tape)", e8.loc[("XRP", "FLUSH_D"), "why"],
+              f"Flush stood down: BTC vol pct < {pb.E_STANDDOWN_VOL:.2f} (quiet tape)")
+        check("F admits the hot flush in the same bar", bool(f8.loc[("XRP", "FLUSH_D"), "admitted"]), True)
+        # COLD flush in a live tape: E takes it, F stands it down
+        check("E admits the cold flush (tape not compressed)", bool(e8.loc[("AVAX", "FLUSH_D"), "admitted"]), True)
+        check("F stands down the cold flush", f8.loc[("AVAX", "FLUSH_D"), "why"],
+              "Flush stood down: the run into it was not hot")
+        # a row with no hot inputs at all must stand down, not be assumed hot
+        check("F stands down a flush with no hot inputs", f8.loc[("BCH", "FLUSH_D"), "why"],
+              "Flush stood down: no hot-run inputs on this row")
+        check("E and F admitted different counts",
+              books.loc["E_experiments_final", "admitted"] != books.loc["F_hot_gate", "admitted"], True)
+
+        # ---- the slot tie-break: among same-bar longs the strongest 7-day move takes the slot
+        print("\nthe slot tie-break picks by 7-day move:")
+        f9 = fb[(fb.entry_t == T9) & (fb.rule == "FLUSH_D")]
+        adm9 = set(f9[f9.admitted].coin)
+        check("the strongest 7-day move got a slot", "LINK" in adm9, True)
+        check("the weakest 7-day move was crowded out", "DOGE" in adm9, False)
+        check("the reason is the slot, not a rule", f9[f9.coin == "DOGE"].why.iloc[0], "account full (5 open)")
 
         print("\nbooks diverge (the point of running all of them):")
         check("A and D admitted different counts",

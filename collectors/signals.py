@@ -126,7 +126,14 @@ def seed_bars(coin: str, start: int) -> pd.DataFrame:
 
 
 def seed_close_history(coin: str, start: int) -> pd.Series:
-    """Archive 4h closes before live history; enough depth for the 6-month CS72 trend gate."""
+    """Archive 4h closes before live history; deep enough for the 6-month CS72 trend gate.
+
+    The Binance Vision monthly klines only run to the last COMPLETE month, so on 2026-10-02 they stopped at
+    2026-09-01 while the live recorder began 2026-09-29 -- a 28-day hole. Every lookback that lands in it read
+    NaN: the 6-month and 1-month gates skip over it and worked, but a 7-day lookback hit 0 of 17 bars. The
+    Coinalyze 4h backfill (derived/panel/4h_backfill) covers exactly that stretch, so it is concatenated here
+    the way seed_bars() already does for highs. Found 2026-10-01 while adding the 7-day tie-break column.
+    """
     out = []
     for sym in vsym(coin):
         for k in _zips(f"{VB}/klines_4h/{sym}/*.zip", 8):
@@ -135,6 +142,10 @@ def seed_close_history(coin: str, start: int) -> pd.Series:
             k = k.iloc[:, [0, 4]].astype(float)
             t = np.where(k.iloc[:, 0] > 1e14, k.iloc[:, 0] // 1_000_000, k.iloc[:, 0] // 1000).astype(int) + H4
             out.append(pd.Series(k.iloc[:, 1].values, index=t))
+    p = f"derived/panel/4h_backfill/{coin}.csv"
+    if os.path.exists(p):
+        b = pd.read_csv(p)
+        out.append(pd.Series(b.c.values, index=b.t.values + H4))
     if not out:
         return pd.Series(dtype=float)
     x = pd.concat(out)
@@ -202,11 +213,26 @@ def bars(coin: str) -> pd.DataFrame | None:
     live["ret24"] = live.c / ago("c", 86400) - 1
     live["oi24"] = live.oi / ago("oi", 86400) - 1
     live["near_hi"] = live.c >= 0.97 * live.hi20
+    # Added 2026-10-01 for the slot tie-break and book F's hot gate. All three use data at or before the
+    # bar close, same as every other column here.
+    #   ret7     the coin's 7-day move -- the tie-break variable (research/daily-gate-2026-10-01/SNIPER.md)
+    #   fund7_pct / runup30   the two lead-up legs of "hot" (research/hot-flush/HOT-FLUSH.md); the third leg
+    #                         is BTC's own 24h move, which btc_state() supplies per bar
+    # ret7 and runup30 reach 7 and 31 days back, far outside the live recorder window, so they read the
+    # SEEDED close history the way ret6m does. Using ago() here returned all-NaN -- the live-window trap this
+    # file already hit once with the regime clock.
+    back = lambda days: pd.Series(closes.reindex(live.index.values - days * 86400).values, index=live.index)
+    live["ret7"] = live.c / back(7) - 1
+    full["fund7"] = full.fund.rolling(42, min_periods=6).sum()
+    live["fund7_pct"] = full.fund7.rolling(WIN, min_periods=MINP).rank(pct=True).reindex(live.index)
+    live["runup30"] = back(1) / back(31) - 1
+    live["dist_hi20"] = live.c / live.hi20 - 1     # the short side's tie-break variable
     return live
 
 
-def btc_state(btc: pd.DataFrame | None) -> tuple[pd.Series, pd.Series]:
-    """BTC regime (grid.py clock) and 20-bar vol percentile, both from data at or before each close.
+def btc_state(btc: pd.DataFrame | None) -> tuple[pd.Series, pd.Series, pd.Series]:
+    """BTC regime (grid.py clock), 20-bar vol percentile, and BTC's own 24h move -- all from data at or
+    before each close. The 24h move is the third leg of book F's "hot" gate.
 
     The live recorder window is only a few days of 4h bars, far short of the 250-bar rolling quantile the
     regime clock needs, so the closes are seeded from the archive first -- exactly as bars() does for the
@@ -214,14 +240,15 @@ def btc_state(btc: pd.DataFrame | None) -> tuple[pd.Series, pd.Series]:
     market state, which silently left the concurrency-capped paper books (C and D) permanently uncapped.
     """
     if btc is None or btc.empty:
-        return pd.Series(dtype=object), pd.Series(dtype=float)
+        return pd.Series(dtype=object), pd.Series(dtype=float), pd.Series(dtype=float)
     seed = seed_close_history("BTC", int(btc.index.min()))
     c = pd.concat([seed, btc.c]) if len(seed) else btc.c
     c = c[~c.index.duplicated(keep="last")].sort_index()
     if len(c) < 300:                      # 250-bar quantile + 30-bar efficiency ratio need real depth
-        return pd.Series(dtype=object), pd.Series(dtype=float)
+        return pd.Series(dtype=object), pd.Series(dtype=float), pd.Series(dtype=float)
     lr = np.log(c).diff()
     vol = lr.rolling(20).std()
+    btc24 = c / c.shift(6) - 1          # BTC's own 24h move -- the third leg of "hot"
     vol_pct = vol.rolling(250, min_periods=100).rank(pct=True)
     vq90 = vol.rolling(250, min_periods=100).quantile(0.90)
     vq75 = vol.rolling(250, min_periods=100).quantile(0.75)
@@ -243,7 +270,7 @@ def btc_state(btc: pd.DataFrame | None) -> tuple[pd.Series, pd.Series]:
     trend = hyst(np.nan_to_num((er > 0.35).values), np.nan_to_num((er < 0.22).values))
     reg = np.where(stress, "Stress", np.where(trend, np.where(mv.values > 0, "Trend up", "Trend down"), "Calm"))
     reg = np.where(np.isnan(vq90.values) | np.isnan(er.values), "", reg)
-    return pd.Series(reg, index=c.index), vol_pct
+    return pd.Series(reg, index=c.index), vol_pct, btc24
 
 
 def liq_buy_rows(start: int, now: int, btc_regime: pd.Series, btc_volpct: pd.Series) -> list[dict]:
@@ -302,7 +329,7 @@ def main() -> int:
         old = set(zip(o.coin, o.rule, o.entry_t))
     btc = bars("BTC")
     pause = pd.Series(False, index=btc.index) if btc is None else (btc.c / pd.Series(btc.c.reindex(btc.index.values - 30 * 86400).values, index=btc.index) - 1 > 0.15).fillna(False)
-    btc_regime, btc_volpct = btc_state(btc)
+    btc_regime, btc_volpct, btc_ret24 = btc_state(btc)
     rows, state = [], []
     now = 0
     for coin in COINS:
@@ -378,18 +405,23 @@ def main() -> int:
                                  ret6m_pct=b.ret6m.iloc[i] * 100, positioning_days=b.positioning_days.iloc[i],
                                  regime=(btc_regime.get(int(T[i]), "") if len(btc_regime) else ""),
                                  btc_vol_pct=(btc_volpct.get(int(T[i]), np.nan) if len(btc_volpct) else np.nan),
-                                 flush_curated=bool(coin in FLUSH_B_COINS), flush_prev24=bool(prev24.iloc[i])))
+                                 flush_curated=bool(coin in FLUSH_B_COINS), flush_prev24=bool(prev24.iloc[i]),
+                                 ret7_pct=b.ret7.iloc[i] * 100, fund7_pct=b.fund7_pct.iloc[i],
+                                 runup30_pct=b.runup30.iloc[i] * 100, dist_hi20_pct=b.dist_hi20.iloc[i] * 100,
+                                 btc_ret24_pct=(btc_ret24.get(int(T[i]), np.nan) * 100 if len(btc_ret24) else np.nan)))
                 nxt = np.searchsorted(T, int(T[j]) if j is not None else exit_t)
                 i = max(i + 1, int(nxt))
     cols = ["coin", "rule", "side", "entry_t", "entry_utc", "entry", "exit_utc", "exit", "how", "status",
             "ret_pct", "ls_pct", "top_pct", "fund_pct", "spot_pct", "ret24_pct", "oi24_pct", "ret6m_pct",
-            "positioning_days", "regime", "btc_vol_pct", "flush_curated", "flush_prev24"]
+            "positioning_days", "regime", "btc_vol_pct", "flush_curated", "flush_prev24",
+            "ret7_pct", "fund7_pct", "runup30_pct", "btc_ret24_pct", "dist_hi20_pct"]
     live_start = int(btc.index.min()) if btc is not None and len(btc) else now
     rows += liq_buy_rows(live_start, now, btc_regime, btc_volpct)
     led = pd.DataFrame(rows, columns=cols).sort_values(["entry_t", "coin"])
     led.round({"entry": 8, "exit": 8, "ret_pct": 4, "ls_pct": 4, "top_pct": 4, "fund_pct": 4, "spot_pct": 4,
                "ret24_pct": 3, "oi24_pct": 3, "ret6m_pct": 3, "positioning_days": 1,
-               "btc_vol_pct": 4}).to_csv(f"{OUT}/ledger.csv", index=False)
+               "btc_vol_pct": 4, "ret7_pct": 3, "fund7_pct": 4, "runup30_pct": 3,
+               "btc_ret24_pct": 3, "dist_hi20_pct": 3}).to_csv(f"{OUT}/ledger.csv", index=False)
     pd.DataFrame(state).round(4).to_csv(f"{OUT}/state.csv", index=False)
 
     fresh = led[[(k not in old) and (t >= now - 8 * 3600)

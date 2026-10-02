@@ -57,8 +57,8 @@ flush long cuts at 24h if down more than 8%, at 48h if not positive, otherwise t
 4. one venue, smallest size that clears the contract minimum, 25% of planned size → 5. 40 live trades inside tolerance →
 6. full planned size. Any kill criterion resets to step 2.
 
-## Four candidate books run in parallel (added 2026-10-01)
-`collectors/paper_books.py` replays the paper signal stream through four admission policies at once. The signals
+## Six candidate books run in parallel (A–D added 2026-10-01, E and F the same day)
+`collectors/paper_books.py` replays the paper signal stream through six admission policies at once. The signals
 are identical — only which Flush trades reach the account differs — so carrying all four costs bookkeeping and
 nothing else, and the live record decides instead of a backtest choice:
 
@@ -69,6 +69,7 @@ nothing else, and the live record decides instead of a backtest choice:
 | C_dynamic_calm1 | rule-based | 1 in Calm, else 2 | 2.784 / −11.80% | post-hoc; superseded by D |
 | **D_dynamic_volcap** | rule-based | 1 when BTC vol pct < 0.40, else 2 | 2.775 / −12.19% | mechanism version, on a plateau, declared in advance |
 | **E_experiments_final** | rule-based, Flush stood down while BTC vol pct < 0.50, second-day flushes skipped | none (max 5 open) | strict walk-forward: unseen-year Sharpe ~2.9 vs ~2.45 for A (see note) | the book the 2026-10-01 nested walk-forward picked; declared before any forward data |
+| **F_hot_gate** | rule-based, Flush admitted only when the run into it was **hot** (7-day funding in its own top fifth, or the prior month up >30%, or BTC down >3% that day), second-day flushes skipped | none (max 5 open) | full-cycle daily: flush edge +2.87% at t 3.48 vs +1.34% at t 1.96 for the stand-down; marked drawdown −14.2% vs −34.9% | book E with one change, to settle which Flush filter is real (see the note below) |
 
 Outputs: `derived/signals/books.csv`, `book_trades.csv` (every admitted *and rejected* signal with the reason),
 `books.md`. Runs hourly after `signals.py`. It places no orders and holds no credentials.
@@ -79,6 +80,27 @@ Outputs: `derived/signals/books.csv`, `book_trades.csv` (every admitted *and rej
 equity × season multiplier; max 5 open; shorts before longs. Group tilt deliberately left out (it only helped the 30-coin
 universe). Evidence: `research/experiments-2026-10-01/NOTES.md` FINAL READ — out of sample it beat A on 2024 and 2025 and
 lost/tied on 2026 YTD. Its sample-size and kill criteria are the same as every other book's.
+
+**Book F (added 2026-10-01, declared before any forward data)** is book E with exactly one change: the Flush leg
+is gated on a hot run instead of on BTC's volatility not being compressed. Why it exists
+(`research/daily-gate-2026-10-01/FLUSH-FILTER.md`): over the full cycle in the daily archive the hot gate
+doubles the flush edge and halves the account drawdown, and on **2020–21, which neither filter was designed
+on, the compression stand-down is worth zero (−0.07%) while the hot gate is +4.19%**. But book E's
+unseen-year average on the 4h panel still prefers the stand-down, and that preference is **entirely 2026**,
+where every leg of the hot gate fails. A backtest cannot decide between "the stand-down is a 2022-onward
+artifact" and "the hot gate stopped working in 2026." E against F can.
+**Kill line, declared now: if F's next 30 closed Flush trades trail E's over the same window, the 2026
+reversal is real and the hot gate is retired.** If F wins, the stand-down was the artifact.
+
+**The slot tie-break changed for every book on 2026-10-01** (`research/daily-gate-2026-10-01/SNIPER.md`).
+When several coins fire the same bar and compete for the last slots, the order was rule priority then larger
+planned size. It is now rule priority, then the pick — **among longs the coin with the strongest 7-day move,
+among shorts the coin furthest below its 20-day high** — then planned size as before. This adds no rule and
+changes no signal, only which of the already-firing coins takes a slot, and the book is slot-bound. Measured
+uplift of the picked coin over the same day's average: +1.43pp on the liquidation buy (positive in all seven
+years), +2.23pp on MOM20, +0.70pp on the crowd short. All are leads (t 2.4–3.5 against a 110-comparison bar
+of 3.51), which is why they go into the forward record rather than into the book. A row missing its pick
+column sorts last, so a blank column can never jump the queue.
 
 The comparison that matters is **A against D**: A's −12.94% drawdown depends on seven coins chosen after seeing
 their results, D's does not. If D's live record holds, it is the book. Do not size up from a small sample in any of
