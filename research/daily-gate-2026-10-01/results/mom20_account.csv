@@ -1,0 +1,7 @@
+variant,n,end,cagr_pct,maxdd_pct,sharpe,worst_month
+"MOM20 10% x5, no selection",1040,57342.0,41.3,-19.4,1.7,-6.5
+"MOM20 15% x5, no selection",1040,173485.0,65.3,-28.0,1.71,-9.7
+"MOM20 15% x5, slot by biggest up day",1041,305829.0,79.1,-23.4,1.86,-9.7
+"MOM20 15% x5, slot by strongest 7-day move",1039,239111.0,73.0,-24.0,1.78,-9.7
+"MOM20 15% x5, 7-day hold, slot by up day",687,522779.0,93.3,-40.8,1.77,-18.9
+"MOM20 15% x5, skip compressed, slot by up day",541,52828.0,39.7,-19.3,1.42,-9.0

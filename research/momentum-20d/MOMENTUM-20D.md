@@ -56,7 +56,29 @@ of +0.56% confirms it is not *purely* beta, but it is weak and regime-dependent.
 * Do **not** run the remaining steps or condition on Stress to force a pass — that is the overtesting trap.
   The disciplined move is to log it on the paper watcher and promote only if live/forward data lifts t over 3.
 
+## Revisited 2026-10-01 with more data — see `research/daily-gate-2026-10-01/MOM20-FULL.md`
+This file said to revisit only with more data and only against a *pre-declared* regime hypothesis. Both
+conditions were met the same night. On the daily archive — **21 coins, 2019-09 to 2026-10, eight years and a
+full cycle** — the unconditional 3-day version is **edge +1.52%, clustered t 3.29, positive in 8 of 8 years**,
+BTC-residual t 4.51. That clears the pass bar this file missed at t 2.02.
+
+The pre-declared hypothesis was *momentum pays in stress and trend*. **Half held.** Trend-up is +2.53%
+(t 3.12) with +2.41% before 2023 and +2.60% after — stable across both halves. **Stress decayed exactly as
+this file warned**: +5.63% before 2023, **+0.36%** after. The caution written here ("conditioning on Stress
+and quoting t 4.19 would be post-hoc regime-picking") was correct.
+
+What the full treatment added: the fade loses on daily data too (−1.72%, t −3.73); entry at the **next day's
+open** beats the close (+2.17%, t 4.01); stops and targets both destroy it; do not cut a day-one loser (down
+>5% it still has +2.43% left); OI building behind the break is the one symptom clearing the search bar
+(t 3.84); and picking the coin with the biggest up day among same-day breaks more than doubles the trade
+(+4.42% vs +2.03%). As a 15% sleeve with that selection: 79.1% a year, −23.4% drawdown, Sharpe 1.86 — with one
+episode taking 420 days to recover.
+
+It remains a **LEAD**: t 3.29 against a 99-comparison family-wise bar of 3.48. Still not in the book.
+
 ## Open
 * ~~Add to the paper watcher as a logging-only lead~~ **done 2026-10-01**: rule MOM20 in collectors/signals.py (near 20d high, long 72h, no stop), logging-only.
-* Revisit only with more data, or if a *pre-declared* regime hypothesis (momentum in stress/trend) is set
-  before testing — not chosen from this table.
+* ~~Revisit only with more data, or if a *pre-declared* regime hypothesis (momentum in stress/trend) is set
+  before testing~~ **done 2026-10-01**, above.
+* The watcher logs MOM20 as "near the 20-day high"; the daily work says the **break** is what pays and
+  "near but not through" is half the edge. Worth aligning the watched rule with the tested one.

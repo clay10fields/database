@@ -1,0 +1,18 @@
+kind,variant,n,edge,t,win,worst
+entry,at the break close,1554,1.52,3.29,51.2,-35.5
+entry,at the next day's open,1553,2.17,4.01,50.0,-68.4
+entry,one day late (next close),1553,1.34,2.93,50.0,-64.2
+entry,limit 2% below the close (unfilled flat),1553,1.51,3.52,36.1,-67.7
+entry,limit 4% below the close (unfilled flat),1553,0.99,2.83,25.0,-67.1
+exit,hold 1 days,1554,-0.26,-1.0,48.1,-37.6
+exit,hold 2 days,1554,0.7,1.79,49.2,-26.0
+exit,hold 3 days,1554,1.52,3.29,51.2,-35.5
+exit,hold 5 days (OVERLAPPING - see the dose table),1549,2.92,4.26,50.8,-56.3
+exit,hold 7 days (OVERLAPPING - see the dose table),1548,4.11,5.07,49.8,-60.6
+exit,hold 14 days (OVERLAPPING - see the dose table),1527,7.01,5.62,50.6,-65.3
+exit,intraday stop 5%,1554,-0.09,-0.26,36.0,-5.1
+exit,intraday stop 8%,1554,0.29,0.71,44.1,-8.1
+exit,intraday stop 12%,1554,0.75,1.66,48.6,-12.1
+exit,profit target +5%,1554,-0.07,-0.29,66.0,-35.5
+exit,profit target +10%,1554,0.33,1.1,55.9,-35.5
+exit,out after day 2 if not positive,1554,1.37,3.12,42.3,-26.0
