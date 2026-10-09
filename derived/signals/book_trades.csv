@@ -26,6 +26,7 @@ E_experiments_final,RENDER,CROWD_24H,1791288000,2026-10-06 12:00:00,closed,7.990
 E_experiments_final,ADA,CROWD_24H,1791432000,2026-10-08 04:00:00,closed,7.2564,Calm,0.616,0.12,False,position below one whole contract,,,,
 E_experiments_final,WLD,CROWD_24H,1791432000,2026-10-08 04:00:00,closed,5.1479,Calm,0.616,0.12,False,CROWD_24H runs on established coins only,,,,
 E_experiments_final,ZEC,CROWD_24H,1791547200,2026-10-09 12:00:00,open,,Calm,0.744,0.12,False,CROWD_24H runs on established coins only,,,,
+E_experiments_final,ETH,CROWD_24H,1791561600,2026-10-09 16:00:00,open,,Calm,0.744,0.12,False,position below one whole contract,,,,
 F_hot_gate,WLD,CROWD_24H,1790769600,2026-09-30 12:00:00,closed,3.8639,Calm,0.496,0.12,False,CROWD_24H runs on established coins only,,,,
 F_hot_gate,RENDER,CROWD_24H,1790784000,2026-09-30 16:00:00,closed,2.1587,Calm,0.492,0.12,False,CROWD_24H runs on established coins only,,,,
 F_hot_gate,XLM,CROWD_24H,1790798400,2026-09-30 20:00:00,closed,3.0871,Calm,0.516,0.12,False,position below one whole contract,,,,
@@ -53,3 +54,4 @@ F_hot_gate,RENDER,CROWD_24H,1791288000,2026-10-06 12:00:00,closed,7.9906,Calm,0.
 F_hot_gate,ADA,CROWD_24H,1791432000,2026-10-08 04:00:00,closed,7.2564,Calm,0.616,0.12,False,position below one whole contract,,,,
 F_hot_gate,WLD,CROWD_24H,1791432000,2026-10-08 04:00:00,closed,5.1479,Calm,0.616,0.12,False,CROWD_24H runs on established coins only,,,,
 F_hot_gate,ZEC,CROWD_24H,1791547200,2026-10-09 12:00:00,open,,Calm,0.744,0.12,False,CROWD_24H runs on established coins only,,,,
+F_hot_gate,ETH,CROWD_24H,1791561600,2026-10-09 16:00:00,open,,Calm,0.744,0.12,False,position below one whole contract,,,,
