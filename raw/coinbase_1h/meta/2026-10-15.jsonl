@@ -35,3 +35,4 @@
 {"run": "2026-10-15T18:24:42.059179+00:00", "ok": true, "rows": 16, "errors": []}
 {"run": "2026-10-15T19:09:27.754279+00:00", "ok": true, "rows": 16, "errors": []}
 {"run": "2026-10-15T19:24:41.234984+00:00", "ok": true, "rows": 16, "errors": []}
+{"run": "2026-10-15T20:12:44.543216+00:00", "ok": false, "rows": 15, "errors": ["ADA-USD:The read operation timed out"]}
