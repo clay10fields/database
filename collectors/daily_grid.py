@@ -63,7 +63,11 @@ def load_gecko() -> dict:
         return out
     with GECKO.open(newline="") as fh:
         for row in csv.DictReader(fh):
-            day = datetime.fromtimestamp(int(row["t"]), timezone.utc).date().isoformat()
+            try:
+                t = int(row["t"])
+            except ValueError:
+                continue
+            day = datetime.fromtimestamp(t, timezone.utc).date().isoformat()
             out[row["coin"]][day] = row
     return out
 
