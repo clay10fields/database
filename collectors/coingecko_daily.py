@@ -6,6 +6,10 @@ Writes raw/marketcap/coingecko_daily.csv append-only.
 Demo keys only serve the last 365 days (days=max is refused), so we ask for 365; rows already
 recorded are skipped, so each daily run only appends what is new. Every run, including a
 missing key or per-coin HTTP errors, is logged to raw/marketcap/meta/<date>.jsonl.
+
+Idempotent: the header is written only when the file has no data rows yet, so a stray
+duplicate header mid-file (from a concurrent writer or a rebase merge) can never trigger
+a second header. On read, non-numeric timestamp rows are skipped.
 """
 from __future__ import annotations
 
@@ -67,11 +71,17 @@ def main() -> int:
         return 0
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     seen = set()
+    has_data = False
     if os.path.exists(OUT):
         with open(OUT, newline="") as fh:
             for row in csv.reader(fh):
-                if row and row[0] != "t":
+                if not row:
+                    continue
+                try:
                     seen.add((int(row[0]), row[1]))
+                    has_data = True
+                except (ValueError, IndexError):
+                    continue  # skip duplicate header rows mid-file
     rows = []
     for coin, cid in IDS.items():
         url = (
@@ -97,10 +107,9 @@ def main() -> int:
         print(coin, "ok")
         time.sleep(8)
     rows.sort()
-    new = not os.path.exists(OUT)
     with open(OUT, "a", newline="") as fh:
         w = csv.writer(fh)
-        if new:
+        if not has_data:
             w.writerow(["t", "coin", "price", "volume_24h", "market_cap"])
         w.writerows(rows)
     print("appended", len(rows))
