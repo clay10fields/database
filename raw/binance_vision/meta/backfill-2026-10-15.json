@@ -1,26 +1,22 @@
 {
  "BTCUSDT": {
   "counts": {
-   "klines_4h:have": 80,
-   "klines_4h:ok": 1,
+   "klines_4h:have": 81,
    "klines_4h:http": 1,
    "fundingRate:have": 81,
    "fundingRate:http": 1,
-   "metrics:have": 1765,
-   "metrics:ok": 13,
+   "metrics:have": 1778,
    "metrics:http": 2
   },
   "errors": []
  },
  "ETHUSDT": {
   "counts": {
-   "klines_4h:have": 80,
-   "klines_4h:ok": 1,
+   "klines_4h:have": 81,
    "klines_4h:http": 1,
    "fundingRate:have": 81,
    "fundingRate:http": 1,
-   "metrics:have": 1765,
-   "metrics:ok": 13,
+   "metrics:have": 1778,
    "metrics:http": 2
   },
   "errors": []
@@ -28,38 +24,32 @@
  "SOLUSDT": {
   "counts": {
    "klines_4h:http": 9,
-   "klines_4h:have": 72,
-   "klines_4h:ok": 1,
+   "klines_4h:have": 73,
    "fundingRate:http": 9,
    "fundingRate:have": 73,
-   "metrics:have": 1765,
-   "metrics:ok": 13,
+   "metrics:have": 1778,
    "metrics:http": 2
   },
   "errors": []
  },
  "XRPUSDT": {
   "counts": {
-   "klines_4h:have": 80,
-   "klines_4h:ok": 1,
+   "klines_4h:have": 81,
    "klines_4h:http": 1,
    "fundingRate:have": 81,
    "fundingRate:http": 1,
-   "metrics:have": 1765,
-   "metrics:ok": 13,
+   "metrics:have": 1778,
    "metrics:http": 2
   },
   "errors": []
  },
  "ADAUSDT": {
   "counts": {
-   "klines_4h:have": 80,
-   "klines_4h:ok": 1,
+   "klines_4h:have": 81,
    "klines_4h:http": 1,
    "fundingRate:have": 81,
    "fundingRate:http": 1,
-   "metrics:have": 1765,
-   "metrics:ok": 13,
+   "metrics:have": 1778,
    "metrics:http": 2
   },
   "errors": []
@@ -67,25 +57,21 @@
  "DOGEUSDT": {
   "counts": {
    "klines_4h:http": 7,
-   "klines_4h:have": 74,
-   "klines_4h:ok": 1,
+   "klines_4h:have": 75,
    "fundingRate:http": 7,
    "fundingRate:have": 75,
-   "metrics:have": 1765,
-   "metrics:ok": 13,
+   "metrics:have": 1778,
    "metrics:http": 2
   },
   "errors": []
  },
  "LTCUSDT": {
   "counts": {
-   "klines_4h:have": 80,
-   "klines_4h:ok": 1,
+   "klines_4h:have": 81,
    "klines_4h:http": 1,
    "fundingRate:have": 81,
    "fundingRate:http": 1,
-   "metrics:have": 1765,
-   "metrics:ok": 13,
+   "metrics:have": 1778,
    "metrics:http": 2
   },
   "errors": []
@@ -93,25 +79,21 @@
  "DOTUSDT": {
   "counts": {
    "klines_4h:http": 8,
-   "klines_4h:have": 73,
-   "klines_4h:ok": 1,
+   "klines_4h:have": 74,
    "fundingRate:http": 8,
    "fundingRate:have": 74,
-   "metrics:have": 1765,
-   "metrics:ok": 13,
+   "metrics:have": 1778,
    "metrics:http": 2
   },
   "errors": []
  },
  "LINKUSDT": {
   "counts": {
-   "klines_4h:have": 80,
-   "klines_4h:ok": 1,
+   "klines_4h:have": 81,
    "klines_4h:http": 1,
    "fundingRate:have": 81,
    "fundingRate:http": 1,
-   "metrics:have": 1765,
-   "metrics:ok": 13,
+   "metrics:have": 1778,
    "metrics:http": 2
   },
   "errors": []
@@ -119,12 +101,10 @@
  "AAVEUSDT": {
   "counts": {
    "klines_4h:http": 10,
-   "klines_4h:have": 71,
-   "klines_4h:ok": 1,
+   "klines_4h:have": 72,
    "fundingRate:http": 10,
    "fundingRate:have": 72,
-   "metrics:have": 1765,
-   "metrics:ok": 13,
+   "metrics:have": 1778,
    "metrics:http": 2
   },
   "errors": []
@@ -132,25 +112,21 @@
  "AVAXUSDT": {
   "counts": {
    "klines_4h:http": 9,
-   "klines_4h:have": 72,
-   "klines_4h:ok": 1,
+   "klines_4h:have": 73,
    "fundingRate:http": 9,
    "fundingRate:have": 73,
-   "metrics:have": 1765,
-   "metrics:ok": 13,
+   "metrics:have": 1778,
    "metrics:http": 2
   },
   "errors": []
  },
  "BCHUSDT": {
   "counts": {
-   "klines_4h:have": 80,
-   "klines_4h:ok": 1,
+   "klines_4h:have": 81,
    "klines_4h:http": 1,
    "fundingRate:have": 81,
    "fundingRate:http": 1,
-   "metrics:have": 1765,
-   "metrics:ok": 13,
+   "metrics:have": 1778,
    "metrics:http": 2
   },
   "errors": []
@@ -158,12 +134,10 @@
  "HBARUSDT": {
   "counts": {
    "klines_4h:http": 15,
-   "klines_4h:have": 66,
-   "klines_4h:ok": 1,
+   "klines_4h:have": 67,
    "fundingRate:http": 15,
    "fundingRate:have": 67,
-   "metrics:have": 1765,
-   "metrics:ok": 13,
+   "metrics:have": 1778,
    "metrics:http": 2
   },
   "errors": []
@@ -171,77 +145,65 @@
  "1000SHIBUSDT": {
   "counts": {
    "klines_4h:http": 17,
-   "klines_4h:have": 64,
-   "klines_4h:ok": 1,
+   "klines_4h:have": 65,
    "fundingRate:http": 17,
    "fundingRate:have": 65,
-   "metrics:have": 1765,
-   "metrics:ok": 13,
+   "metrics:have": 1778,
    "metrics:http": 2
   },
   "errors": []
  },
  "XLMUSDT": {
   "counts": {
-   "klines_4h:have": 80,
-   "klines_4h:ok": 1,
+   "klines_4h:have": 81,
    "klines_4h:http": 1,
    "fundingRate:have": 81,
    "fundingRate:http": 1,
-   "metrics:have": 1764,
-   "metrics:http": 3,
-   "metrics:ok": 13
+   "metrics:have": 1777,
+   "metrics:http": 3
   },
   "errors": []
  },
  "XTZUSDT": {
   "counts": {
    "klines_4h:http": 2,
-   "klines_4h:have": 79,
-   "klines_4h:ok": 1,
+   "klines_4h:have": 80,
    "fundingRate:http": 2,
    "fundingRate:have": 80,
-   "metrics:have": 1764,
-   "metrics:http": 3,
-   "metrics:ok": 13
+   "metrics:have": 1777,
+   "metrics:http": 3
   },
   "errors": []
  },
  "ZECUSDT": {
   "counts": {
    "klines_4h:http": 2,
-   "klines_4h:have": 79,
-   "klines_4h:ok": 1,
+   "klines_4h:have": 80,
    "fundingRate:http": 2,
    "fundingRate:have": 80,
-   "metrics:have": 1764,
-   "metrics:http": 3,
-   "metrics:ok": 13
+   "metrics:have": 1777,
+   "metrics:http": 3
   },
   "errors": []
  },
  "NEARUSDT": {
   "counts": {
    "klines_4h:http": 10,
-   "klines_4h:have": 71,
-   "klines_4h:ok": 1,
+   "klines_4h:have": 72,
    "fundingRate:http": 10,
    "fundingRate:have": 72,
-   "metrics:have": 1764,
-   "metrics:http": 3,
-   "metrics:ok": 13
+   "metrics:have": 1777,
+   "metrics:http": 3
   },
   "errors": []
  },
  "ALGOUSDT": {
   "counts": {
    "klines_4h:http": 6,
-   "klines_4h:have": 75,
-   "klines_4h:ok": 1,
+   "klines_4h:have": 76,
    "fundingRate:http": 6,
    "fundingRate:have": 76,
-   "metrics:have": 1765,
-   "metrics:ok": 13,
+   "metrics:have": 1778,
    "metrics:http": 2
   },
   "errors": []
@@ -249,26 +211,22 @@
  "WLDUSDT": {
   "counts": {
    "klines_4h:http": 43,
-   "klines_4h:have": 38,
-   "klines_4h:ok": 1,
+   "klines_4h:have": 39,
    "fundingRate:http": 43,
    "fundingRate:have": 39,
    "metrics:http": 26,
-   "metrics:have": 1164,
-   "metrics:ok": 13
+   "metrics:have": 1177
   },
   "errors": []
  },
  "RENDERUSDT": {
   "counts": {
    "klines_4h:http": 55,
-   "klines_4h:have": 26,
-   "klines_4h:ok": 1,
+   "klines_4h:have": 27,
    "fundingRate:http": 55,
    "fundingRate:have": 27,
    "metrics:http": 27,
-   "metrics:have": 797,
-   "metrics:ok": 13
+   "metrics:have": 810
   },
   "errors": []
  }
