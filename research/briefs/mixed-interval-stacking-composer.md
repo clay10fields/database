@@ -8,7 +8,7 @@ This brief covers the mixed approaches worth implementing, in rough order of pay
 
 ---
 
-## 1. Fifth Up / Fourth Down (the spiral)
+## 1. Fifth Up / Fourth Down (the spiral) — PRIORITY: last
 
 **Rule:** ascend a perfect fifth (7 semitones), descend a perfect fourth (5 semitones), repeat.
 
@@ -21,8 +21,9 @@ pattern = [+7, -5]  # fifth up, fourth down
 - After 6 cycles you land on the tritone (6 semitones) relative to the start. After 12, you've covered all 12 pitches but the *order* of arrival is completely different from the circle of fifths.
 - **Why it matters for the composer:** the existing circle-of-fifths motion in `adaptive_composer.py` is periodic. This gives you a non-periodic, drifting harmonic center — useful for sections that should feel like they're slowly escaping a key without ever landing on a resolution.
 - **Implementation note:** because it never repeats, you need a transposition budget or a "wrap at octave" option. Without wrapping, MIDI note numbers climb indefinitely. With wrapping (mod 12), you get a 12-note scale whose *sequence* is the spiral order: 0, 7, 2, 9, 4, 11, 6, 1, 8, 3, 10, 5.
+- Last priority because it breaks the closed-loop assumption hardest — everything else in the composer assumes scales eventually cycle.
 
-## 2. Major Third Up / Tritone Down (Messiaen Mode 3)
+## 2. Major Third Up / Tritone Down (Messiaen Mode 3) — PRIORITY: second
 
 **Rule:** ascend a major third (4 semitones), descend a tritone (6 semitones), repeat.
 
@@ -35,7 +36,7 @@ pattern = [+4, -6]
 - Pitch classes generated (from C): C, E, B-flat, D-sharp, G-sharp, C-sharp, F-sharp, A, then back to C. Eight notes.
 - **For the composer:** pair this with the existing mode system. When the user selects "mode 3" or a "Messiaen" flag, generate from this pattern instead of the diatonic modes. The 8-note limit means chord vocabulary is small but extremely colorful — lots of major sevenths, minor ninths, tritones.
 
-## 3. Major Third Up / Minor Third Down (octatonic)
+## 3. Major Third Up / Minor Third Down (octatonic) — PRIORITY: first
 
 **Rule:** ascend a major third, descend a minor third, repeat.
 
@@ -47,6 +48,7 @@ pattern = [+4, -3]
 - This is the **octatonic scale** (8 notes, alternating whole/half). It's the scale Stravinsky's *Rite of Spring* is built on.
 - Distinct from pure minor-third stacking (diminished seventh, 4 notes) because the alternation breaks the symmetry — you get 8 notes, not 4.
 - **Composer use:** great for "unsettled" or "ritual" sections. The existing drum pattern templates (afro, latin) pair naturally with octatonic harmony because both have that off-balance, non-Western pulse feel.
+- First priority: most battle-tested of the mixed patterns, and it slots into the existing mode/drum-template architecture with minimal refactoring.
 
 ## 4. Minor Third Up / Major Third Down
 
@@ -107,10 +109,8 @@ def build_mixed_scale(root_pc, pattern, wrap=True, max_notes=24):
     notes, pc = [], root_pc
     i = 0
     while len(notes) < max_notes:
-        notes.append(pc if wrap else root_pc + sum(pattern[:i % len(pattern)]) % 12 + 12 * (sum(pattern[:i]) // 12))
-        # simpler: always track absolute semitone offset from root
-        pc = (pc + pattern[i % len(pattern)]) % 12
         notes.append(pc)
+        pc = (pc + pattern[i % len(pattern)]) % 12
         i += 1
         if wrap and pc == root_pc and i > 0:
             break  # closed
@@ -118,6 +118,20 @@ def build_mixed_scale(root_pc, pattern, wrap=True, max_notes=24):
 ```
 
 *(The sketch above is intentionally rough — clean it to match the existing function signatures in adaptive_composer.py. The key design decision is the `wrap` flag: True gives you a closed scale for chord/mode use; False gives you the drifting spiral for generative, non-repeating lines.)*
+
+---
+
+## Session Memory
+
+Store the active mixed pattern name in the session JSON alongside mode name, so reloads restore it. Mixed modes don't have a traditional tonic, so chord function should fall back to the existing **grid/density fallback** with the five complementary strategies rather than key-based voice leading.
+
+---
+
+## Test Vectors
+
+- Mode 3 from C should emit exactly {0, 4, 11, 3, 8, 1, 6, 9}
+- Octatonic from C should emit exactly {0, 4, 1, 5, 2, 6, 3, 7}
+- Fifth/fourth spiral from C: 0, 7, 2, 9, 4, 11, 6, 1, 8, 3, 10, 5 (12 unique before any repeat — verify no early collision)
 
 ---
 
