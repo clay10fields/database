@@ -3,5 +3,5 @@ A_curated_nocap,"current spec: curated seven, no Flush cap",5000.0,0.0,0.0,0,0,0
 B_dynamic_cap2,"rule-based universe, max 2 concurrent Flush",5000.0,0.0,0.0,0,0,0,0,0,,,0,0
 C_dynamic_calm1,"rule-based, max 1 Flush in Calm else 2",5000.0,0.0,0.0,0,0,0,0,0,,,0,0
 D_dynamic_volcap,"rule-based, max 1 Flush when BTC vol pct < 0.40 else 2",5000.0,0.0,0.0,0,0,0,0,0,,,0,0
-E_experiments_final,"CS 48h + CS24 established + Flush stand-down (vol<0.50) + liq buy, season-sized",5013.36,0.267,-1.187,68,15,53,13,2,0.415,38.5,10,5
-F_hot_gate,book E with the Flush leg gated on a HOT run instead of the vol stand-down,5013.36,0.267,-1.187,68,15,53,13,2,0.415,38.5,10,5
+E_experiments_final,"CS 48h + CS24 established + Flush stand-down (vol<0.50) + liq buy, season-sized",5027.59,0.552,-1.187,68,15,53,14,2,0.585,42.9,10,5
+F_hot_gate,book E with the Flush leg gated on a HOT run instead of the vol stand-down,5027.59,0.552,-1.187,68,15,53,14,2,0.585,42.9,10,5
