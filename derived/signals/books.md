@@ -6,7 +6,7 @@ Six candidate books on the same signal stream. $5,000 start, max 5 open, short p
 - **B_dynamic_cap2** (rule-based universe, max 2 concurrent Flush): $5,000.00 (+0.00%), worst drawdown 0.00%, 0 admitted / 0 rejected, 0 closed
 - **C_dynamic_calm1** (rule-based, max 1 Flush in Calm else 2): $5,000.00 (+0.00%), worst drawdown 0.00%, 0 admitted / 0 rejected, 0 closed
 - **D_dynamic_volcap** (rule-based, max 1 Flush when BTC vol pct < 0.40 else 2): $5,000.00 (+0.00%), worst drawdown 0.00%, 0 admitted / 0 rejected, 0 closed
-- **E_experiments_final** (CS 48h + CS24 established + Flush stand-down (vol<0.50) + liq buy, season-sized): $5,035.37 (+0.71%), worst drawdown -1.19%, 16 admitted / 58 rejected, 15 closed, avg +0.65% win 47%
-- **F_hot_gate** (book E with the Flush leg gated on a HOT run instead of the vol stand-down): $5,035.37 (+0.71%), worst drawdown -1.19%, 16 admitted / 58 rejected, 15 closed, avg +0.65% win 47%
+- **E_experiments_final** (CS 48h + CS24 established + Flush stand-down (vol<0.50) + liq buy, season-sized): $5,033.17 (+0.66%), worst drawdown -1.19%, 17 admitted / 58 rejected, 16 closed, avg +0.59% win 44%
+- **F_hot_gate** (book E with the Flush leg gated on a HOT run instead of the vol stand-down): $5,033.17 (+0.66%), worst drawdown -1.19%, 17 admitted / 58 rejected, 16 closed, avg +0.59% win 44%
 
 The live record decides between them; nothing here changes a rule. A vs D settles the Flush universe (research/universe-refresh/FLUSH-VOL-CAP-2026-10-01.md); E vs F settles which Flush filter is real (research/daily-gate-2026-10-01/FLUSH-FILTER.md). F is retired if its next 30 closed flush trades trail E's over the same window.
