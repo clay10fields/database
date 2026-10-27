@@ -73,7 +73,7 @@ E_experiments_final,SOL,CROWD_24H,1792944000,2026-10-25 16:00:00,closed,-0.3658,
 E_experiments_final,ETH,CROWD_24H,1792944000,2026-10-25 16:00:00,closed,0.5747,Calm,0.02,0.12,False,position below one whole contract,,,,
 E_experiments_final,BTC,CROWD_24H,1792944000,2026-10-25 16:00:00,closed,0.1516,Calm,0.02,0.12,False,position below one whole contract,,,,
 E_experiments_final,ZEC,CROWD_24H,1792972800,2026-10-26 00:00:00,closed,-1.7224,Calm,0.024,0.12,False,CROWD_24H runs on established coins only,,,,
-E_experiments_final,SOL,CROWD_24H,1793030400,2026-10-26 16:00:00,open,,Trend down,0.056,0.15,True,,1.0,509.3,0.34,
+E_experiments_final,SOL,CROWD_24H,1793030400,2026-10-26 16:00:00,closed,0.8228,Trend down,0.056,0.15,True,,1.0,509.3,0.34,3.85
 E_experiments_final,XRP,CROWD_24H,1793059200,2026-10-27 00:00:00,open,,Trend down,0.084,0.15,True,,1.0,654.3,0.35,
 E_experiments_final,ZEC,CROWD_24H,1793059200,2026-10-27 00:00:00,open,,Trend down,0.084,0.15,False,CROWD_24H runs on established coins only,,,,
 E_experiments_final,BTC,CROWD_24H,1793059200,2026-10-27 00:00:00,open,,Trend down,0.084,0.15,False,position below one whole contract,,,,
@@ -152,7 +152,7 @@ F_hot_gate,SOL,CROWD_24H,1792944000,2026-10-25 16:00:00,closed,-0.3658,Calm,0.02
 F_hot_gate,ETH,CROWD_24H,1792944000,2026-10-25 16:00:00,closed,0.5747,Calm,0.02,0.12,False,position below one whole contract,,,,
 F_hot_gate,BTC,CROWD_24H,1792944000,2026-10-25 16:00:00,closed,0.1516,Calm,0.02,0.12,False,position below one whole contract,,,,
 F_hot_gate,ZEC,CROWD_24H,1792972800,2026-10-26 00:00:00,closed,-1.7224,Calm,0.024,0.12,False,CROWD_24H runs on established coins only,,,,
-F_hot_gate,SOL,CROWD_24H,1793030400,2026-10-26 16:00:00,open,,Trend down,0.056,0.15,True,,1.0,509.3,0.34,
+F_hot_gate,SOL,CROWD_24H,1793030400,2026-10-26 16:00:00,closed,0.8228,Trend down,0.056,0.15,True,,1.0,509.3,0.34,3.85
 F_hot_gate,XRP,CROWD_24H,1793059200,2026-10-27 00:00:00,open,,Trend down,0.084,0.15,True,,1.0,654.3,0.35,
 F_hot_gate,ZEC,CROWD_24H,1793059200,2026-10-27 00:00:00,open,,Trend down,0.084,0.15,False,CROWD_24H runs on established coins only,,,,
 F_hot_gate,BTC,CROWD_24H,1793059200,2026-10-27 00:00:00,open,,Trend down,0.084,0.15,False,position below one whole contract,,,,
