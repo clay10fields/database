@@ -1,0 +1,234 @@
+{
+ "arxiv_1503.07675": {
+  "bytes": 4316313,
+  "description": "Harvey et al. 2015: 72 cluster collisions, DM-gas fractional lag beta",
+  "file": "arxiv/1503.07675.tar.gz",
+  "first_fetched": "2026-10-27T01:46:52Z",
+  "sha256": "29dd9b68881c24ec895c08f3292fddd16ce8bf44c0e354ab9bf80bf7a8ef30fd",
+  "url": "https://arxiv.org/e-print/1503.07675"
+ },
+ "arxiv_1703.10538": {
+  "bytes": 1101369,
+  "description": "Nesseris, Pantazis & Perivolaropoulos 2017: 'Gold-2017' f*sigma8 compilation",
+  "file": "arxiv/1703.10538.tar.gz",
+  "first_fetched": "2026-10-27T01:46:51Z",
+  "sha256": "47825bf2746b7afa2c8cb59b562ee3fda4f8f101894518c3d46081ba3a7d6633",
+  "url": "https://arxiv.org/e-print/1703.10538"
+ },
+ "arxiv_1808.05724": {
+  "bytes": 5832773,
+  "description": "Chen, Huang & Wang 2019: Planck 2018 distance priors (R, l_A, omega_b)",
+  "file": "arxiv/1808.05724.tar.gz",
+  "first_fetched": "2026-10-27T01:46:50Z",
+  "sha256": "9a01121d3a36ff2fd00b39023906e030a4044b9581a5596b7c0e7b535ec4a110",
+  "url": "https://arxiv.org/e-print/1808.05724"
+ },
+ "arxiv_1808.06634": {
+  "bytes": 1890517,
+  "description": "Read, Walker & Steger 2019: dwarf central densities rho_DM(150 pc); input to Correa 2021 (MNRAS 503, 920)",
+  "file": "arxiv/1808.06634.tar.gz",
+  "first_fetched": "2026-10-27T01:46:52Z",
+  "sha256": "0dc8a865f0354e7f51b86e62e7ea4764d4a59d41cfccd0db7370aaf66c14b999",
+  "url": "https://arxiv.org/e-print/1808.06634"
+ },
+ "arxiv_2006.12515": {
+  "bytes": 9243240,
+  "description": "Sagunski et al. 2021: SIDM cross-sections of groups and clusters",
+  "file": "arxiv/2006.12515.tar.gz",
+  "first_fetched": "2026-10-27T01:46:53Z",
+  "sha256": "1b3f94159f712e4e7d3dbea8f7944c9ff648abbabe71ded13260c7a97fba96c7",
+  "url": "https://arxiv.org/e-print/2006.12515"
+ },
+ "arxiv_2305.16176": {
+  "bytes": 2781671,
+  "description": "Yang et al. 2023: parametric gravothermal SIDM halo model (coefficients used in physics/sidm.py)",
+  "file": "arxiv/2305.16176.tar.gz",
+  "first_fetched": "2026-10-27T01:46:53Z",
+  "sha256": "08fd824645e6b1338a2a3a2591ac0a9bce126ac0c876c03e50bd6d2062a3f8cc",
+  "url": "https://arxiv.org/e-print/2305.16176"
+ },
+ "arxiv_2610.26877": {
+  "bytes": 2035791,
+  "description": "Oct 2026 paper: 'Revisiting self-interacting dark matter with DESI DR2 BAO' (reproduction target)",
+  "file": "arxiv/2610.26877.tar.gz",
+  "first_fetched": "2026-10-27T01:46:53Z",
+  "sha256": "c808104078cc0be4ad5dcb623a2f043019078045a070056b18a7add8351ce124",
+  "url": "https://arxiv.org/e-print/2610.26877"
+ },
+ "arxiv_abstracts": {
+  "bytes": 33596,
+  "description": "Abstracts used to verify single-number literature constraints quoted in data/literature.py",
+  "file": "arxiv/abstracts.xml",
+  "first_fetched": "2026-10-27T01:46:54Z",
+  "sha256": "3e6ce9ad8aea834d4678585e26f0864c75c1e53e51a433360c612d03a32c356f",
+  "url": "https://export.arxiv.org/api/query?id_list=0704.0261,1503.07675,2012.06611,2006.12515,1808.05603,2105.14030,1310.3278,2007.02958,2105.05259,1712.07962,1303.1521,1508.03339&max_results=20"
+ },
+ "arxiv_abstracts_desi": {
+  "bytes": 14481,
+  "description": "DESI DR2 cosmology abstract (quoted significance of dynamical dark energy)",
+  "file": "arxiv/abstracts_desi.xml",
+  "first_fetched": "2026-10-27T02:16:50Z",
+  "sha256": "254b2b8fb42312cc608c29780d3dd07c3153db5b14c9f8c51e6a927123e8ddba",
+  "url": "https://export.arxiv.org/api/query?id_list=2503.14738&max_results=1"
+ },
+ "desi_dr1_cov": {
+  "bytes": 2170,
+  "description": "DESI DR1 BAO covariance",
+  "file": "desi/dr1_cov.txt",
+  "first_fetched": "2026-10-27T01:46:48Z",
+  "sha256": "bbafa9074b51cf1a45e0d10e4f37db8c0e80a5d1d1788857abb7fc49fb21abcc",
+  "url": "https://raw.githubusercontent.com/CobayaSampler/bao_data/master/desi_2024_gaussian_bao_ALL_GCcomb_cov.txt"
+ },
+ "desi_dr1_mean": {
+  "bytes": 376,
+  "description": "DESI DR1 (2024) BAO mean (arXiv:2404.03002)",
+  "file": "desi/dr1_mean.txt",
+  "first_fetched": "2026-10-27T01:46:47Z",
+  "sha256": "dd2873a0b88459a491af3c0c0307ba059f62df9211d5b976760f310565a1be68",
+  "url": "https://raw.githubusercontent.com/CobayaSampler/bao_data/master/desi_2024_gaussian_bao_ALL_GCcomb_mean.txt"
+ },
+ "desi_dr2_cov": {
+  "bytes": 2547,
+  "description": "DESI DR2 BAO covariance",
+  "file": "desi/dr2_cov.txt",
+  "first_fetched": "2026-10-27T01:46:47Z",
+  "sha256": "252a143274c8a07c78694c119617d36594f6d7965d00319ca611c6ffb886e509",
+  "url": "https://raw.githubusercontent.com/CobayaSampler/bao_data/master/desi_bao_dr2/desi_gaussian_bao_ALL_GCcomb_cov.txt"
+ },
+ "desi_dr2_mean": {
+  "bytes": 472,
+  "description": "DESI DR2 BAO (arXiv:2503.14738) Gaussian likelihood mean, as distributed for Cobaya",
+  "file": "desi/dr2_mean.txt",
+  "first_fetched": "2026-10-27T01:46:47Z",
+  "sha256": "9ac154ab583ce759c0f7eef3c978c7c70a6ead2d18774caceadf1a350a640585",
+  "url": "https://raw.githubusercontent.com/CobayaSampler/bao_data/master/desi_bao_dr2/desi_gaussian_bao_ALL_GCcomb_mean.txt"
+ },
+ "pantheon_cov": {
+  "bytes": 33284960,
+  "description": "Pantheon+ statistical+systematic covariance",
+  "file": "pantheon/PantheonPlusSH0ES_STAT+SYS.cov",
+  "first_fetched": "2026-10-27T01:46:50Z",
+  "sha256": "abf806d966485e64afdb359c87bffc0ecc00d05eff0a31ced66f247385df0fdc",
+  "url": "https://raw.githubusercontent.com/PantheonPlusSH0ES/DataRelease/main/Pantheon%2B_Data/4_DISTANCES_AND_COVAR/Pantheon%2BSH0ES_STAT%2BSYS.cov"
+ },
+ "pantheon_dat": {
+  "bytes": 579283,
+  "description": "Pantheon+ SN Ia distances (Scolnic+2022, Brout+2022)",
+  "file": "pantheon/PantheonPlusSH0ES.dat",
+  "first_fetched": "2026-10-27T01:46:48Z",
+  "sha256": "1cb0fc379ef066afdc2ffd1857681cc478024570d8a3eba284fb645775198cf8",
+  "url": "https://raw.githubusercontent.com/PantheonPlusSH0ES/DataRelease/main/Pantheon%2B_Data/4_DISTANCES_AND_COVAR/Pantheon%2BSH0ES.dat"
+ },
+ "pbh_511keV": {
+  "bytes": 736,
+  "description": "Hawking evaporation: Galactic 511 keV line (Laha 2019)",
+  "file": "pbh/511keV.txt",
+  "first_fetched": "2026-10-27T01:46:55Z",
+  "sha256": "9450e19dd5c1752f204d971d911eb600bcea2697c678125f0a40e9b5f4f32a3f",
+  "url": "https://raw.githubusercontent.com/bradkav/PBHbounds/master/bounds/511keV.txt"
+ },
+ "pbh_CMB": {
+  "bytes": 406,
+  "description": "Planck CMB accretion bound incl. DM halo (Serpico+2020)",
+  "file": "pbh/CMB.txt",
+  "first_fetched": "2026-10-27T01:46:55Z",
+  "sha256": "69e41a41e0b8347694517b2b5c616d91385fd952fde8efc8ce24fb7e435d96b3",
+  "url": "https://raw.githubusercontent.com/bradkav/PBHbounds/master/bounds/CMB.txt"
+ },
+ "pbh_CMBevap": {
+  "bytes": 572,
+  "description": "Hawking evaporation: CMB energy injection (Poulin+2017)",
+  "file": "pbh/CMBevap.txt",
+  "first_fetched": "2026-10-27T01:46:55Z",
+  "sha256": "870797d099918f88a01c3157d4092b5f86508fd70a0ce451dbd808ba8027fd37",
+  "url": "https://raw.githubusercontent.com/bradkav/PBHbounds/master/bounds/CMBevap.txt"
+ },
+ "pbh_EGRB": {
+  "bytes": 550,
+  "description": "Hawking evaporation: extragalactic gamma-ray background (Carr+2010)",
+  "file": "pbh/EGRB.txt",
+  "first_fetched": "2026-10-27T01:46:55Z",
+  "sha256": "628ac3cecdeaf5c09d663432b72a8e5ebc90e6f76ad552301c85318675b1cc3b",
+  "url": "https://raw.githubusercontent.com/bradkav/PBHbounds/master/bounds/EGRB.txt"
+ },
+ "pbh_EROS": {
+  "bytes": 2126,
+  "description": "EROS-2 microlensing (Tisserand+2007)",
+  "file": "pbh/EROS.txt",
+  "first_fetched": "2026-10-27T01:46:54Z",
+  "sha256": "be337b5e8405ee29b052da939c23a30436ec0916b4791e1c4bcf62df8c101484",
+  "url": "https://raw.githubusercontent.com/bradkav/PBHbounds/master/bounds/EROS.txt"
+ },
+ "pbh_HSC": {
+  "bytes": 2238,
+  "description": "Subaru HSC microlensing of M31 (Niikura+2019, updated Smyth+2020, Croon+2020)",
+  "file": "pbh/HSC.txt",
+  "first_fetched": "2026-10-27T01:46:54Z",
+  "sha256": "ca4e14989e7dd3ac0a5769197565d42653a131e184ce690c2eaa06f6818d97bb",
+  "url": "https://raw.githubusercontent.com/bradkav/PBHbounds/master/bounds/HSC.txt"
+ },
+ "pbh_LIGO": {
+  "bytes": 942,
+  "description": "LIGO/Virgo merger rate bounds (for completeness of the window map)",
+  "file": "pbh/LIGO.txt",
+  "first_fetched": "2026-10-27T01:46:55Z",
+  "sha256": "ed12230c10703bec3007de6081dc67e3441ce9b74e51da057683c7583abf5136",
+  "url": "https://raw.githubusercontent.com/bradkav/PBHbounds/master/bounds/LIGO.txt"
+ },
+ "pbh_M": {
+  "bytes": 642,
+  "description": "MACHO microlensing (Alcock+2001)",
+  "file": "pbh/M.txt",
+  "first_fetched": "2026-10-27T01:46:54Z",
+  "sha256": "3e0ec59c283fe27375e9ac9b4a26e9f949ed96bee0426bd451f8b2f224056522",
+  "url": "https://raw.githubusercontent.com/bradkav/PBHbounds/master/bounds/M.txt"
+ },
+ "pbh_OGLE-2019": {
+  "bytes": 822,
+  "description": "OGLE 5-year microlensing (Niikura+2019)",
+  "file": "pbh/OGLE-2019.txt",
+  "first_fetched": "2026-10-27T01:46:54Z",
+  "sha256": "9144e3e957d76f2a953a48db842fb5d91ecf9506f4486b3116cb607e2145151c",
+  "url": "https://raw.githubusercontent.com/bradkav/PBHbounds/master/bounds/OGLE-2019.txt"
+ },
+ "pbh_UFdwarfs": {
+  "bytes": 455,
+  "description": "Eridanus II star cluster + ultra-faint dwarf heating (Brandt 2016)",
+  "file": "pbh/UFdwarfs.txt",
+  "first_fetched": "2026-10-27T01:46:54Z",
+  "sha256": "ad15eb2731e3e0b2980007078418fa9d5a9c7bd070870db48366f97109e6dac1",
+  "url": "https://raw.githubusercontent.com/bradkav/PBHbounds/master/bounds/UFdwarfs.txt"
+ },
+ "pbh_Voyager": {
+  "bytes": 581,
+  "description": "Hawking evaporation: Voyager-1 e+e- (Boudaud & Cirelli 2019)",
+  "file": "pbh/Voyager.txt",
+  "first_fetched": "2026-10-27T01:46:55Z",
+  "sha256": "08c1449e1fbd15eef95fe6b2cbdd2facb699caba838bca7158ca0d8d225edbb9",
+  "url": "https://raw.githubusercontent.com/bradkav/PBHbounds/master/bounds/Voyager.txt"
+ },
+ "pbh_WideBinaries": {
+  "bytes": 413,
+  "description": "Halo wide-binary disruption (Monroy-Rodriguez & Allen 2014)",
+  "file": "pbh/WideBinaries.txt",
+  "first_fetched": "2026-10-27T01:46:54Z",
+  "sha256": "fdec2632ef66d00a2a82329227182759495086fc5f5a1420ad75151130e0f16f",
+  "url": "https://raw.githubusercontent.com/bradkav/PBHbounds/master/bounds/WideBinaries.txt"
+ },
+ "sparc_rotmod": {
+  "bytes": 110737,
+  "description": "SPARC mass models: rotation curve + baryonic components, 175 galaxies (Lelli+2016)",
+  "file": "sparc/Rotmod_LTG.zip",
+  "first_fetched": "2026-10-27T01:46:47Z",
+  "sha256": "0a80cc90714828cc28b7dd57923576714d209f2490328c087c4a4ad607faf588",
+  "url": "https://astroweb.cwru.edu/SPARC/Rotmod_LTG.zip"
+ },
+ "sparc_table": {
+  "bytes": 28259,
+  "description": "SPARC galaxy table (distance, inclination, quality, disk scale length, ...)",
+  "file": "sparc/SPARC_Lelli2016c.mrt",
+  "first_fetched": "2026-10-27T01:46:47Z",
+  "sha256": "5aa0501f6b0d881fa579030e315e7b5b6ef561a5bd3a07472f9929c7e5728243",
+  "url": "https://astroweb.cwru.edu/SPARC/SPARC_Lelli2016c.mrt"
+ }
+}
