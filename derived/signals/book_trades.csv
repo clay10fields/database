@@ -86,7 +86,7 @@ E_experiments_final,BCH,CROWD_24H,1793332800,2026-10-30 04:00:00,closed,-2.2797,
 E_experiments_final,SOL,CROWD_24H,1793404800,2026-10-31 00:00:00,closed,0.793,Stress,0.988,0.195,True,,2.0,963.0,0.68,6.96
 E_experiments_final,ZEC,CROWD_24H,1793433600,2026-10-31 08:00:00,closed,2.0082,Stress,0.98,0.195,False,CROWD_24H runs on established coins only,,,,
 E_experiments_final,BTC,CROWD_24H,1793448000,2026-10-31 12:00:00,closed,-0.5561,Stress,0.984,0.195,True,,1.0,775.76,0.31,-4.62
-E_experiments_final,XLM,CROWD_24H,1793476800,2026-10-31 20:00:00,open,,Stress,0.964,0.195,True,,1.0,847.65,1.04,
+E_experiments_final,XLM,CROWD_24H,1793476800,2026-10-31 20:00:00,closed,1.3275,Stress,0.964,0.195,True,,1.0,847.65,1.04,10.22
 E_experiments_final,LINK,CROWD_24H,1793505600,2026-11-01 04:00:00,open,,Stress,0.92,0.195,True,,1.0,577.8,0.5,
 F_hot_gate,WLD,CROWD_24H,1790769600,2026-09-30 12:00:00,closed,3.8639,Calm,0.496,0.12,False,CROWD_24H runs on established coins only,,,,
 F_hot_gate,RENDER,CROWD_24H,1790784000,2026-09-30 16:00:00,closed,2.1587,Calm,0.492,0.12,False,CROWD_24H runs on established coins only,,,,
@@ -175,5 +175,5 @@ F_hot_gate,BCH,CROWD_24H,1793332800,2026-10-30 04:00:00,closed,-2.2797,Stress,0.
 F_hot_gate,SOL,CROWD_24H,1793404800,2026-10-31 00:00:00,closed,0.793,Stress,0.988,0.195,True,,2.0,963.0,0.68,6.96
 F_hot_gate,ZEC,CROWD_24H,1793433600,2026-10-31 08:00:00,closed,2.0082,Stress,0.98,0.195,False,CROWD_24H runs on established coins only,,,,
 F_hot_gate,BTC,CROWD_24H,1793448000,2026-10-31 12:00:00,closed,-0.5561,Stress,0.984,0.195,True,,1.0,775.76,0.31,-4.62
-F_hot_gate,XLM,CROWD_24H,1793476800,2026-10-31 20:00:00,open,,Stress,0.964,0.195,True,,1.0,847.65,1.04,
+F_hot_gate,XLM,CROWD_24H,1793476800,2026-10-31 20:00:00,closed,1.3275,Stress,0.964,0.195,True,,1.0,847.65,1.04,10.22
 F_hot_gate,LINK,CROWD_24H,1793505600,2026-11-01 04:00:00,open,,Stress,0.92,0.195,True,,1.0,577.8,0.5,
