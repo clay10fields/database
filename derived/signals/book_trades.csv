@@ -91,6 +91,7 @@ E_experiments_final,LINK,CROWD_24H,1793505600,2026-11-01 04:00:00,closed,1.6567,
 E_experiments_final,ZEC,CROWD_24H,1793592000,2026-11-02 04:00:00,closed,10.9985,Stress,0.832,0.195,False,CROWD_24H runs on established coins only,,,,
 E_experiments_final,SOL,CROWD_24H,1793750400,2026-11-04 00:00:00,closed,-3.0523,Trend down,0.032,0.15,True,,1.0,464.05,0.34,-14.5
 E_experiments_final,SOL,CROWD_24H,1793980800,2026-11-06 16:00:00,open,,Stress,1.0,0.195,True,,2.0,907.0,0.67,
+E_experiments_final,ETH,CROWD_24H,1794009600,2026-11-07 00:00:00,open,,Stress,0.968,0.195,False,position below one whole contract,,,,
 F_hot_gate,WLD,CROWD_24H,1790769600,2026-09-30 12:00:00,closed,3.8639,Calm,0.496,0.12,False,CROWD_24H runs on established coins only,,,,
 F_hot_gate,RENDER,CROWD_24H,1790784000,2026-09-30 16:00:00,closed,2.1587,Calm,0.492,0.12,False,CROWD_24H runs on established coins only,,,,
 F_hot_gate,XLM,CROWD_24H,1790798400,2026-09-30 20:00:00,closed,3.0871,Calm,0.516,0.12,False,position below one whole contract,,,,
@@ -183,3 +184,4 @@ F_hot_gate,LINK,CROWD_24H,1793505600,2026-11-01 04:00:00,closed,1.6567,Stress,0.
 F_hot_gate,ZEC,CROWD_24H,1793592000,2026-11-02 04:00:00,closed,10.9985,Stress,0.832,0.195,False,CROWD_24H runs on established coins only,,,,
 F_hot_gate,SOL,CROWD_24H,1793750400,2026-11-04 00:00:00,closed,-3.0523,Trend down,0.032,0.15,True,,1.0,464.05,0.34,-14.5
 F_hot_gate,SOL,CROWD_24H,1793980800,2026-11-06 16:00:00,open,,Stress,1.0,0.195,True,,2.0,907.0,0.67,
+F_hot_gate,ETH,CROWD_24H,1794009600,2026-11-07 00:00:00,open,,Stress,0.968,0.195,False,position below one whole contract,,,,
