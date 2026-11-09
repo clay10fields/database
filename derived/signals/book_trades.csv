@@ -93,7 +93,7 @@ E_experiments_final,SOL,CROWD_24H,1793750400,2026-11-04 00:00:00,closed,-3.0523,
 E_experiments_final,SOL,CROWD_24H,1793980800,2026-11-06 16:00:00,closed,1.212,Stress,1.0,0.195,True,,2.0,907.0,0.67,10.32
 E_experiments_final,ETH,CROWD_24H,1794009600,2026-11-07 00:00:00,closed,-0.1652,Stress,0.968,0.195,False,position below one whole contract,,,,
 E_experiments_final,BTC,CROWD_24H,1794038400,2026-11-07 08:00:00,closed,0.0506,Stress,0.968,0.195,True,,1.0,760.53,0.31,0.08
-E_experiments_final,ETH,CROWD_24H,1794096000,2026-11-08 00:00:00,open,,Stress,0.944,0.195,False,position below one whole contract,,,,
+E_experiments_final,ETH,CROWD_24H,1794096000,2026-11-08 00:00:00,closed,4.9353,Stress,0.944,0.195,False,position below one whole contract,,,,
 E_experiments_final,SOL,CROWD_24H,1794153600,2026-11-08 16:00:00,open,,Stress,0.936,0.195,True,,2.0,896.9,0.67,
 E_experiments_final,BTC,CROWD_24H,1794153600,2026-11-08 16:00:00,open,,Stress,0.936,0.195,True,,1.0,760.39,0.31,
 E_experiments_final,ZEC,CROWD_24H,1794153600,2026-11-08 16:00:00,open,,Stress,0.936,0.195,False,CROWD_24H runs on established coins only,,,,
@@ -191,7 +191,7 @@ F_hot_gate,SOL,CROWD_24H,1793750400,2026-11-04 00:00:00,closed,-3.0523,Trend dow
 F_hot_gate,SOL,CROWD_24H,1793980800,2026-11-06 16:00:00,closed,1.212,Stress,1.0,0.195,True,,2.0,907.0,0.67,10.32
 F_hot_gate,ETH,CROWD_24H,1794009600,2026-11-07 00:00:00,closed,-0.1652,Stress,0.968,0.195,False,position below one whole contract,,,,
 F_hot_gate,BTC,CROWD_24H,1794038400,2026-11-07 08:00:00,closed,0.0506,Stress,0.968,0.195,True,,1.0,760.53,0.31,0.08
-F_hot_gate,ETH,CROWD_24H,1794096000,2026-11-08 00:00:00,open,,Stress,0.944,0.195,False,position below one whole contract,,,,
+F_hot_gate,ETH,CROWD_24H,1794096000,2026-11-08 00:00:00,closed,4.9353,Stress,0.944,0.195,False,position below one whole contract,,,,
 F_hot_gate,SOL,CROWD_24H,1794153600,2026-11-08 16:00:00,open,,Stress,0.936,0.195,True,,2.0,896.9,0.67,
 F_hot_gate,BTC,CROWD_24H,1794153600,2026-11-08 16:00:00,open,,Stress,0.936,0.195,True,,1.0,760.39,0.31,
 F_hot_gate,ZEC,CROWD_24H,1794153600,2026-11-08 16:00:00,open,,Stress,0.936,0.195,False,CROWD_24H runs on established coins only,,,,
