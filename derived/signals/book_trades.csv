@@ -103,6 +103,7 @@ E_experiments_final,BTC,CROWD_24H,1794268800,2026-11-10 00:00:00,closed,1.9764,T
 E_experiments_final,XRP,CROWD_24H,1794412800,2026-11-11 16:00:00,closed,4.1712,Calm,0.728,0.12,True,,1.0,536.15,0.34,22.03
 E_experiments_final,SOL,CROWD_24H,1794412800,2026-11-11 16:00:00,closed,3.6146,Calm,0.728,0.12,True,,1.0,424.0,0.33,14.99
 E_experiments_final,BTC,CROWD_24H,1794412800,2026-11-11 16:00:00,closed,2.9777,Calm,0.728,0.12,False,position below one whole contract,,,,
+E_experiments_final,XLM,CROWD_24H,1794628800,2026-11-14 04:00:00,open,,Trend down,0.86,0.15,True,,1.0,713.7,0.92,
 F_hot_gate,WLD,CROWD_24H,1790769600,2026-09-30 12:00:00,closed,3.8639,Calm,0.496,0.12,False,CROWD_24H runs on established coins only,,,,
 F_hot_gate,RENDER,CROWD_24H,1790784000,2026-09-30 16:00:00,closed,2.1587,Calm,0.492,0.12,False,CROWD_24H runs on established coins only,,,,
 F_hot_gate,XLM,CROWD_24H,1790798400,2026-09-30 20:00:00,closed,3.0871,Calm,0.516,0.12,False,position below one whole contract,,,,
@@ -207,3 +208,4 @@ F_hot_gate,BTC,CROWD_24H,1794268800,2026-11-10 00:00:00,closed,1.9764,Trend down
 F_hot_gate,XRP,CROWD_24H,1794412800,2026-11-11 16:00:00,closed,4.1712,Calm,0.728,0.12,True,,1.0,536.15,0.34,22.03
 F_hot_gate,SOL,CROWD_24H,1794412800,2026-11-11 16:00:00,closed,3.6146,Calm,0.728,0.12,True,,1.0,424.0,0.33,14.99
 F_hot_gate,BTC,CROWD_24H,1794412800,2026-11-11 16:00:00,closed,2.9777,Calm,0.728,0.12,False,position below one whole contract,,,,
+F_hot_gate,XLM,CROWD_24H,1794628800,2026-11-14 04:00:00,open,,Trend down,0.86,0.15,True,,1.0,713.7,0.92,
