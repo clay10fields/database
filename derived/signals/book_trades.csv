@@ -116,7 +116,7 @@ E_experiments_final,SOL,CROWD_24H,1795449600,2026-11-23 16:00:00,closed,8.629,St
 E_experiments_final,BCH,CROWD_24H,1795464000,2026-11-23 20:00:00,closed,3.1934,Stress,1.0,0.195,True,,4.0,804.04,1.83,23.85
 E_experiments_final,XRP,CROWD_24H,1795464000,2026-11-23 20:00:00,closed,2.6772,Stress,1.0,0.195,True,,2.0,943.4,0.67,24.59
 E_experiments_final,LINK,CROWD_24H,1795464000,2026-11-23 20:00:00,closed,1.966,Stress,1.0,0.195,True,,2.0,900.3,0.92,16.78
-E_experiments_final,ADA,CROWD_24H,1795492800,2026-11-24 04:00:00,open,,Stress,0.96,0.195,True,,1.0,736.5,0.65,
+E_experiments_final,ADA,CROWD_24H,1795492800,2026-11-24 04:00:00,closed,2.8192,Stress,0.96,0.195,True,,1.0,736.5,0.65,20.11
 F_hot_gate,WLD,CROWD_24H,1790769600,2026-09-30 12:00:00,closed,3.8639,Calm,0.496,0.12,False,CROWD_24H runs on established coins only,,,,
 F_hot_gate,RENDER,CROWD_24H,1790784000,2026-09-30 16:00:00,closed,2.1587,Calm,0.492,0.12,False,CROWD_24H runs on established coins only,,,,
 F_hot_gate,XLM,CROWD_24H,1790798400,2026-09-30 20:00:00,closed,3.0871,Calm,0.516,0.12,False,position below one whole contract,,,,
@@ -234,4 +234,4 @@ F_hot_gate,SOL,CROWD_24H,1795449600,2026-11-23 16:00:00,closed,8.629,Stress,1.0,
 F_hot_gate,BCH,CROWD_24H,1795464000,2026-11-23 20:00:00,closed,3.1934,Stress,1.0,0.195,True,,4.0,804.04,1.83,23.85
 F_hot_gate,XRP,CROWD_24H,1795464000,2026-11-23 20:00:00,closed,2.6772,Stress,1.0,0.195,True,,2.0,943.4,0.67,24.59
 F_hot_gate,LINK,CROWD_24H,1795464000,2026-11-23 20:00:00,closed,1.966,Stress,1.0,0.195,True,,2.0,900.3,0.92,16.78
-F_hot_gate,ADA,CROWD_24H,1795492800,2026-11-24 04:00:00,open,,Stress,0.96,0.195,True,,1.0,736.5,0.65,
+F_hot_gate,ADA,CROWD_24H,1795492800,2026-11-24 04:00:00,closed,2.8192,Stress,0.96,0.195,True,,1.0,736.5,0.65,20.11
