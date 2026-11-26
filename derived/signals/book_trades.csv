@@ -117,10 +117,12 @@ E_experiments_final,BCH,CROWD_24H,1795464000,2026-11-23 20:00:00,closed,3.1934,S
 E_experiments_final,XRP,CROWD_24H,1795464000,2026-11-23 20:00:00,closed,2.6772,Stress,1.0,0.195,True,,2.0,943.4,0.67,24.59
 E_experiments_final,LINK,CROWD_24H,1795464000,2026-11-23 20:00:00,closed,1.966,Stress,1.0,0.195,True,,2.0,900.3,0.92,16.78
 E_experiments_final,ADA,CROWD_24H,1795492800,2026-11-24 04:00:00,closed,2.8192,Stress,0.96,0.195,True,,1.0,736.5,0.65,20.11
-E_experiments_final,ZEC,CROWD_24H,1795636800,2026-11-25 20:00:00,open,,Calm,0.728,0.12,False,CROWD_24H runs on established coins only,,,,
-E_experiments_final,BCH,CROWD_24H,1795636800,2026-11-25 20:00:00,open,,Calm,0.728,0.12,True,,3.0,610.56,1.38,
-E_experiments_final,SOL,CROWD_24H,1795636800,2026-11-25 20:00:00,open,,Calm,0.728,0.12,True,,1.0,351.45,0.33,
+E_experiments_final,ZEC,CROWD_24H,1795636800,2026-11-25 20:00:00,closed,4.286,Calm,0.728,0.12,False,CROWD_24H runs on established coins only,,,,
+E_experiments_final,BCH,CROWD_24H,1795636800,2026-11-25 20:00:00,closed,-2.9695,Calm,0.728,0.12,True,,3.0,610.56,1.38,-19.51
+E_experiments_final,SOL,CROWD_24H,1795636800,2026-11-25 20:00:00,closed,-1.4658,Calm,0.728,0.12,True,,1.0,351.45,0.33,-5.48
 E_experiments_final,LINK,CROWD_24H,1795651200,2026-11-26 00:00:00,open,,Calm,0.764,0.12,True,,1.0,452.5,0.46,
+E_experiments_final,BCH,CROWD_24H,1795723200,2026-11-26 20:00:00,open,,Calm,0.744,0.12,True,,3.0,628.08,1.39,
+E_experiments_final,ADA,CROWD_24H,1795723200,2026-11-26 20:00:00,open,,Calm,0.744,0.12,False,position below one whole contract,,,,
 F_hot_gate,WLD,CROWD_24H,1790769600,2026-09-30 12:00:00,closed,3.8639,Calm,0.496,0.12,False,CROWD_24H runs on established coins only,,,,
 F_hot_gate,RENDER,CROWD_24H,1790784000,2026-09-30 16:00:00,closed,2.1587,Calm,0.492,0.12,False,CROWD_24H runs on established coins only,,,,
 F_hot_gate,XLM,CROWD_24H,1790798400,2026-09-30 20:00:00,closed,3.0871,Calm,0.516,0.12,False,position below one whole contract,,,,
@@ -239,7 +241,9 @@ F_hot_gate,BCH,CROWD_24H,1795464000,2026-11-23 20:00:00,closed,3.1934,Stress,1.0
 F_hot_gate,XRP,CROWD_24H,1795464000,2026-11-23 20:00:00,closed,2.6772,Stress,1.0,0.195,True,,2.0,943.4,0.67,24.59
 F_hot_gate,LINK,CROWD_24H,1795464000,2026-11-23 20:00:00,closed,1.966,Stress,1.0,0.195,True,,2.0,900.3,0.92,16.78
 F_hot_gate,ADA,CROWD_24H,1795492800,2026-11-24 04:00:00,closed,2.8192,Stress,0.96,0.195,True,,1.0,736.5,0.65,20.11
-F_hot_gate,ZEC,CROWD_24H,1795636800,2026-11-25 20:00:00,open,,Calm,0.728,0.12,False,CROWD_24H runs on established coins only,,,,
-F_hot_gate,BCH,CROWD_24H,1795636800,2026-11-25 20:00:00,open,,Calm,0.728,0.12,True,,3.0,610.56,1.38,
-F_hot_gate,SOL,CROWD_24H,1795636800,2026-11-25 20:00:00,open,,Calm,0.728,0.12,True,,1.0,351.45,0.33,
+F_hot_gate,ZEC,CROWD_24H,1795636800,2026-11-25 20:00:00,closed,4.286,Calm,0.728,0.12,False,CROWD_24H runs on established coins only,,,,
+F_hot_gate,BCH,CROWD_24H,1795636800,2026-11-25 20:00:00,closed,-2.9695,Calm,0.728,0.12,True,,3.0,610.56,1.38,-19.51
+F_hot_gate,SOL,CROWD_24H,1795636800,2026-11-25 20:00:00,closed,-1.4658,Calm,0.728,0.12,True,,1.0,351.45,0.33,-5.48
 F_hot_gate,LINK,CROWD_24H,1795651200,2026-11-26 00:00:00,open,,Calm,0.764,0.12,True,,1.0,452.5,0.46,
+F_hot_gate,BCH,CROWD_24H,1795723200,2026-11-26 20:00:00,open,,Calm,0.744,0.12,True,,3.0,628.08,1.39,
+F_hot_gate,ADA,CROWD_24H,1795723200,2026-11-26 20:00:00,open,,Calm,0.744,0.12,False,position below one whole contract,,,,
